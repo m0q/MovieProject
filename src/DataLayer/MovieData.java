@@ -46,32 +46,6 @@ public class MovieData {
                     films.add(film);
                 }
             }
-            
-            /* com.csvreader.CsvReader implementation
-            String[] headers = csv.getHeaders();
-            csv.readHeaders();
-            
-            while(csv.readRecord()){
-                if(films.stream().anyMatch(item -> item.filmID.equals(csv.get(ApplicationVariables.filmID)))){
-                    Film tmpFilm = films.stream().filter(item -> item.filmID.equals(csv.get(ApplicationVariables.filmID))).collect(Collectors.toList()).get(0);
-                    
-                    if(tmpFilm.directors.stream().anyMatch(item -> item.getID().equals(csv.get(ApplicationVariables.directorID)))){
-                    
-                    }else{
-                        Director director = this.getDirectorFromCSV(csv);
-                        tmpFilm.directors.add(director);
-                    }
-                    if(tmpFilm.actors.stream().anyMatch(item -> item.getID().equals(csv.get(ApplicationVariables.actorID)))){
-                    
-                    }else{
-                        Actor actor = this.getActorFromCSV(csv);
-                        tmpFilm.actors.add(actor);
-                    }
-                }else{
-                    Film film = this.getFilmFromCSV(csv);
-                    films.add(film);
-                }
-            }*/
         }catch(IOException ex){
             ex.printStackTrace();
         }
