@@ -54,13 +54,13 @@ public class MovieData {
     }
     
     private Director getDirectorFromCSV(String[] line){
-        Director director = new Director(line[AppVariables.directorID], 
+        Director director = new Director(line[AppVariables.directorID].replace(" ", ""), 
                                          line[AppVariables.directorName]);
         return director;
     }
     
     private Actor getActorFromCSV(String[] line){
-        Actor actor = new Actor(line[AppVariables.actorID], 
+        Actor actor = new Actor(line[AppVariables.actorID].replace(" ", ""), 
                                 line[AppVariables.actorName]);
         return actor;
     }
