@@ -28,10 +28,10 @@ public class MovieProject {
         MovieBusinessLayer mbl = new MovieBusinessLayer();
         Films films = mbl.getFilmsFromCSV(AppVariables.FILE_PATH);
         
-        Films f = mbl.getFilmSubsetByMovieID(films, "2975590");
-        f.forEach(x -> System.out.println(x.filmName));
+        //Films f = mbl.getFilmSubsetByMovieID(films, "2975590");
+        //f.forEach(x -> System.out.println(x.filmName));
         
-        mbl.getDistinctActorsFromFilms(films, null).forEach(x -> System.out.println(x.getName()));
+        mbl.getDistinctActorsFromFilms(films, "0811583").forEach(x -> System.out.println(x.getName()));
         
         
         /*List<Film> tmpFilms= new ArrayList();
