@@ -5,15 +5,9 @@
  */
 package movieproject;
 
-import DataLayer.MovieData;
 import ClassLayer.*;
 import ApplicationVariables.AppVariables;
 import BusinessLayer.MovieBusinessLayer;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 /**
  *
  * @author mqul
@@ -31,7 +25,7 @@ public class MovieProject {
         //Films f = mbl.getFilmSubsetByMovieID(films, "2975590");
         //f.forEach(x -> System.out.println(x.filmName));
         
-        mbl.getDistinctActorsFromFilms(films, "0811583").forEach(x -> System.out.println(x.getName()));
+        mbl.getDistinctActorsFromFilms(films, "0000255").forEach(x -> System.out.println(x.getName()));
         
         
         /*List<Film> tmpFilms= new ArrayList();
