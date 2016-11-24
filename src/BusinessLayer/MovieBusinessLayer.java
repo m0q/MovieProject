@@ -7,6 +7,7 @@ package BusinessLayer;
 
 import ClassLayer.*;
 import DataLayer.MovieData;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,7 +41,18 @@ public class MovieBusinessLayer {
     public List<Actor> getDistinctActorsFromFilms(Films films, String actorID){
         if(actorID == null){
             //TO-DO
-            return null; //actor list
+            List<Actor> tmpList = new ArrayList();
+            for(Film f : films){
+                List<Actor> aList = f.actors;
+                
+                for(Actor a : aList){
+                    tmpList.add(new Actor(a.getID(), a.getName()));
+                }
+                
+            }
+            
+            //tmpList.stream().filter(x -> x.getID().equals(actorID)).collect(Collectors.groupingBy(p -> p.getID()));
+            return tmpList; //actor list
         }else{
             //TO-DO
             return null; //actor list
