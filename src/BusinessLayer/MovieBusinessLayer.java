@@ -33,7 +33,8 @@ public class MovieBusinessLayer {
             List <Director> tmpList = new ArrayList();
             
             films.forEach(film -> tmpList.addAll(film.directors.stream()
-                    .filter(x -> tmpList.stream().noneMatch(y -> y.getID().equals(x.getID())))
+                    .filter(x -> tmpList.stream()
+                        .noneMatch(y -> y.getID().equals(x.getID())))
                     .collect(Collectors.toList())));
             
             tmpList.sort(Comparator.comparing(c -> c.getName()));
@@ -56,7 +57,8 @@ public class MovieBusinessLayer {
             List <Actor> tmpList = new ArrayList();
             
             films.forEach(film -> tmpList.addAll(film.actors.stream()
-                    .filter(x -> tmpList.stream().noneMatch(y -> y.getID().equals(x.getID())))
+                    .filter(x -> tmpList.stream()
+                        .noneMatch(y -> y.getID().equals(x.getID())))
                     .collect(Collectors.toList())));
             
             tmpList.sort(Comparator.comparing(c -> c.getName()));
