@@ -9,7 +9,9 @@ import ClassLayer.*;
 import DataLayer.MovieData;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 /**
  *
@@ -54,6 +56,25 @@ public class MovieBusinessLayer {
     
     public List<Actor> getDistinctActorsFromFilms(Films films, String actorID){
         if(actorID == null){
+            
+            /*films.stream()
+                    .flatMap(film -> film.actors.stream()
+                            .map(x -> new Actor(x.getID(), x.getName())))
+                    .collect(C ollectors.groupingBy(x -> x.getID()));
+            
+            List<Actor> map = films.stream()
+                    .flatMap(x -> x.actors.stream()
+                            .map(i -> new Actor(i.getID(), i.getName())))
+                    .collect(Collectors.groupingBy(x -> x.getID()))
+                    .values().stream().flatMap(c -> c.stream()).collect(Collectors.toList());;
+                       
+            for(int i = 0; i<map.size(); i++){
+                System.out.println(map.get(i).getName());//.forEach(x -> System.out.println(x.getID() + x.getName()));
+            }
+            
+            return new ArrayList();*/
+                    
+                    
             List <Actor> tmpList = new ArrayList();
             
             films.forEach(film -> tmpList.addAll(film.actors.stream()
@@ -64,6 +85,8 @@ public class MovieBusinessLayer {
             tmpList.sort(Comparator.comparing(c -> c.getName()));
             
            return tmpList;
+            
+            
            /*traditional method 
             for(Film film : films){
                 for(Actor actor : film.actors){
