@@ -25,8 +25,8 @@ public class MovieProject {
         //Films f = mbl.getFilmSubsetByMovieID(films, "2975590");
         //f.forEach(x -> System.out.println(x.filmName));
         
-        mbl.getDistinctDirectorsFromFilms(films, "0811583"/*"0000255"*/).forEach(x -> System.out.println(x.getName()));
-        
+        mbl.getDistinctDirectorsFromFilms(films, null/*"0811583"*//*"0000255"*/).forEach(x -> System.out.println(x.getName()));
+        mbl.getDistinctSimplisticFilmFromFilms(films, "2975590").forEach(film -> System.out.println(film.filmName));
         
         /*List<Film> tmpFilms= new ArrayList();
         

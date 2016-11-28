@@ -70,10 +70,10 @@ public class MovieData {
         Director director = this.getDirectorFromCSV(line);
         Actor actor = this.getActorFromCSV(line);
         
-        Film film = new Film(line[AppVariables.filmID],
-                             line[AppVariables.filmName],
-                             line[AppVariables.imdbRating],
-                             line[AppVariables.filmYear]);
+        Film film = new Film(line[AppVariables.filmID].replace(" ", ""),
+                             line[AppVariables.filmName].replaceFirst(" ", ""),
+                             line[AppVariables.imdbRating].replace(" ", ""),
+                             line[AppVariables.filmYear].replace(" ", ""));
         film.directors.add(director);
         film.actors.add(actor);
         

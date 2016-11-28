@@ -34,23 +34,43 @@ public class MovieBusinessLayer {
         if(directorID == null){
             List <Director> tmpList = new ArrayList();
             
-            films.forEach(film -> film.directors.stream()
+            /**
+             starting with the list of films, we access each film and stream into 
+             the list of directors. From here, we ensure that no director ID in the
+             stream already exists in the tmpFilm list. The child stream then returns 
+             a stream of directors to the parent which then adds each of the returned
+             directors into the tmpList, then turns the stream into a list of directors
+             */
+            
+            films.stream().flatMap(film -> film.directors.stream()
+                        .filter(dir -> tmpList.stream()
+                                .noneMatch(di -> di.getID().equals(dir.getID())))
+                        .map(nDir -> tmpList.add(nDir)))
+                        .collect(Collectors.toList());
+            
+            tmpList.sort(Comparator.comparing(c -> c.getName()));
+            
+            /*films.forEach(film -> film.directors.stream()
                         .filter(dir -> tmpList.stream()
                                 .noneMatch(di -> di.getID().equals(dir.getID())))
                         .map(nDir -> tmpList.add(nDir))
-                        .collect(Collectors.toList()));
-            
-            tmpList.sort(Comparator.comparing(c -> c.getName()));
+                        .collect(Collectors.toList()));*/
            
             return tmpList;
         }else{
             List <Director> tmpList = new ArrayList();
             
-            films.forEach(film -> film.directors.stream()
+            films.stream().flatMap(film -> film.directors.stream()
+                        .filter(dir -> tmpList.stream()
+                                .noneMatch(di -> di.getID().equals(dir.getID())) && dir.getID().equals(directorID))
+                        .map(nDir -> tmpList.add(nDir)))
+                        .collect(Collectors.toList());
+            
+            /*films.forEach(film -> film.directors.stream()
                         .filter(dir -> (tmpList.stream()
                             .noneMatch(di -> di.getID().equals(dir.getID()))) && dir.getID().equals(directorID))
                         .map(nDir -> tmpList.add(nDir))
-                        .collect(Collectors.toList()));
+                        .collect(Collectors.toList()));*/
             
             return tmpList; 
         }
@@ -60,11 +80,11 @@ public class MovieBusinessLayer {
         if(actorID == null){
             List <Actor> tmpList = new ArrayList();
             
-            films.forEach(film -> film.actors.stream()
-                        .filter(a -> tmpList.stream()
-                                .noneMatch(e -> e.getID().equals(a.getID())))
-                        .map(ac -> tmpList.add(ac))
-                        .collect(Collectors.toList()));
+            films.stream().flatMap(film -> film.actors.stream()
+                        .filter(act -> tmpList.stream()
+                                .noneMatch(listAct -> listAct.getID().equals(act.getID())))
+                        .map(nAct -> tmpList.add(nAct)))
+                        .collect(Collectors.toList());
             
             tmpList.sort(Comparator.comparing(c -> c.getName()));
            
@@ -72,18 +92,23 @@ public class MovieBusinessLayer {
         }else{
             List <Actor> tmpList = new ArrayList();
             
-            films.forEach(film -> film.actors.stream()
-                        .filter(a -> (tmpList.stream()
-                            .noneMatch(e -> e.getID().equals(a.getID()))) && a.getID().equals(actorID))
-                        .map(nDir -> tmpList.add(nDir))
-                        .collect(Collectors.toList()));
+            films.stream().flatMap(film -> film.actors.stream()
+                        .filter(act -> tmpList.stream()
+                                .noneMatch(listAct -> listAct.getID().equals(act.getID())) && act.getID().equals(actorID))
+                        .map(nAct -> tmpList.add(nAct)))
+                        .collect(Collectors.toList());
             
             return tmpList; 
         }
     }
     
     
-    //GetDistinctSimplisticFilmFromFilms??
+    public List<SimplisticFilm> getDistinctSimplisticFilmFromFilms(Films films, String filmID){
+        return films.stream()
+                .filter(film -> film.getFilmID().equals(filmID))
+                .map(fi -> new SimplisticFilm(fi.getFilmID(), fi.getFilmName()))
+                .collect(Collectors.toList());
+    }
     
     public Films getFilmSubset(String filmID, String directorID, String actorID, Films films){
         Films tmpFilms = new Films();
