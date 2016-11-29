@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Hello World - Input Form</title>
+    </h:head>
+    <h:body>
+        
+        <h1>Test - Practice</h1>
+        
+        <h:form>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            Films:
+                        </td>
+                        <td> 
+                            <h:selectOneMenu value="Test" style="width:230px;">
+                                <f:selectItem itemLabel="--SELECT--" itemValue="#{null}" />
+                                <f:selectItems value="#{user.filmList}" var="c" itemLabel="#{user.filmName}" itemValue="#{user.filmID}" />
+                            </h:selectOneMenu>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Directors: 
+                        </td>
+                        <td>
+                            <h:selectOneMenu value="Test" style="width:230px;">
+                                <f:selectItem itemLabel="--SELECT--" itemValue="#{null}" />
+                                <f:selectItems value="#{user.directorsNames}" />
+                            </h:selectOneMenu>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Actors: 
+                        </td>
+                        <td>
+                            <h:selectOneMenu value="Test" style="width:230px;">
+                                <f:selectItem itemLabel="--SELECT--" itemValue="#{null}" />
+                                <f:selectItems value="#{user.actorsNames}" />
+                            </h:selectOneMenu>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <h:commandButton value="reset"/>
+                            <h:commandButton value="submit"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </h:form>
+        
+        <!--<h:form>
+            <h:selectOneMenu>
+                <f:selectItem value="#{firstName}"/>
+            </h:selectOneMenu>
+            <h:inputText a:placeholder="first name" value="#{firstName}"/>
+            <br></br>
+            <h:inputText a:placeholder="last name" value="#{lastName}"/>
+            <br></br>
+            <h:commandButton value="reset" action="hello-world"/>
+        </h:form>
+        -->
+        <!--
+        Form example - h: means it's coming from the JSF basic HTML library
+        creates 2 input fields and stores their values as number1 and number2
+        then creates a button that loads the "myresponse" page, with the inputs
+        <h:form>
+            <h:inputText id = "num1" value="#{number1}" a:placeholder="num1"/> +
+            <h:inputText id = "num2" value="#{number2}" a:placeholder="num1"/>
+            <h:commandButton value="Submit" action="myresponse" />
+        </h:form>
+        -->
+        
+    </h:body>
+</html>
+
