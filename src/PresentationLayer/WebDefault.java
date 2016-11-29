@@ -15,17 +15,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.annotation.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-import javax.inject.Named;
 
 /**
  *
  * @author mqul
  */
-@javax.faces.bean.ManagedBean(name="user")
-@ViewScoped
 public class WebDefault implements Serializable{
     
     public List<String> a = new ArrayList();
