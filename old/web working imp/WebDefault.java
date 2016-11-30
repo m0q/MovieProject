@@ -61,40 +61,19 @@ public class WebDefault implements Serializable{
         }
     }
     
-    /*public List getDirectors(){
-        List<SelectItem> siList = new ArrayList();
-        siList.add(new SelectItem(null, "--SELECT--"));
-        for(Director d : mbl.getDistinctDirectorsFromFilms(films, null)){
-            siList.add(new SelectItem(d.getID(), d.getName()));
-        }
-        return siList;
-    }*/
-    
     public List getDirectors(){
-        if(isPostback() && mbl.getDistinctDirectorsFromFilms(films, null).size() == 1){
-            List<SelectItem> siList = new ArrayList();
-            
-            mbl.getDistinctDirectorsFromFilms(films, null).stream()
-                    .map(a -> siList.add(new SelectItem(a.getID(), a.getName())))
-                    .collect(Collectors.toList());
-                    
-            return siList;
-        }else{
-            List<SelectItem> siList = new ArrayList();
-            siList.add(new SelectItem(null, "--SELECT--"));
-            mbl.getDistinctDirectorsFromFilms(films, null).stream()
-                    .map(a -> siList.add(new SelectItem(a.getID(), a.getName())))
-                    .collect(Collectors.toList());
-            
-            return siList;
-        }
+        return populateDropDownList(mbl.getDistinctDirectorsFromFilms(films, null)); 
     }
     
     public List getActors(){
-        if(isPostback() && mbl.getDistinctActorsFromFilms(films, null).size() == 1){
+        return populateDropDownList(mbl.getDistinctActorsFromFilms(films, null));  
+    }
+    
+    private List populateDropDownList(List<? extends Person> curList){
+        if(isPostback() && curList.size() == 1){
             List<SelectItem> siList = new ArrayList();
             
-            mbl.getDistinctActorsFromFilms(films, null).stream()
+            curList.stream()
                     .map(a -> siList.add(new SelectItem(a.getID(), a.getName())))
                     .collect(Collectors.toList());
                     
@@ -102,13 +81,11 @@ public class WebDefault implements Serializable{
         }else{
             List<SelectItem> siList = new ArrayList();
             siList.add(new SelectItem(null, "--SELECT--"));
-            mbl.getDistinctActorsFromFilms(films, null).stream()
-                    .map(a -> siList.add(new SelectItem(a.getID(), a.getName())))
-                    .collect(Collectors.toList());
-            
-            /*for(Actor d : mbl.getDistinctActorsFromFilms(films, null)){
-                siList.add(new SelectItem(d.getID(), d.getName()));
-            }*/
+
+            curList.stream()
+                .map(a -> siList.add(new SelectItem(a.getID(), a.getName())))
+                .collect(Collectors.toList());
+
             return siList;
         }
     }

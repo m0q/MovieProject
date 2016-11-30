@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Movie DB</title>
+    </h:head>
+    <h:body>
+        <h1>Movie DB</h1>
+        <h:form>
+            Films:<h:selectOneMenu style="width:230px;" value="#{bean.selectedFilm}" >
+                <f:ajax listener="#{bean.submit()}" render="@form" />
+                <f:selectItems value="#{bean.films}" />
+            </h:selectOneMenu>
+            <br></br>
+            Directors:<h:selectOneMenu style="width:230px;" value="#{bean.selectedDirector}">
+                <f:ajax listener="#{bean.submit()}" render="@form" />
+                <f:selectItems value="#{bean.directors}" />
+            </h:selectOneMenu>
+            <br></br>
+            Actors:<h:selectOneMenu style="width:230px;" value="#{bean.selectedActor}">
+                <f:ajax listener="#{bean.submit()}"       render="@form" />
+                <f:selectItems value="#{bean.actors}" />
+            </h:selectOneMenu>
+            <br></br>
+            <h:commandButton value="Reset" action="#{bean.reset}" />
+        </h:form>
+    </h:body>
+</html>
+
