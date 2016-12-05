@@ -12,6 +12,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
 
@@ -93,14 +94,36 @@ public class Beans implements Serializable{
         }
     }
     
-    //action handler on postback
+    //http://ruleoftech.com/2012/jsf-1-2-and-getting-selected-value-from-dropdown
+    public void valueChangeMethodFilm(ValueChangeEvent e){
+        if(isPostback()){
+            selectedFilm = e.getNewValue().toString();
+            films = (selectedFilm == null ? films : mbl.getFilmSubsetByMovieID(films, selectedFilm));
+        }
+    }
+    
+    public void valueChangeMethodDir(ValueChangeEvent e){
+        if(isPostback()){
+            selectedDirector = e.getNewValue().toString();
+            films = (selectedDirector == null ? films : mbl.getFilmSubsetByDirectorID(films, selectedDirector));
+        }
+    }
+    
+    public void valueChangeMethodAct(ValueChangeEvent e){
+        if(isPostback()){
+            selectedActor = e.getNewValue().toString();
+            films = (selectedActor == null ? films : mbl.getFilmSubsetByActorID(films, selectedActor));
+        }
+    }
+    
+    /*action handler on postback
     public void submit(){
         if(isPostback()){
             films = (selectedFilm == null ? films : mbl.getFilmSubsetByMovieID(films, selectedFilm));
             films = (selectedDirector==null ? films : mbl.getFilmSubsetByDirectorID(films, selectedDirector));
             films = (selectedActor==null ? films : mbl.getFilmSubsetByActorID(films, selectedActor));
         }
-    }
+    }*/
     
     //completely refresh the page to initial state
     public void reset() throws IOException {

@@ -9,18 +9,26 @@
     <h:body>
         <h1>Movie DB</h1>
         <h:form>
-            Films:<h:selectOneMenu style="width:230px;" value="#{bean.selectedFilm}" >
+            <!-- implementation used AJAX listener
+            
+            Films:<h:selectOneMenu style="width:230px;" value="#{bean.selectedFilm}">
+                <f:selectItems value="#{bean.films}" />
                 <f:ajax listener="#{bean.submit()}" render="@form" />
+            </h:selectOneMenu>
+            
+            -->
+            Films:<h:selectOneMenu style="width:230px;" value="#{bean.selectedFilm}" 
+                          onchange="submit()" valueChangeListener="#{bean.valueChangeMethodFilm}">
                 <f:selectItems value="#{bean.films}" />
             </h:selectOneMenu>
             <br></br>
-            Directors:<h:selectOneMenu style="width:230px;" value="#{bean.selectedDirector}">
-                <f:ajax listener="#{bean.submit()}" render="@form" />
+            Directors:<h:selectOneMenu style="width:230px;" value="#{bean.selectedDirector}"
+                          onchange="submit()" valueChangeListener="#{bean.valueChangeMethodDir}">
                 <f:selectItems value="#{bean.directors}" />
             </h:selectOneMenu>
             <br></br>
-            Actors:<h:selectOneMenu style="width:230px;" value="#{bean.selectedActor}">
-                <f:ajax listener="#{bean.submit()}"       render="@form" />
+            Actors:<h:selectOneMenu style="width:230px;" value="#{bean.selectedActor}"
+                          onchange="submit()" valueChangeListener="#{bean.valueChangeMethodAct}">
                 <f:selectItems value="#{bean.actors}" />
             </h:selectOneMenu>
             <br></br>
