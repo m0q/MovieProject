@@ -18,7 +18,6 @@ public class MovieProject {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
         MovieBusinessLayer mbl = new MovieBusinessLayer();
         Films films = mbl.getFilmsFromCSV(AppVariables.FILE_PATH);
         

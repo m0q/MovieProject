@@ -51,14 +51,14 @@ public class MovieData {
     }
     
     private Director getDirectorFromCSV(String[] line){
-        Director director = new Director(line[AppVariables.directorID].replace(" ", ""), 
-                                         line[AppVariables.directorName].replaceFirst(" ", ""));
+        Director director = new Director(line[AppVariables.directorID].trim(), 
+                                         line[AppVariables.directorName].trim());
         return director;
     }
     
     private Actor getActorFromCSV(String[] line){
-        Actor actor = new Actor(line[AppVariables.actorID].replace(" ", ""), 
-                                line[AppVariables.actorName].replaceFirst(" ", ""));
+        Actor actor = new Actor(line[AppVariables.actorID].trim(), 
+                                line[AppVariables.actorName].trim());
         return actor;
     }
     
@@ -67,10 +67,10 @@ public class MovieData {
         Director director = this.getDirectorFromCSV(line);
         Actor actor = this.getActorFromCSV(line);
         
-        Film film = new Film(line[AppVariables.filmID].replace(" ", ""),
-                             line[AppVariables.filmName].replaceFirst(" ", ""),
-                             line[AppVariables.imdbRating].replace(" ", ""),
-                             line[AppVariables.filmYear].replace(" ", ""));
+        Film film = new Film(line[AppVariables.filmID].trim(),
+                             line[AppVariables.filmName].trim(),
+                             line[AppVariables.imdbRating].trim(),
+                             line[AppVariables.filmYear].trim());
         film.directors.add(director);
         film.actors.add(actor);
         

@@ -36,6 +36,20 @@ public class Film {
         this.filmYear = filmYear;
     }
     
+    public SimplisticFilm toSimplisticFilm(){
+        return new SimplisticFilm(this.filmID, this.filmName);
+    }
+    
+    public boolean isValid(){ //TODO: check if Java has is null or empty
+        if(this.filmID == null || this.filmID.isEmpty()){
+            return false;
+        }else if(this.filmName == null || this.filmName.isEmpty()){
+            return false;
+        }else{
+            return true;
+        }
+    }
+    
     //+getters
     public String getFilmID(){return filmID;}
     public String getFilmName(){return filmName;}

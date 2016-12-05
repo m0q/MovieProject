@@ -15,6 +15,16 @@ public class SimplisticFilm{
         this.filmName = filmName;
     }
     
+    public boolean isValid(){ //TODO: check if Java has is null or empty
+        if(this.filmID == null || this.filmID.isEmpty()){
+            return false;
+        }else if(this.filmName == null || this.filmName.isEmpty()){
+            return false;
+        }else{
+            return true;
+        }
+    }
+    
     public String getFilmID(){return filmID;}
     public String getFilmName(){return filmName;}
     public void setFilmID(String filmID){this.filmID = filmID;}

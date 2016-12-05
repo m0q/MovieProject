@@ -38,7 +38,12 @@ public class Beans implements Serializable{
             return siList;
         }else{
             List<SelectItem> siList = new ArrayList();
-            siList.add(new SelectItem(null, AppVariables.DropDownDefault));
+            
+            //<--SELECT--> Option
+            SelectItem noSelect = new SelectItem(null, AppVariables.DropDownDefault);
+            noSelect.setNoSelectionOption(true);
+            siList.add(noSelect);
+            
             mbl.getDistinctSimplisticFilmFromFilms(films, null).stream()
                     .map(f -> siList.add(new SelectItem(f.getFilmID(), f.getFilmName())))
                     .collect(Collectors.toList());
@@ -76,6 +81,8 @@ public class Beans implements Serializable{
             return siList;
         }else{
             List<SelectItem> siList = new ArrayList();
+            
+            //TODO: <--SELECT--> Option
             siList.add(new SelectItem(null, AppVariables.DropDownDefault));
 
             curList.stream()
