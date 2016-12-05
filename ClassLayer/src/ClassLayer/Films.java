@@ -26,7 +26,9 @@ public class Films extends ArrayList<Film>{
     public List<SimplisticFilm> toListOfSimplisticFilms(){
         List<SimplisticFilm> sFilms = new ArrayList();
         for(Film film : this){
-            sFilms.add(film.toSimplisticFilm());
+            if(film.isValid()){
+                sFilms.add(film.toSimplisticFilm());
+            }
         }
         return sFilms;
     }

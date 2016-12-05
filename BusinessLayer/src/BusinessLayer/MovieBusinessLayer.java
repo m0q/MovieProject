@@ -85,19 +85,10 @@ public class MovieBusinessLayer {
     
     
     public List<SimplisticFilm> getDistinctSimplisticFilmFromFilms(Films films, String filmID){
-        List<SimplisticFilm> filmList = films.stream()
-               // .filter(film -> film.getFilmID().equals(filmID))
-                .map(fi -> new SimplisticFilm(fi.getFilmID(), fi.getFilmName()))
-                .collect(Collectors.toList());
-        filmList.sort(Comparator.comparing(f -> f.getFilmName()));
-        return filmList;
-    }
-    
-   /* public List<SimplisticFilm> getDistinctSimplisticFilmFromFilms(Films films, String filmID){
-        List<SimplisticFilm> sFilms = films.toSimplisticFilm();
+        List<SimplisticFilm> sFilms = films.toListOfSimplisticFilms();
         sFilms.sort(Comparator.comparing(f -> f.getFilmName()));
         return sFilms;
-    }*/
+    }
     
     public Films getFilmSubset(String filmID, String directorID, String actorID, Films films){
         Films tmpFilms = new Films();
