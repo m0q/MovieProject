@@ -9,7 +9,6 @@ package ClassLayer;
 public class SimplisticFilm{
     public String filmID, filmName;
     
-    public SimplisticFilm(){ }
     public SimplisticFilm(String filmID, String filmName){
         this.filmID = filmID;
         this.filmName = filmName;
