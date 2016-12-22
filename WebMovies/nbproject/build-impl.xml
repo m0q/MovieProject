@@ -865,6 +865,9 @@ exists or setup the property manually. For example like this:
         <ant antfile="${project.DataLayer}/build.xml" inheritall="false" target="jar">
             <property name="deploy.on.save" value="false"/>
         </ant>
+        <ant antfile="${project.DataLayerDB}/build.xml" inheritall="false" target="jar">
+            <property name="deploy.on.save" value="false"/>
+        </ant>
     </target>
     <target depends="init" if="dist.ear.dir" name="deps-ear-jar" unless="no.deps">
         <ant antfile="${project.ApplicationVariables}/build.xml" inheritall="false" target="jar">
@@ -877,6 +880,9 @@ exists or setup the property manually. For example like this:
             <property name="deploy.on.save" value="false"/>
         </ant>
         <ant antfile="${project.DataLayer}/build.xml" inheritall="false" target="jar">
+            <property name="deploy.on.save" value="false"/>
+        </ant>
+        <ant antfile="${project.DataLayerDB}/build.xml" inheritall="false" target="jar">
             <property name="deploy.on.save" value="false"/>
         </ant>
     </target>
@@ -1028,6 +1034,7 @@ exists or setup the property manually. For example like this:
         <copyfiles files="${reference.BusinessLayer.jar}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${reference.DataLayer.jar}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${file.reference.opencsv-3.8.jar}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${reference.DataLayerDB.jar}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
         <mkdir dir="${build.web.dir}/META-INF"/>
         <manifest file="${build.web.dir}/META-INF/MANIFEST.MF" mode="update"/>
     </target>
@@ -1037,6 +1044,7 @@ exists or setup the property manually. For example like this:
         <copyfiles files="${reference.BusinessLayer.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${reference.DataLayer.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${file.reference.opencsv-3.8.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copyfiles files="${reference.DataLayerDB.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
     </target>
     <target depends="init" if="dist.ear.dir" name="-clean-webinf-lib">
         <delete dir="${build.web.dir}/WEB-INF/lib"/>
@@ -1454,6 +1462,7 @@ exists or setup the property manually. For example like this:
         <ant antfile="${project.BusinessLayer}/build.xml" inheritall="false" target="clean"/>
         <ant antfile="${project.ClassLayer}/build.xml" inheritall="false" target="clean"/>
         <ant antfile="${project.DataLayer}/build.xml" inheritall="false" target="clean"/>
+        <ant antfile="${project.DataLayerDB}/build.xml" inheritall="false" target="clean"/>
     </target>
     <target depends="init" name="do-clean">
         <condition property="build.dir.to.clean" value="${build.web.dir}">

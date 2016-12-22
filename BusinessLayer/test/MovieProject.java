@@ -8,6 +8,7 @@
 import ClassLayer.*;
 import ApplicationVariables.AppVariables;
 import BusinessLayer.MovieBusinessLayer;
+import java.util.stream.Collectors;
 /**
  *
  * @author mqul
@@ -19,7 +20,11 @@ public class MovieProject {
      */
     public static void main(String[] args) {
         MovieBusinessLayer mbl = new MovieBusinessLayer();
-        Films films = mbl.getFilmsFromCSV(AppVariables.FILE_PATH);
+        
+        mbl.getDistinctSimplisticFilmFromFilms(mbl.getFilmsFromDB(), null).stream()
+                    .forEach(film -> System.out.println(film));
+        
+        Films films = mbl.getFilmsFromDB();//.getFilmsFromCSV(AppVariables.FILE_PATH);
         
         //Films f = mbl.getFilmSubsetByMovieID(films, "2975590");
         //f.forEach(x -> System.out.println(x.filmName));

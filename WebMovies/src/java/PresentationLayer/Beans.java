@@ -25,7 +25,8 @@ import javax.servlet.http.HttpServletRequest;
 public class Beans implements Serializable{
     
     private MovieBusinessLayer mbl = new MovieBusinessLayer();
-    private Films films = mbl.getFilmsFromCSV("/Users/mqul/NetBeansProjects/NovusMovieProject/TestData.csv");//AppVariables.FILE_PATH);
+    //private Films films = mbl.getFilmsFromCSV("/Users/mqul/NetBeansProjects/NovusMovieProject/TestData.csv");//AppVariables.FILE_PATH);
+    private Films films = mbl.getFilmsFromDB();
     private String selectedFilm, selectedDirector, selectedActor;
     
     public List getFilms(){

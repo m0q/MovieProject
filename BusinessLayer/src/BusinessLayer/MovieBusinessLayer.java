@@ -2,6 +2,7 @@ package BusinessLayer;
 
 import ClassLayer.*;
 import DataLayer.MovieData;
+import datalayerdb.MovieDataDB;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -19,6 +20,18 @@ public class MovieBusinessLayer {
             return films;
         }catch(Exception ex){
             //Do something with error
+            return null;
+        }
+    }
+    
+    public Films getFilmsFromDB(){
+        try{
+            MovieDataDB md = new MovieDataDB();
+            Films films = md.getFilms();
+            return films;
+        }catch(Exception ex){
+            //Do something with error
+            ex.printStackTrace();
             return null;
         }
     }
