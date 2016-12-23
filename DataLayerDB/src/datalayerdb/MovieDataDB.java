@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -62,11 +64,11 @@ public class MovieDataDB {
                         rsCount++; 
                         break;
                     case 2: 
-                        film.actors.add(getActor(rs)); 
+                        film.actors.addAll(getActor(rs)); 
                         rsCount++; 
                         break;
                     case 3: 
-                        film.directors.add(getDirector(rs)); 
+                        film.directors.addAll(getDirector(rs)); 
                         break;
                 }
             }while(hasResults = cs.getMoreResults());
@@ -92,30 +94,32 @@ public class MovieDataDB {
         }
     }
     
-    private Actor getActor(ResultSet rs) throws SQLException{
+    private List<Actor> getActor(ResultSet rs) throws SQLException{
         String actorName = null, actorID = null;
+        List<Actor> tmpList = new ArrayList<Actor>();
         
-        if(rs.next()){
+        while(rs.next()){
             actorName = String.format("%s %s", rs.getString(AppVariables.dbActorFirstName), 
                                                rs.getString(AppVariables.dbActorLastName)); 
             actorID = rs.getString(AppVariables.dbImdbID);
-            return new Actor(actorID, actorName);
-        }else{
-            return null;
+            tmpList.add(new Actor(actorID, actorName));
         }
+        
+        return tmpList;
     }
     
-    private Director getDirector(ResultSet rs) throws SQLException{
+    private List<Director> getDirector(ResultSet rs) throws SQLException{
         String directorName = null, directorID = null;
+        List<Director> tmpList = new ArrayList<Director>();
         
-        if(rs.next()){
+        while(rs.next()){
             directorName = String.format("%s %s", rs.getString(AppVariables.dbDirectorFirstName), 
                                                   rs.getString(AppVariables.dbDirectorLastName)); 
             directorID = rs.getString(AppVariables.dbImdbID);
-            return new Director(directorID, directorName);
-        }else{
-            return null;
+            tmpList.add(new Director(directorID, directorName));
         }
+        
+        return tmpList;
     }
 }
 
