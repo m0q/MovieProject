@@ -18,5 +18,19 @@ public class AppVariables {
     
     public static String FILE_PATH = "/Users/mqul/NetBeansProjects/NovusMovieProject/TestData.csv";
     
-    public static String DropDownDefault = "--SELECT--";
+    public static final String DropDownDefault = "--SELECT--";
+    
+    /*DB Fields*/
+    public static final String dbImdbID = "imdb_id";
+    
+    public static final String dbFilmID = "film_id";
+    public static final String dbFilmName = "film_name";
+    public static final String dbFilmYear = "film_year";
+    public static final String dbFilmRating = "imdb_rating";
+    
+    public static final String dbActorFirstName = "actor_firstNames";
+    public static final String dbActorLastName = "actor_lastName";
+    
+    public static final String dbDirectorFirstName = "director_firstNames";
+    public static final String dbDirectorLastName = "director_lastName";
 }

@@ -134,7 +134,7 @@ public class Beans implements Serializable{
     
     //check if status of page is postback
     public static boolean isPostback() {
-        return FacesContext.getCurrentInstance().isPostback();
+       return FacesContext.getCurrentInstance().isPostback();
     }
     
     //+getters, +setters

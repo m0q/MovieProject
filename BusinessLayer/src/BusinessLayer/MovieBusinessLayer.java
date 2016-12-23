@@ -3,6 +3,7 @@ package BusinessLayer;
 import ClassLayer.*;
 import DataLayer.MovieData;
 import datalayerdb.MovieDataDB;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -29,12 +30,11 @@ public class MovieBusinessLayer {
             MovieDataDB md = new MovieDataDB();
             Films films = md.getFilms();
             return films;
-        }catch(Exception ex){
-            //Do something with error
+        }catch(SQLException | ClassNotFoundException ex){
             ex.printStackTrace();
             return null;
         }
-    }
+    }   
     
     public List<Director> getDistinctDirectorsFromFilms(Films films, String directorID){
         if(directorID == null){

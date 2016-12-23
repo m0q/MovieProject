@@ -1,5 +1,6 @@
 package datalayerdb;
 
+import ApplicationVariables.AppVariables;
 import ClassLayer.Actor;
 import ClassLayer.Director;
 import ClassLayer.Film;
@@ -8,9 +9,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 /**
  *
@@ -23,16 +22,17 @@ public class MovieDataDB {
     static ResultSet rs = null;
     Films films = null;
     
-    public MovieDataDB() throws SQLException{
-        conn = DriverManager.getConnection(dbURL,username,password);
+    public MovieDataDB() throws ClassNotFoundException, SQLException{
+        Class.forName("com.mysql.jdbc.Driver"); //register the db driver 
+        conn = DriverManager.getConnection(dbURL,username,password); //establish connection
         films = new Films();
     }
     
     public Films getFilms() throws SQLException{
-        ResultSet tmpRS = conn.prepareStatement("SELECT film_id FROM Films").executeQuery();
-        
+        ResultSet tmpRS = conn.prepareStatement("SELECT film_id FROM Films WHERE is_archived = FALSE").executeQuery();
+
         while(tmpRS.next()){
-            getDBData(Integer.parseInt(tmpRS.getString("film_id")));
+            getDBData(Integer.parseInt(tmpRS.getString(AppVariables.dbFilmID)));
         }
         tmpRS.close();
         return films;
@@ -54,6 +54,8 @@ public class MovieDataDB {
                
                 rs = cs.getResultSet(); //TO-DO: Close rs connection
                 
+                //TO-DO: fix the problems where you should be able to add multiple
+                //       actors and directors to a single film
                 switch(rsCount){
                     case 1: 
                         film = getFilm(rs); 
@@ -71,6 +73,8 @@ public class MovieDataDB {
             
             films.add(film);
             
+        }catch(Exception e){
+            e.printStackTrace();
         }
     } 
     
@@ -78,13 +82,13 @@ public class MovieDataDB {
         String filmID = null, filmName = null, imdbRating = null, filmYear = null;
         
         if(rs.next()){
-            filmID = rs.getString(4); 
-            filmName = rs.getString(2);
-            imdbRating = rs.getString(5);
-            filmYear = rs.getString(3);
+            filmID = rs.getString(AppVariables.dbImdbID); 
+            filmName = rs.getString(AppVariables.dbFilmName);
+            imdbRating = rs.getString(AppVariables.dbFilmRating);
+            filmYear = rs.getString(AppVariables.dbFilmYear);
             return new Film(filmID, filmName, imdbRating, filmYear);
         }else{
-            return new Film("[archived]","[archived]","[archived]","[archived]");
+            return null;
         }
     }
     
@@ -92,8 +96,9 @@ public class MovieDataDB {
         String actorName = null, actorID = null;
         
         if(rs.next()){
-            actorName = String.format("%s %s", rs.getString(2), rs.getString(3)); 
-            actorID = rs.getString(4);
+            actorName = String.format("%s %s", rs.getString(AppVariables.dbActorFirstName), 
+                                               rs.getString(AppVariables.dbActorLastName)); 
+            actorID = rs.getString(AppVariables.dbImdbID);
             return new Actor(actorID, actorName);
         }else{
             return null;
@@ -104,8 +109,9 @@ public class MovieDataDB {
         String directorName = null, directorID = null;
         
         if(rs.next()){
-            directorName = String.format("%s %s", rs.getString(2), rs.getString(3)); 
-            directorID = rs.getString(4);
+            directorName = String.format("%s %s", rs.getString(AppVariables.dbDirectorFirstName), 
+                                                  rs.getString(AppVariables.dbDirectorLastName)); 
+            directorID = rs.getString(AppVariables.dbImdbID);
             return new Director(directorID, directorName);
         }else{
             return null;
