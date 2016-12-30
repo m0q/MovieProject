@@ -33,7 +33,7 @@ public class Beans implements Serializable{
         if(isPostback() && films.size() == 1){
             List<SelectItem> siList = new ArrayList();
             
-            mbl.getDistinctSimplisticFilmFromFilms(films, null).stream()
+            mbl.getDistinctSimplisticFilmsFromFilms(films).stream()
                     .map(f -> siList.add(new SelectItem(f.getFilmID(), f.getFilmName())))
                     .collect(Collectors.toList());
                     
@@ -46,7 +46,7 @@ public class Beans implements Serializable{
             noSelect.setNoSelectionOption(true);
             siList.add(noSelect);
             
-            mbl.getDistinctSimplisticFilmFromFilms(films, null).stream()
+            mbl.getDistinctSimplisticFilmsFromFilms(films).stream()
                     .map(f -> siList.add(new SelectItem(f.getFilmID(), f.getFilmName())))
                     .collect(Collectors.toList());
             
@@ -56,12 +56,12 @@ public class Beans implements Serializable{
     
     //populate and return a list of directors based on what the films list currently holds
     public List getDirectors(){
-        return populateDropDownList(mbl.getDistinctDirectorsFromFilms(films, null)); 
+        return populateDropDownList(mbl.getDistinctDirectorsFromFilms(films)); 
     }
     
     //populate and return a list of actors based on what the films list currently holds
     public List getActors(){
-        return populateDropDownList(mbl.getDistinctActorsFromFilms(films, null));  
+        return populateDropDownList(mbl.getDistinctActorsFromFilms(films));  
     }
     
     /*
@@ -99,21 +99,24 @@ public class Beans implements Serializable{
     public void valueChangeMethodFilm(ValueChangeEvent e){
         if(isPostback()){
             selectedFilm = e.getNewValue().toString();
-            films = (selectedFilm == null ? films : mbl.getFilmSubsetByMovieID(films, selectedFilm));
+            //films = (selectedFilm == null ? films : mbl.getFilmSubsetByMovieID(films, selectedFilm));
+            films = (selectedFilm == null ? films : mbl.getFilmsSubset(selectedFilm, null, null, films));
         }
     }
     
     public void valueChangeMethodDir(ValueChangeEvent e){
         if(isPostback()){
             selectedDirector = e.getNewValue().toString();
-            films = (selectedDirector == null ? films : mbl.getFilmSubsetByDirectorID(films, selectedDirector));
+            //films = (selectedDirector == null ? films : mbl.getFilmSubsetByDirectorID(films, selectedDirector));
+            films = (selectedDirector == null ? films : mbl.getFilmsSubset(null, selectedDirector, null, films));
         }
     }
     
     public void valueChangeMethodAct(ValueChangeEvent e){
         if(isPostback()){
             selectedActor = e.getNewValue().toString();
-            films = (selectedActor == null ? films : mbl.getFilmSubsetByActorID(films, selectedActor));
+            //films = (selectedActor == null ? films : mbl.getFilmSubsetByActorID(films, selectedActor));
+            films = (selectedActor == null ? films : mbl.getFilmsSubset(null, null, selectedActor, films));
         }
     }
     
