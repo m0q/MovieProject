@@ -44,7 +44,7 @@ public class MovieData {
                 }
             }
         }catch(IOException ex){
-            //do something 
+            ex.printStackTrace();
         }
         
         return films;

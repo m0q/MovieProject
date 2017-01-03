@@ -1,5 +1,6 @@
 package BusinessLayer;
 
+import ApplicationEnum.DataLayerType;
 import ClassLayer.*;
 import DataLayer.MovieData;
 import datalayerdb.MovieDataDB;
@@ -14,19 +15,16 @@ import java.util.stream.Collectors;
  */
 public class MovieBusinessLayer {
     
-    public Films getFilmsFromCSV(String csvPath){
-        try{
-            return new MovieData().getCsvData(csvPath);
-        }catch(Exception ex){
-            ex.printStackTrace();
-            return null;
-        }
-    }
-    
-    //Films
-    public Films getFilmsFromDB(){
-        try{
-            return new MovieDataDB().getFilms();
+    public Films getFilms(DataLayerType dataType, String csvPath){
+        try{ 
+            switch(dataType){
+                case CSV: 
+                    return new MovieData().getCsvData(csvPath);
+                case DATABASE:
+                    return new MovieDataDB().getFilms();
+                default:
+                    return null;
+            }
         }catch(SQLException | ClassNotFoundException ex){
             ex.printStackTrace();
             return null;

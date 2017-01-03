@@ -1,5 +1,6 @@
 package PresentationLayer;
 
+import ApplicationEnum.DataLayerType;
 import ApplicationVariables.AppVariables;
 import BusinessLayer.MovieBusinessLayer;
 import ClassLayer.*;
@@ -25,8 +26,8 @@ import javax.servlet.http.HttpServletRequest;
 public class Beans implements Serializable{
     
     private MovieBusinessLayer mbl = new MovieBusinessLayer();
-    //private Films films = mbl.getFilmsFromCSV("/Users/mqul/NetBeansProjects/NovusMovieProject/TestData.csv");//AppVariables.FILE_PATH);
-    private Films films = mbl.getFilmsFromDB();
+    //private Films films = mbl.getFilms(DataLayerType.CSV, AppVariables.FILE_PATH);
+    private Films films = mbl.getFilms(DataLayerType.DATABASE, null);
     private String selectedFilm, selectedDirector, selectedActor;
     
     public List getFilms(){

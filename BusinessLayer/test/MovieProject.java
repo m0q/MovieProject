@@ -5,6 +5,7 @@
  */
 
 
+import ApplicationEnum.DataLayerType;
 import ClassLayer.*;
 import ApplicationVariables.AppVariables;
 import BusinessLayer.MovieBusinessLayer;
@@ -22,7 +23,7 @@ public class MovieProject {
         MovieBusinessLayer mbl = new MovieBusinessLayer();
         
         
-        Films films = mbl.getFilmsFromDB();//.getFilmsFromCSV(AppVariables.FILE_PATH);
+        Films films = mbl.getFilms(DataLayerType.DATABASE, null);//.getFilmsFromCSV(AppVariables.FILE_PATH);
         
         
            
