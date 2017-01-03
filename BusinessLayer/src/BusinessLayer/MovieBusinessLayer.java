@@ -5,10 +5,8 @@ import ClassLayer.*;
 import DataLayer.MovieData;
 import datalayerdb.MovieDataDB;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
+
 /**
  *
  * @author mqul

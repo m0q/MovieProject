@@ -37,6 +37,8 @@ public class MovieDataDB {
             getDBData(Integer.parseInt(tmpRS.getString(AppVariables.dbFilmID)));
         }
         tmpRS.close();
+        rs.close();
+        conn.close();
         return films;
     }
     
