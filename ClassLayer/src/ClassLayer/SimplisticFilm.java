@@ -15,7 +15,8 @@ public class SimplisticFilm{
         this.filmName = filmName;
     }
     
-    public boolean isValid(){ //TODO: check if Java has is null or empty
+    /**   ensure the name/id values exist   **/
+    public boolean isValid(){
         if(this.filmID == null || this.filmID.isEmpty()){
             return false;
         }else if(this.filmName == null || this.filmName.isEmpty()){

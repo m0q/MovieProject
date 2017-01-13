@@ -1,6 +1,6 @@
 package PresentationLayer;
 
-import ApplicationEnum.DataLayerType;
+import ApplicationVariables.DataLayerType;
 import ApplicationVariables.AppVariables;
 import BusinessLayer.MovieBusinessLayer;
 import ClassLayer.*;
@@ -26,8 +26,8 @@ import javax.servlet.http.HttpServletRequest;
 public class Beans implements Serializable{
     
     private MovieBusinessLayer mbl = new MovieBusinessLayer();
-    //private Films films = mbl.getFilms(DataLayerType.CSV, AppVariables.FILE_PATH);
-    private Films films = mbl.getFilms(DataLayerType.DATABASE, null);
+    private Films films = mbl.getFilms(DataLayerType.CSV, AppVariables.FILE_PATH);
+    //private Films films = mbl.getFilms(DataLayerType.DATABASE, null);
     private String selectedFilm, selectedDirector, selectedActor;
     
     public List getFilms(){
@@ -100,24 +100,21 @@ public class Beans implements Serializable{
     public void valueChangeMethodFilm(ValueChangeEvent e){
         if(isPostback()){
             selectedFilm = e.getNewValue().toString();
-            //films = (selectedFilm == null ? films : mbl.getFilmSubsetByMovieID(films, selectedFilm));
-            films = (selectedFilm == null ? films : mbl.getFilmsSubset(selectedFilm, null, null, films));
+            films = (selectedFilm == null ? films : mbl.getFilmsSubset(selectedFilm, selectedDirector, selectedActor, films));
         }
     }
     
     public void valueChangeMethodDir(ValueChangeEvent e){
         if(isPostback()){
             selectedDirector = e.getNewValue().toString();
-            //films = (selectedDirector == null ? films : mbl.getFilmSubsetByDirectorID(films, selectedDirector));
-            films = (selectedDirector == null ? films : mbl.getFilmsSubset(null, selectedDirector, null, films));
+            films = (selectedDirector == null ? films : mbl.getFilmsSubset(selectedFilm, selectedDirector, selectedActor, films));
         }
     }
     
     public void valueChangeMethodAct(ValueChangeEvent e){
         if(isPostback()){
             selectedActor = e.getNewValue().toString();
-            //films = (selectedActor == null ? films : mbl.getFilmSubsetByActorID(films, selectedActor));
-            films = (selectedActor == null ? films : mbl.getFilmsSubset(null, null, selectedActor, films));
+            films = (selectedActor == null ? films : mbl.getFilmsSubset(selectedFilm, selectedDirector, selectedActor, films));
         }
     }
     

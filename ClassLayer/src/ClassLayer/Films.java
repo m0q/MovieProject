@@ -32,8 +32,7 @@ public class Films extends ArrayList<Film>{
     
     
     public List<SimplisticFilm> toListSimplisticFilm(){
-        return this.stream().map(film -> film.toSimplisticFilm())
-                            .sorted(Comparator.comparing(fi -> fi.getFilmName()))
+        return this.stream().sorted(Comparator.comparing(fi -> fi.getFilmName()))
                             .collect(Collectors.toList());
         
     }

@@ -34,9 +34,10 @@ public class Film extends SimplisticFilm {
         this.filmYear = filmYear;
     }
     
+    /* not needed because Film is a subclass of SimplisticFilm
     public SimplisticFilm toSimplisticFilm(){
         return (SimplisticFilm)this;
-    }
+    }*/
     
     //+getters
     public String getFilmRating(){return imdbRating;}

@@ -30,6 +30,7 @@ public class MovieDataDB {
         films = new Films();
     }
     
+    /* call getDBData on all unarchived film_id's from db */
     public Films getFilms() throws SQLException{
         ResultSet tmpRS = conn.prepareStatement("SELECT film_id FROM Films WHERE is_archived = FALSE").executeQuery();
 
@@ -42,7 +43,8 @@ public class MovieDataDB {
         return films;
     }
     
-    private void getDBData(int filmID) throws SQLException{
+    /* call stored procedure using given film_id and store results as objects */
+    private void getDBData(int filmID){
         Film film = new Film();
         
         try(CallableStatement cs = conn.prepareCall("{CALL getFilmDetails(?)}")){
@@ -50,16 +52,15 @@ public class MovieDataDB {
             cs.setInt(1, filmID);
             
             boolean hasResults = cs.execute();
-            int rsCount = 1;
+            int rsCount = 1; //1-3 result set counter
             
             do{
                /* ResultSetMetaData rsmd = rs.getMetaData();
                 int count = rsmd.getColumnCount(); */
                
-                rs = cs.getResultSet(); //TO-DO: Close rs connection
+                rs = cs.getResultSet();
                 
-                //TO-DO: fix the problems where you should be able to add multiple
-                //       actors and directors to a single film
+                //determine where to store results
                 switch(rsCount){
                     case 1: 
                         film = getFilm(rs); 
@@ -72,6 +73,8 @@ public class MovieDataDB {
                     case 3: 
                         film.directors.addAll(getDirector(rs)); 
                         break;
+                    default: 
+                        throw new RuntimeException("Unreachable");
                 }
             }while(hasResults = cs.getMoreResults());
             

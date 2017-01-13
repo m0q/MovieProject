@@ -1,6 +1,6 @@
 package BusinessLayer;
 
-import ApplicationEnum.DataLayerType;
+import ApplicationVariables.DataLayerType;
 import ClassLayer.*;
 import DataLayer.MovieData;
 import datalayerdb.MovieDataDB;
@@ -13,6 +13,7 @@ import java.util.List;
  */
 public class MovieBusinessLayer {
     
+    //retrieve film list from data source
     public Films getFilms(DataLayerType dataType, String csvPath){
         try{ 
             switch(dataType){
@@ -21,7 +22,7 @@ public class MovieBusinessLayer {
                 case DATABASE:
                     return new MovieDataDB().getFilms();
                 default:
-                    return null;
+                    throw new RuntimeException("Unknown Data Type: " + dataType.toString());
             }
         }catch(SQLException | ClassNotFoundException ex){
             ex.printStackTrace();
@@ -29,6 +30,7 @@ public class MovieBusinessLayer {
         }
     }
     
+    //Films
     public List<SimplisticFilm> getDistinctSimplisticFilmsFromFilms(Films films){
         return (films == null) ? null : films.toListSimplisticFilm();
     }

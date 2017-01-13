@@ -3,10 +3,9 @@ package ApplicationVariables;
 /**
  *
  * @author mqul
- * 
- * static variables used in all layers
  */
 public class AppVariables {
+    /**   CSV Index   **/
     public static int filmID = 0;
     public static int filmName = 1;
     public static int imdbRating = 2;
@@ -16,11 +15,13 @@ public class AppVariables {
     public static int actorID = 5;
     public static int actorName = 6;
     
+    /**   CSV Path   **/
     public static String FILE_PATH = "/Users/mqul/NetBeansProjects/NovusMovieProject/TestData.csv";
     
+    /**   CSV Default   **/
     public static final String DropDownDefault = "--SELECT--";
     
-    /*DB Fields*/
+    /**   Database Fields   **/
     public static final String dbImdbID = "imdb_id";
     
     public static final String dbFilmID = "film_id";

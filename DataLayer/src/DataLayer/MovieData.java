@@ -9,7 +9,7 @@ import java.io.IOException;
  *
  * @author mqul
  * 
- * extract details from CSV and store them in Lists/Objects from ClassLayer
+ * extract data from CSV and store them in Objects from ClassLayer
  */
 public class MovieData {
     
@@ -21,7 +21,8 @@ public class MovieData {
         try(CSVReader csv = new CSVReader(new FileReader(csvPath));){
             
             String[] headers = csv.readNext(); //read first line for header strings
-                    
+            
+            //ensure record in not already present
             while((line = csv.readNext()) != null){
                 if(films.stream().anyMatch(item -> item.filmID.equals(line[AppVariables.filmID]))){
                     Film tmpFilm = films.stream().filter(item -> item.filmID.equals(line[AppVariables.filmID])).findFirst().get();//.collect(Collectors.toList()).get(0);
