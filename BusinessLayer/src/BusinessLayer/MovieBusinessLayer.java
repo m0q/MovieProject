@@ -6,6 +6,7 @@ import DataLayer.MovieData;
 import datalayerdb.MovieDataDB;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -55,6 +56,14 @@ public class MovieBusinessLayer {
 
     public List<Actor> getDistinctActor(Films films, String actorID){
         return films.getDistinctActor(actorID);
+    }
+    
+    //--------------------------
+    public Film getFilmFromSimplisticFilm(String filmID){
+        return this.getFilms(DataLayerType.CSV, null)
+                        .stream()
+                        .filter(f -> f.filmID.equals(filmID))
+                        .findFirst().get();
     }
 }
 

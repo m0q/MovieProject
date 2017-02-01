@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
@@ -25,18 +26,80 @@ import javax.servlet.http.HttpServletRequest;
 @ViewScoped
 public class Beans implements Serializable{
     
-    private MovieBusinessLayer mbl = new MovieBusinessLayer();
-    private Films films = mbl.getFilms(DataLayerType.CSV, AppVariables.FILE_PATH);
+    //private MovieBusinessLayer mbl = new MovieBusinessLayer();
+    //private Films films = mbl.getFilms(DataLayerType.CSV, AppVariables.FILE_PATH);
     //private Films films = mbl.getFilms(DataLayerType.DATABASE, null);
     private String selectedFilm, selectedDirector, selectedActor;
+    List<Director> directors;
+    List<Actor> actors;
+    List<SimplisticFilm> sFilms;
+    private String returnedFilmID, returnedFilmName, returnedFilmYear;
     
-    public List getFilms(){
+    public String getReturnedFilmID(){return returnedFilmID;}
+    public void setReturnedFilmID(String rFilmID){this.returnedFilmID = rFilmID;}
+    
+    public String getReturnedFilmName(){return returnedFilmName;}
+    public void setReturnedFilmName(String rFilmName){this.returnedFilmName = rFilmName;}
+    
+    @PostConstruct
+    protected void load(){
+        if (this.isPostback()){
+            try{
+                MovieBusinessLayer mbl = new MovieBusinessLayer();
+                String filmID = (selectedFilm == null ? null : selectedFilm);
+                String directorID = (selectedDirector == null ? null : selectedDirector);
+                String actorID = (selectedActor == null ? null : selectedActor);
+
+                populateDropDownsWithFilteredData(filmID, directorID, actorID);
+                
+                System.out.println(mbl.getFilmFromSimplisticFilm("3322312").filmName);
+                
+                Film film = mbl.getFilmFromSimplisticFilm(selectedFilm);
+                returnedFilmID = film.filmID;
+                returnedFilmName = film.filmYear;
+            }catch(Exception e){
+                System.out.println(e.getMessage() + " <<<ERROR");
+            }
+        }else{
+            populateDropDownsWithOriginalData();
+        }
+    }
+    
+    private void populateDropDownsWithOriginalData(){
+        try{
+            MovieBusinessLayer mbl = new MovieBusinessLayer();
+            Films films = mbl.getFilms(DataLayerType.CSV, AppVariables.FILE_PATH);
+
+            directors = mbl.getDistinctDirectorsFromFilms(films);
+            actors = mbl.getDistinctActorsFromFilms(films);
+            sFilms = mbl.getDistinctSimplisticFilmsFromFilms(films);
+        }catch(Exception e){
+               
+        }
+    }
+    
+    private void populateDropDownsWithFilteredData(String filmID, String directorID, String actorID){
+        try{
+            MovieBusinessLayer mbl = new MovieBusinessLayer();
+            Films films = mbl.getFilms(DataLayerType.CSV, AppVariables.FILE_PATH);
+            
+            Films tmp = mbl.getFilmsSubset(filmID, directorID, actorID, films);
+
+            actors = (actorID == null) ? mbl.getDistinctActorsFromFilms(tmp) : mbl.getDistinctActor(tmp, actorID);
+            directors = (directorID == null) ? mbl.getDistinctDirectorsFromFilms(tmp) : mbl.getDistinctDirector(tmp, directorID);
+            sFilms = (filmID == null) ? mbl.getDistinctSimplisticFilmsFromFilms(tmp) : tmp.getDistinctSimplisticFilm(filmID);
+        }catch(Exception e){
+               
+        }
+    }
+    //--------------------------------------------------------------------------
+    public List populateFilms(List<SimplisticFilm> films){
         if(isPostback() && films.size() == 1){
             List<SelectItem> siList = new ArrayList();
             
-            mbl.getDistinctSimplisticFilmsFromFilms(films).stream()
-                    .map(f -> siList.add(new SelectItem(f.getFilmID(), f.getFilmName())))
-                    .collect(Collectors.toList());
+            films.stream()
+                 .map(f -> siList.add(new SelectItem(f.getFilmID(), f.getFilmName())))
+                 .collect(Collectors.toList());
                     
             return siList;
         }else{
@@ -47,22 +110,27 @@ public class Beans implements Serializable{
             noSelect.setNoSelectionOption(true);
             siList.add(noSelect);
             
-            mbl.getDistinctSimplisticFilmsFromFilms(films).stream()
-                    .map(f -> siList.add(new SelectItem(f.getFilmID(), f.getFilmName())))
-                    .collect(Collectors.toList());
+            films.stream()
+                 .map(f -> siList.add(new SelectItem(f.getFilmID(), f.getFilmName())))
+                 .collect(Collectors.toList());
             
             return siList;
         }
     }
     
+    public List getFilms(){
+        return populateFilms(this.sFilms);
+    }
     //populate and return a list of directors based on what the films list currently holds
     public List getDirectors(){
-        return populateDropDownList(mbl.getDistinctDirectorsFromFilms(films)); 
+        return populateDropDownList(this.directors);
+        //return populateDropDownList(mbl.getDistinctDirectorsFromFilms(films)); 
     }
     
     //populate and return a list of actors based on what the films list currently holds
     public List getActors(){
-        return populateDropDownList(mbl.getDistinctActorsFromFilms(films));  
+        return populateDropDownList(this.actors);
+        //return populateDropDownList(mbl.getDistinctActorsFromFilms(films));  
     }
     
     /*
@@ -100,32 +168,26 @@ public class Beans implements Serializable{
     public void valueChangeMethodFilm(ValueChangeEvent e){
         if(isPostback()){
             selectedFilm = e.getNewValue().toString();
-            films = (selectedFilm == null ? films : mbl.getFilmsSubset(selectedFilm, selectedDirector, selectedActor, films));
+            this.load();
+            /*films = (selectedFilm == null ? films : mbl.getFilmsSubset(selectedFilm, selectedDirector, selectedActor, films));*/
         }
     }
     
     public void valueChangeMethodDir(ValueChangeEvent e){
         if(isPostback()){
             selectedDirector = e.getNewValue().toString();
-            films = (selectedDirector == null ? films : mbl.getFilmsSubset(selectedFilm, selectedDirector, selectedActor, films));
+            this.load();
+            /*films = (selectedDirector == null ? films : mbl.getFilmsSubset(selectedFilm, selectedDirector, selectedActor, films));*/
         }
     }
     
     public void valueChangeMethodAct(ValueChangeEvent e){
         if(isPostback()){
             selectedActor = e.getNewValue().toString();
-            films = (selectedActor == null ? films : mbl.getFilmsSubset(selectedFilm, selectedDirector, selectedActor, films));
+            this.load();
+            /*films = (selectedActor == null ? films : mbl.getFilmsSubset(selectedFilm, selectedDirector, selectedActor, films));*/
         }
     }
-    
-    /*action handler on postback
-    public void submit(){
-        if(isPostback()){
-            films = (selectedFilm == null ? films : mbl.getFilmSubsetByMovieID(films, selectedFilm));
-            films = (selectedDirector==null ? films : mbl.getFilmSubsetByDirectorID(films, selectedDirector));
-            films = (selectedActor==null ? films : mbl.getFilmSubsetByActorID(films, selectedActor));
-        }
-    }*/
     
     //completely refresh the page to initial state
     public void reset() throws IOException {

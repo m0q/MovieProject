@@ -34,7 +34,12 @@
             <br></br>
             <h:commandButton value="Reset" action="#{bean.reset}" />
             <br />
-            <h:commandButton value="Submit" action="film-data" />
+            <h:commandButton value="Submit" action="film-data" /> <br /><br/>
+            
+            Film ID: <h:outputText value="#{bean.returnedFilmID}" /> <br/>
+            Film Name: <h:outputText value="#{bean.returnedFilmName}" /> <br/>
+            Actor: <h:outputText value="#{bean.selectedActor}" /> <br/>
+            
         </h:form>
     </h:body>
 </html>
