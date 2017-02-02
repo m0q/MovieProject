@@ -33,13 +33,7 @@ public class Beans implements Serializable{
     List<Director> directors;
     List<Actor> actors;
     List<SimplisticFilm> sFilms;
-    private String returnedFilmID, returnedFilmName, returnedFilmYear;
-    
-    public String getReturnedFilmID(){return returnedFilmID;}
-    public void setReturnedFilmID(String rFilmID){this.returnedFilmID = rFilmID;}
-    
-    public String getReturnedFilmName(){return returnedFilmName;}
-    public void setReturnedFilmName(String rFilmName){this.returnedFilmName = rFilmName;}
+    private boolean isSubmitted = false;
     
     @PostConstruct
     protected void load(){
@@ -52,11 +46,9 @@ public class Beans implements Serializable{
 
                 populateDropDownsWithFilteredData(filmID, directorID, actorID);
                 
-                System.out.println(mbl.getFilmFromSimplisticFilm("3322312").filmName);
-                
-                Film film = mbl.getFilmFromSimplisticFilm(selectedFilm);
-                returnedFilmID = film.filmID;
-                returnedFilmName = film.filmYear;
+                if(filmID != null && directorID != null && actorID != null && isSubmitted){
+                    this.populateFields(filmID, directorID, actorID);
+                }
             }catch(Exception e){
                 System.out.println(e.getMessage() + " <<<ERROR");
             }
@@ -195,6 +187,11 @@ public class Beans implements Serializable{
         ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
     }
     
+    public void submitForm(){
+        setIsSubmitted(true);
+        this.load();
+    }
+    
     //check if status of page is postback
     public static boolean isPostback() {
        return FacesContext.getCurrentInstance().isPostback();
@@ -207,4 +204,57 @@ public class Beans implements Serializable{
     public void setSelectedDirector(String si){this.selectedDirector = si;}
     public String getSelectedActor(){return this.selectedActor;}
     public void setSelectedActor(String si){this.selectedActor = si;}
+    public boolean getIsSubmitted(){return this.isSubmitted;}
+    public void setIsSubmitted(Boolean isSubmitted){this.isSubmitted = isSubmitted;}
+    
+    
+    //-------------------------------------------------
+    //-------------------------------------------------
+    private String filmID, filmName, filmYear, imdbRating;
+    private String actorID, actorName;
+    private String directorID, directorName;
+    
+    public void populateFields(String filmID, String directorID, String actorID){
+        try{
+            MovieBusinessLayer mbl = new MovieBusinessLayer();
+            Film film = mbl.getFilmFromSimplisticFilm(filmID);
+            
+            this.filmID = film.getFilmID();
+            this.filmName = film.getFilmName();
+            this.filmYear = film.getFilmYear();
+            this.imdbRating = film.getFilmRating();
+            
+            Director director = mbl.getDirectorFromSimplisticFilm(film, directorID);
+            this.directorID = director.getID();
+            this.directorName = director.getName();
+            
+            Actor actor = mbl.getActorFromSimplisticFilm(film, actorID);
+            this.actorID = actor.getID();
+            this.actorName = actor.getName();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public String getFilmID() {return filmID;}
+    public void setFilmID(String filmID) {this.filmID = filmID;}
+
+    public String getFilmName() {return filmName;}
+    public void setFilmName(String filmName) {this.filmName = filmName;}
+
+    public String getFilmYear() {return filmYear;}
+    public void setFilmYear(String filmYear) {this.filmYear = filmYear;}
+
+    public String getImdbRating() {return imdbRating;}
+    public void setImdbRating(String imdbRating) {this.imdbRating = imdbRating;}
+
+    public String getActorID() {return actorID;}
+    public void setActorID(String actorID) {this.actorID = actorID;}
+    public String getActorName() {return actorName;}
+    public void setActorName(String actorName) {this.actorName = actorName;}
+
+    public String getDirectorID() {return directorID;}
+    public void setDirectorID(String directorID) {this.directorID = directorID;}
+    public String getDirectorName() {return directorName;}
+    public void setDirectorName(String directorName) {this.directorName = directorName;}
 }

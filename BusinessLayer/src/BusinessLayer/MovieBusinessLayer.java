@@ -1,5 +1,6 @@
 package BusinessLayer;
 
+import ApplicationVariables.AppVariables;
 import ApplicationVariables.DataLayerType;
 import ClassLayer.*;
 import DataLayer.MovieData;
@@ -60,9 +61,23 @@ public class MovieBusinessLayer {
     
     //--------------------------
     public Film getFilmFromSimplisticFilm(String filmID){
-        return this.getFilms(DataLayerType.CSV, null)
+        return this.getFilms(DataLayerType.CSV, AppVariables.FILE_PATH)
                         .stream()
-                        .filter(f -> f.filmID.equals(filmID))
+                        .filter(f -> f.getFilmID().equals(filmID))
+                        .findFirst().get();
+    }
+    
+    public Director getDirectorFromSimplisticFilm(Film sFilm, String directorID){
+        return sFilm.getDirectorList()
+                        .stream()
+                        .filter(d -> d.getID().equals(directorID))
+                        .findFirst().get();
+    }
+    
+    public Actor getActorFromSimplisticFilm(Film sFilm, String actorID){
+        return sFilm.getActorList()
+                        .stream()
+                        .filter(a -> a.getID().equals(actorID))
                         .findFirst().get();
     }
 }
