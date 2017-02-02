@@ -39,13 +39,19 @@ public class Beans implements Serializable{
     protected void load(){
         if (this.isPostback()){
             try{
-                MovieBusinessLayer mbl = new MovieBusinessLayer();
                 String filmID = (selectedFilm == null ? null : selectedFilm);
                 String directorID = (selectedDirector == null ? null : selectedDirector);
                 String actorID = (selectedActor == null ? null : selectedActor);
 
                 populateDropDownsWithFilteredData(filmID, directorID, actorID);
                 
+                /*TO-DO:
+                    check why auto fill for all fields does not trigger the button
+                    previously implemented. - Hiding the button until all fields
+                    are complete only work after you select more than one field.
+                    Selecting 1 field that completes all other fields does not show
+                    the button.
+                */
                 if(filmID != null && directorID != null && actorID != null && isSubmitted){
                     this.populateFields(filmID, directorID, actorID);
                 }
@@ -209,6 +215,7 @@ public class Beans implements Serializable{
     
     
     //-------------------------------------------------
+    //   Populating strings with selected film data
     //-------------------------------------------------
     private String filmID, filmName, filmYear, imdbRating;
     private String actorID, actorName;
