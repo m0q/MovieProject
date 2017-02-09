@@ -1,20 +1,11 @@
 package BusinessLayer;
 
 import ApplicationVariables.AppVariables;
-import ApplicationVariables.DataLayerType;
 import ClassLayer.*;
 import DataLayer.MovieData;
-import datalayerdb.MovieDataDB;
-import datalayerdb.DB;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.stream.Collectors;
-import org.ehcache.Cache;
-import org.ehcache.CacheManager;
-import org.ehcache.config.builders.CacheConfigurationBuilder;
-import org.ehcache.config.builders.CacheManagerBuilder;
-import org.ehcache.config.builders.ResourcePoolsBuilder;
-import utilities.SimpleCaching;
+import caching.SimpleCaching;
+import java.sql.SQLException;
 
 /**
  *
@@ -22,42 +13,22 @@ import utilities.SimpleCaching;
  */
 public class MovieBusinessLayer {
     
-    static SimpleCaching sc = new SimpleCaching();
-    
+    //retrieve film list from data source or cache 
     public Films getFilms(){
-        if(sc.get(AppVariables.cacheName) != null){
-            return sc.get(AppVariables.cacheName);
+        if(SimpleCaching.get(AppVariables.Cache.filmCacheName) != null){
+            return SimpleCaching.get(AppVariables.Cache.filmCacheName);
         }else{
             try{
-                Films films = new DB().getDBData();
-                sc.put(AppVariables.cacheName, films);
-                return sc.get(AppVariables.cacheName);
-            }catch(Exception e){
-                
+                //Films films = new MovieData().getCsvData(AppVariables.CSV.FILE_PATH);
+                Films films = new MovieData().getDatabaseData();
+                SimpleCaching.put(AppVariables.Cache.filmCacheName, films);
+                return SimpleCaching.get(AppVariables.Cache.filmCacheName);
+            }catch(SQLException | ClassNotFoundException e){
                 e.printStackTrace();
                 return null;
-                
             }
         }
     }
-    
-    /*retrieve film list from data source
-    public Films getFilms(DataLayerType dataType, String csvPath){
-        try{ 
-            switch(dataType){
-                case CSV: 
-                    return new MovieData().getCsvData(csvPath);
-                case DATABASE:
-                    //return new MovieDataDB().getFilms();
-                    return new DB().getDBData();
-                default:
-                    throw new RuntimeException("Unknown Data Type: " + dataType.toString());
-            }
-        }catch(SQLException | ClassNotFoundException ex){
-            ex.printStackTrace();
-            return null;
-        }
-    }*/
     
     //Films
     public List<SimplisticFilm> getDistinctSimplisticFilmsFromFilms(Films films){
@@ -86,7 +57,7 @@ public class MovieBusinessLayer {
         return films.getDistinctActor(actorID);
     }
     
-    //--------------------------
+    //information for table once all dropdown fields are selected
     public Film getFilmFromSimplisticFilm(String filmID){
         return this.getFilms()
                         .stream()

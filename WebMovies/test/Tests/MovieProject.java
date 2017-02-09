@@ -1,6 +1,5 @@
 package Tests;
 
-import ApplicationVariables.DataLayerType;
 import ClassLayer.*;
 import BusinessLayer.MovieBusinessLayer;
 

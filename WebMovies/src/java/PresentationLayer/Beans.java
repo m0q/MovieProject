@@ -1,6 +1,5 @@
 package PresentationLayer;
 
-import ApplicationVariables.DataLayerType;
 import ApplicationVariables.AppVariables;
 import BusinessLayer.MovieBusinessLayer;
 import ClassLayer.*;
@@ -27,8 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 public class Beans implements Serializable{
     
     private MovieBusinessLayer mbl = new MovieBusinessLayer();
-    //private Films films = mbl.getFilms(DataLayerType.CSV, AppVariables.FILE_PATH);
-    //private Films films = mbl.getFilms(DataLayerType.DATABASE, null);
     private String selectedFilm, selectedDirector, selectedActor;
     List<Director> directors;
     List<Actor> actors;
@@ -78,7 +75,6 @@ public class Beans implements Serializable{
     
     private void populateDropDownsWithFilteredData(String filmID, String directorID, String actorID){
         try{
-           //Films films = mbl.getFilms(DataLayerType.CSV, AppVariables.FILE_PATH);
             Films films = mbl.getFilms();
             
             Films tmp = mbl.getFilmsSubset(filmID, directorID, actorID, films);
@@ -87,7 +83,7 @@ public class Beans implements Serializable{
             directors = (directorID == null) ? mbl.getDistinctDirectorsFromFilms(tmp) : mbl.getDistinctDirector(tmp, directorID);
             sFilms = (filmID == null) ? mbl.getDistinctSimplisticFilmsFromFilms(tmp) : tmp.getDistinctSimplisticFilm(filmID);
         }catch(Exception e){
-               
+            e.printStackTrace();
         }
     }
     //--------------------------------------------------------------------------
@@ -104,7 +100,7 @@ public class Beans implements Serializable{
             List<SelectItem> siList = new ArrayList();
             
             //<--SELECT--> Option
-            SelectItem noSelect = new SelectItem(null, AppVariables.DropDownDefault);
+            SelectItem noSelect = new SelectItem(null, AppVariables.CSV.dropDownDefault);
             noSelect.setNoSelectionOption(true);
             siList.add(noSelect);
             
@@ -116,20 +112,13 @@ public class Beans implements Serializable{
         }
     }
     
-    public List getFilms(){
-        return populateFilms(this.sFilms);
-    }
+    public List getFilms(){ return populateFilms(this.sFilms); }
+    
     //populate and return a list of directors based on what the films list currently holds
-    public List getDirectors(){
-        return populateDropDownList(this.directors);
-        //return populateDropDownList(mbl.getDistinctDirectorsFromFilms(films)); 
-    }
+    public List getDirectors(){ return populateDropDownList(this.directors); }
     
     //populate and return a list of actors based on what the films list currently holds
-    public List getActors(){
-        return populateDropDownList(this.actors);
-        //return populateDropDownList(mbl.getDistinctActorsFromFilms(films));  
-    }
+    public List getActors(){ return populateDropDownList(this.actors); }
     
     /*
         takes a generalised collector list - either Actor or Director
@@ -152,7 +141,7 @@ public class Beans implements Serializable{
             List<SelectItem> siList = new ArrayList();
             
             //TODO: <--SELECT--> Option
-            siList.add(new SelectItem(null, AppVariables.DropDownDefault));
+            siList.add(new SelectItem(null, AppVariables.CSV.dropDownDefault));
 
             curList.stream()
                 .map(a -> siList.add(new SelectItem(a.getID(), a.getName())))
@@ -167,7 +156,6 @@ public class Beans implements Serializable{
         if(isPostback()){
             selectedFilm = e.getNewValue().toString();
             this.load();
-            /*films = (selectedFilm == null ? films : mbl.getFilmsSubset(selectedFilm, selectedDirector, selectedActor, films));*/
         }
     }
     
@@ -175,7 +163,6 @@ public class Beans implements Serializable{
         if(isPostback()){
             selectedDirector = e.getNewValue().toString();
             this.load();
-            /*films = (selectedDirector == null ? films : mbl.getFilmsSubset(selectedFilm, selectedDirector, selectedActor, films));*/
         }
     }
     
@@ -183,7 +170,6 @@ public class Beans implements Serializable{
         if(isPostback()){
             selectedActor = e.getNewValue().toString();
             this.load();
-            /*films = (selectedActor == null ? films : mbl.getFilmsSubset(selectedFilm, selectedDirector, selectedActor, films));*/
         }
     }
     
