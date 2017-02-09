@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 @ViewScoped
 public class Beans implements Serializable{
     
-    //private MovieBusinessLayer mbl = new MovieBusinessLayer();
+    private MovieBusinessLayer mbl = new MovieBusinessLayer();
     //private Films films = mbl.getFilms(DataLayerType.CSV, AppVariables.FILE_PATH);
     //private Films films = mbl.getFilms(DataLayerType.DATABASE, null);
     private String selectedFilm, selectedDirector, selectedActor;
@@ -65,21 +65,21 @@ public class Beans implements Serializable{
     
     private void populateDropDownsWithOriginalData(){
         try{
-            MovieBusinessLayer mbl = new MovieBusinessLayer();
-            Films films = mbl.getFilms(DataLayerType.CSV, AppVariables.FILE_PATH);
-
+            //Films films = mbl.getFilms(DataLayerType.CSV, AppVariables.FILE_PATH);
+            Films films = mbl.getFilms();
+            
             directors = mbl.getDistinctDirectorsFromFilms(films);
             actors = mbl.getDistinctActorsFromFilms(films);
             sFilms = mbl.getDistinctSimplisticFilmsFromFilms(films);
         }catch(Exception e){
-               
+           e.printStackTrace();
         }
     }
     
     private void populateDropDownsWithFilteredData(String filmID, String directorID, String actorID){
         try{
-            MovieBusinessLayer mbl = new MovieBusinessLayer();
-            Films films = mbl.getFilms(DataLayerType.CSV, AppVariables.FILE_PATH);
+           //Films films = mbl.getFilms(DataLayerType.CSV, AppVariables.FILE_PATH);
+            Films films = mbl.getFilms();
             
             Films tmp = mbl.getFilmsSubset(filmID, directorID, actorID, films);
 

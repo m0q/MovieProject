@@ -113,7 +113,6 @@ BEGIN
             ON ac.actor_id = lfa.actor_id
   WHERE lfa.film_id = fid;
  
- 
   SELECT di.director_id, di.director_firstNames, di.director_lastName, di.imdb_id
   FROM Directors di
   JOIN Lookup_Film_Directors lfd

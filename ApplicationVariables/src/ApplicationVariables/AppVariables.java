@@ -15,6 +15,9 @@ public class AppVariables {
     public static int actorID = 5;
     public static int actorName = 6;
     
+    /**   Cache Name   **/ 
+    public static String cacheName = "Cache_Film";
+    
     /**   CSV Path   **/
     public static String FILE_PATH = "/Users/mqul/NetBeansProjects/NovusMovieProject/TestData.csv";
     
