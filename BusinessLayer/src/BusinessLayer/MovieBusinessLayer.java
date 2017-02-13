@@ -19,8 +19,8 @@ public class MovieBusinessLayer {
             return SimpleCaching.get(AppVariables.Cache.filmCacheName);
         }else{
             try{
-                //Films films = new MovieData().getCsvData(AppVariables.CSV.FILE_PATH);
-                Films films = new MovieData().getDatabaseData();
+                //Films films = new MovieData().getFilmData(AppVariables.CSV.EXTENDED_FILE_PATH);
+                Films films = new MovieData().getFilmData(AppVariables.Database.connectionString, AppVariables.Database.username, AppVariables.Database.password);
                 SimpleCaching.put(AppVariables.Cache.filmCacheName, films);
                 return SimpleCaching.get(AppVariables.Cache.filmCacheName);
             }catch(SQLException | ClassNotFoundException e){
@@ -35,8 +35,8 @@ public class MovieBusinessLayer {
         return (films == null) ? null : films.toListSimplisticFilm();
     }
     
-    public Films getFilmsSubset(String filmID, String directorID, String actorID, Films films){
-        return films.getFilmsFilteredSubset(filmID, directorID, actorID);
+    public Films getFilmsSubset(String filmID, String directorID, String actorID, String filmYear, Films films){
+        return films.getFilmsFilteredSubset(filmID, directorID, actorID, filmYear);
     }
     
     //Directors
@@ -55,6 +55,20 @@ public class MovieBusinessLayer {
 
     public List<Actor> getDistinctActor(Films films, String actorID){
         return films.getDistinctActor(actorID);
+    }
+    
+    //Film Years
+    public List<String> getDistinctYearsFromFilms(Films films){
+        return (films == null) ? null : films.toListDistinctYear();
+    }
+    
+    public List<String> getDistinctYear(Films films, String year){
+        return films.getDistinctYear(year);
+    }
+    
+    //Film Imdb IDs
+    public List<String> getDistinctImdbIDsFromFilms(Films films){
+        return (films == null) ? null : films.toListDistinctImdbIDs();
     }
     
     //information for table once all dropdown fields are selected

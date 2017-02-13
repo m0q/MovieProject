@@ -18,7 +18,7 @@ import java.sql.SQLException;
  */
 public class MovieData {
     
-    public Films getCsvData(String csvPath){
+    public Films getFilmData(String csvPath){
         Films films = new Films();
         String[] line;
         
@@ -36,11 +36,8 @@ public class MovieData {
     }
     
     /* call stored procedure using given film_id and store results as objects */
-    public Films getDatabaseData() throws ClassNotFoundException, SQLException{
-        final String dbConnectionString = AppVariables.Database.connectionString;//database mysql localhost connection
-        final String username = AppVariables.Database.username; // username of db - root
-        final String password = AppVariables.Database.password; // password of db
-         
+    public Films getFilmData(String dbConnectionString, String username, String password) throws ClassNotFoundException, SQLException{
+
         //register and load the db driver - must happen before db connection is made
         Class.forName(AppVariables.Database.mysqlDriver); 
         
@@ -75,20 +72,20 @@ public class MovieData {
         }
     } 
     
-    Films storeLine(String[] line, Films films){
+    private Films storeLine(String[] line, Films films){
         Films tmpFilms = films;
         
         //ensure record in not already present
-        if(tmpFilms.stream().anyMatch(item -> item.filmID.equals(line[AppVariables.CSV.filmID]))){
-            Film tmpFilm = tmpFilms.stream().filter(item -> item.filmID.equals(line[AppVariables.CSV.filmID])).findFirst().get();//.collect(Collectors.toList()).get(0);
+        if(tmpFilms.stream().anyMatch(item -> item.filmID.equals(line[AppVariables.filmID]))){
+            Film tmpFilm = tmpFilms.stream().filter(item -> item.filmID.equals(line[AppVariables.filmID])).findFirst().get();//.collect(Collectors.toList()).get(0);
 
-            if(tmpFilm.directors.stream().anyMatch(item -> item.getID().equals(line[AppVariables.CSV.directorID]))){
+            if(tmpFilm.directors.stream().anyMatch(item -> item.getID().equals(line[AppVariables.directorID]))){
 
             }else{
                 Director director = this.getDirectorFromData(line);
                 tmpFilm.directors.add(director);
             }
-            if(tmpFilm.actors.stream().anyMatch(item -> item.getID().equals(line[AppVariables.CSV.actorID]))){
+            if(tmpFilm.actors.stream().anyMatch(item -> item.getID().equals(line[AppVariables.actorID]))){
 
             }else{
                 Actor actor = this.getActorFromData(line);
@@ -103,14 +100,14 @@ public class MovieData {
     }
     
     private Director getDirectorFromData(String[] line){
-        Director director = new Director(line[AppVariables.CSV.directorID].trim(), 
-                                         line[AppVariables.CSV.directorName].trim());
+        Director director = new Director(line[AppVariables.directorID].trim(), 
+                                         line[AppVariables.directorName].trim());
         return director;
     }
     
     private Actor getActorFromData(String[] line){
-        Actor actor = new Actor(line[AppVariables.CSV.actorID].trim(), 
-                                line[AppVariables.CSV.actorName].trim());
+        Actor actor = new Actor(line[AppVariables.actorID].trim(), 
+                                line[AppVariables.actorName].trim());
         return actor;
     }
     
@@ -119,10 +116,10 @@ public class MovieData {
         Director director = this.getDirectorFromData(line);
         Actor actor = this.getActorFromData(line);
         
-        Film film = new Film(line[AppVariables.CSV.filmID].trim(),
-                             line[AppVariables.CSV.filmName].trim(),
-                             line[AppVariables.CSV.imdbRating].trim(),
-                             line[AppVariables.CSV.filmYear].trim());
+        Film film = new Film(line[AppVariables.filmID].trim(),
+                             line[AppVariables.filmName].trim(),
+                             line[AppVariables.imdbRating].trim(),
+                             line[AppVariables.filmYear].trim());
         film.directors.add(director);
         film.actors.add(actor);
         
