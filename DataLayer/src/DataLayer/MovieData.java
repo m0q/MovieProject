@@ -37,25 +37,30 @@ public class MovieData {
     
     /* call stored procedure using given film_id and store results as objects */
     public Films getDatabaseData() throws ClassNotFoundException, SQLException{
-        final String dbURL = "jdbc:mysql://localhost:3306/db_Movie?useSSL=false";//AppVariables.Database.url;
-        final String username = "root";// AppVariables.Database.username;
-        final String password = "";//AppVariables.Database.password;
+        final String dbConnectionString = AppVariables.Database.connectionString;//database mysql localhost connection
+        final String username = AppVariables.Database.username; // username of db - root
+        final String password = AppVariables.Database.password; // password of db
          
         //register and load the db driver - must happen before db connection is made
         Class.forName(AppVariables.Database.mysqlDriver); 
         
-        Connection conn = DriverManager.getConnection(dbURL,username,password); //establish connection 
+        Connection conn = DriverManager.getConnection(dbConnectionString,username,password); //establish connection 
         Films films = new Films();
      
-        try(CallableStatement cs = conn.prepareCall("{CALL getAllDetails()}")){
+        try(CallableStatement cs = conn.prepareCall(String.format("{CALL %s}", AppVariables.Database.storedProcedureName))){
             boolean hasResults = cs.execute(); //execute stored procedure
             
             //retrieve the returned data (resultset) 
             try(ResultSet rs = cs.getResultSet()){
                 while(rs.next()){
-                    String[] line = {rs.getString(1),rs.getString(2),rs.getString(3)
-                                    ,rs.getString(4),rs.getString(5),rs.getString(6)
-                                    ,rs.getString(7),rs.getString(8)};
+                    String[] line = {rs.getString(AppVariables.Database.filmID)
+                                    ,rs.getString(AppVariables.Database.filmName)
+                                    ,rs.getString(AppVariables.Database.imdbRating)
+                                    ,rs.getString(AppVariables.Database.directorID)
+                                    ,rs.getString(AppVariables.Database.directorName)
+                                    ,rs.getString(AppVariables.Database.actorID)
+                                    ,rs.getString(AppVariables.Database.actorName)
+                                    ,rs.getString(AppVariables.Database.filmYear)};
                                   
                     films = storeLine(line, films);
                 }

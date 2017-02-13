@@ -34,7 +34,8 @@
                 </h:selectOneMenu>
                 </p>
                 <h:commandButton value="Reset" class="button" action="#{bean.reset}" />
-                <h:commandButton value="Submit" class="button" action="#{bean.submitForm}" /> <br />
+                <h:commandButton rendered="#{bean.isAllSelected}" value="Submit" class="button" action="#{bean.submitForm}" /> <br />
+       <!--disabled ="true"-->
         </h:form> 
         
         <h:dataTable rendered="#{bean.isSubmitted}" class="tftable" value="Film" var="item" border="1">
@@ -54,6 +55,8 @@
                 <h:outputText value="Film Name" />
               </f:facet>
                 <h:outputText value="#{bean.filmName}" />
+                <br />
+                <h:outputLink value="#{bean.filmImdbLink}">IMDb Page</h:outputLink>
             </h:column>
 
             <h:column>
@@ -82,6 +85,8 @@
                 <h:outputText value="Director Name" />
               </f:facet>
                 <h:outputText value="#{bean.directorName}" />
+                <br />
+                <h:outputLink value="#{bean.directorImdbLink}">IMDb Profile</h:outputLink>
             </h:column>
 
             <h:column>
@@ -96,6 +101,8 @@
                 <h:outputText value="Actor Name" />
               </f:facet>
                 <h:outputText value="#{bean.actorName}" />
+                <br />
+                <h:outputLink value="#{bean.actorImdbLink}">IMDb Profile</h:outputLink>
             </h:column>
         </h:dataTable>
     </h:body>

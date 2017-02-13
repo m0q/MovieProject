@@ -30,7 +30,7 @@ public class Beans implements Serializable{
     List<Director> directors;
     List<Actor> actors;
     List<SimplisticFilm> sFilms;
-    private boolean isSubmitted = false;
+    private boolean isSubmitted = false, isAllSelected = false;
     
     @PostConstruct
     protected void load(){
@@ -41,19 +41,8 @@ public class Beans implements Serializable{
                 String actorID = (selectedActor == null ? null : selectedActor);
 
                 populateDropDownsWithFilteredData(filmID, directorID, actorID);
-                
-                /*TO-DO:
-                    check why auto fill for all fields does not trigger the button
-                    previously implemented. - Hiding the button until all fields
-                    are complete only work after you select more than one field.
-                    Selecting 1 field that completes all other fields does not show
-                    the button.
-                */
-                if(filmID != null && directorID != null && actorID != null && isSubmitted){
-                    this.populateFields(filmID, directorID, actorID);
-                }
             }catch(Exception e){
-                System.out.println(e.getMessage() + " <<<ERROR");
+                e.printStackTrace();
             }
         }else{
             populateDropDownsWithOriginalData();
@@ -82,6 +71,12 @@ public class Beans implements Serializable{
             actors = (actorID == null) ? mbl.getDistinctActorsFromFilms(tmp) : mbl.getDistinctActor(tmp, actorID);
             directors = (directorID == null) ? mbl.getDistinctDirectorsFromFilms(tmp) : mbl.getDistinctDirector(tmp, directorID);
             sFilms = (filmID == null) ? mbl.getDistinctSimplisticFilmsFromFilms(tmp) : tmp.getDistinctSimplisticFilm(filmID);
+            
+            if(sFilms.size() == 1 && directors.size() == 1 && actors.size() == 1){
+                isAllSelected = true;
+                this.populateFields(sFilms.get(0).filmID, directors.get(0).personID, actors.get(0).personID);
+            }
+            
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -100,7 +95,7 @@ public class Beans implements Serializable{
             List<SelectItem> siList = new ArrayList();
             
             //<--SELECT--> Option
-            SelectItem noSelect = new SelectItem(null, AppVariables.CSV.dropDownDefault);
+            SelectItem noSelect = new SelectItem(null, AppVariables.WebProperties.dropDownDefault);
             noSelect.setNoSelectionOption(true);
             siList.add(noSelect);
             
@@ -141,7 +136,7 @@ public class Beans implements Serializable{
             List<SelectItem> siList = new ArrayList();
             
             //TODO: <--SELECT--> Option
-            siList.add(new SelectItem(null, AppVariables.CSV.dropDownDefault));
+            siList.add(new SelectItem(null, AppVariables.WebProperties.dropDownDefault));
 
             curList.stream()
                 .map(a -> siList.add(new SelectItem(a.getID(), a.getName())))
@@ -198,6 +193,8 @@ public class Beans implements Serializable{
     public void setSelectedActor(String si){this.selectedActor = si;}
     public boolean getIsSubmitted(){return this.isSubmitted;}
     public void setIsSubmitted(Boolean isSubmitted){this.isSubmitted = isSubmitted;}
+    public boolean getIsAllSelected(){return this.isAllSelected;}
+    public void setIsAllSelected(Boolean isAllSelected){this.isAllSelected = isAllSelected;}
     
     
     //-------------------------------------------------
@@ -228,26 +225,17 @@ public class Beans implements Serializable{
             e.printStackTrace();
         }
     }
-
+    
+    //JSF read access to fields
+    public String getFilmImdbLink() {return String.format(AppVariables.WebProperties.imdbFilmURL, filmID);}
+    public String getDirectorImdbLink() {return String.format(AppVariables.WebProperties.imdbProfileURL, directorID);}
+    public String getActorImdbLink() {return String.format(AppVariables.WebProperties.imdbProfileURL, actorID);}
     public String getFilmID() {return filmID;}
-    public void setFilmID(String filmID) {this.filmID = filmID;}
-
     public String getFilmName() {return filmName;}
-    public void setFilmName(String filmName) {this.filmName = filmName;}
-
     public String getFilmYear() {return filmYear;}
-    public void setFilmYear(String filmYear) {this.filmYear = filmYear;}
-
     public String getImdbRating() {return imdbRating;}
-    public void setImdbRating(String imdbRating) {this.imdbRating = imdbRating;}
-
     public String getActorID() {return actorID;}
-    public void setActorID(String actorID) {this.actorID = actorID;}
     public String getActorName() {return actorName;}
-    public void setActorName(String actorName) {this.actorName = actorName;}
-
     public String getDirectorID() {return directorID;}
-    public void setDirectorID(String directorID) {this.directorID = directorID;}
     public String getDirectorName() {return directorName;}
-    public void setDirectorName(String directorName) {this.directorName = directorName;}
 }
