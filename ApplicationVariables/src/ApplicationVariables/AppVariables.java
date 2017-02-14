@@ -18,8 +18,8 @@ public class AppVariables {
         
     public static class CSV{      
         /**   CSV Path   **/
-        public static String FILE_PATH = "/Users/mqul/NetBeansProjects/NovusMovieProject/TestData.csv";
-        public static String EXTENDED_FILE_PATH = "/Users/mqul/NetBeansProjects/NovusMovieProject/ExtendedTestData.csv";
+        public static String FILE_PATH = "/Users/mqul/NetBeansProjects/NovusMovieProject/Data/TestData.csv";
+        public static String EXTENDED_FILE_PATH = "/Users/mqul/NetBeansProjects/NovusMovieProject/Data/ExtendedTestData.csv";
     }
     
     public static class Database{

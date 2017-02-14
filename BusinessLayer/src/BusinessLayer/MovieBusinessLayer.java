@@ -18,15 +18,15 @@ public class MovieBusinessLayer {
         if(SimpleCaching.get(AppVariables.Cache.filmCacheName) != null){
             return SimpleCaching.get(AppVariables.Cache.filmCacheName);
         }else{
-            try{
-                //Films films = new MovieData().getFilmData(AppVariables.CSV.EXTENDED_FILE_PATH);
-                Films films = new MovieData().getFilmData(AppVariables.Database.connectionString, AppVariables.Database.username, AppVariables.Database.password);
+            //try{
+                Films films = new MovieData().getFilmData(AppVariables.CSV.EXTENDED_FILE_PATH);
+                //Films films = new MovieData().getFilmData(AppVariables.Database.connectionString, AppVariables.Database.username, AppVariables.Database.password);
                 SimpleCaching.put(AppVariables.Cache.filmCacheName, films);
                 return SimpleCaching.get(AppVariables.Cache.filmCacheName);
-            }catch(SQLException | ClassNotFoundException e){
+            /*}catch(SQLException | ClassNotFoundException e){
                 e.printStackTrace();
                 return null;
-            }
+            }*/
         }
     }
     
@@ -64,11 +64,6 @@ public class MovieBusinessLayer {
     
     public List<String> getDistinctYear(Films films, String year){
         return films.getDistinctYear(year);
-    }
-    
-    //Film Imdb IDs
-    public List<String> getDistinctImdbIDsFromFilms(Films films){
-        return (films == null) ? null : films.toListDistinctImdbIDs();
     }
     
     //information for table once all dropdown fields are selected

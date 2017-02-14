@@ -23,10 +23,10 @@ public class Films extends ArrayList<Film>{
     //Films
     public Films getFilmsFilteredSubset(String filmID, String directorID, String actorID, String filmYear){
         Films tmpFilms = new Films();
-        tmpFilms.addAll(this.stream().filter(f -> f.filmID.equals((filmID == null) ? f.filmID : filmID))
+        tmpFilms.addAll(this.stream().filter(f -> f.filmID.equals((filmID == null) ? f.filmID : filmID)) 
+                                     .filter(f -> f.filmYear.equals((filmYear == null) ? f.filmYear : filmYear))
                                      .filter(f -> f.directors.stream().anyMatch(p -> p.getID().equals((directorID == null) ? p.getID() : directorID)))
                                      .filter(f -> f.actors.stream().anyMatch(p -> p.getID().equals((actorID == null) ? p.getID() : actorID)))
-                                     .filter(f -> f.filmYear.equals((filmYear == null) ? f.filmYear : filmYear))
                                      .sorted(Comparator.comparing(f -> f.getFilmName()))
                                      .collect(Collectors.toList()));
         return tmpFilms;
@@ -123,20 +123,5 @@ public class Films extends ArrayList<Film>{
         Collections.sort(tmpList);
                 
         return tmpList;   
-    }
-    
-    //Imdb IDs
-    public List<String> toListDistinctImdbIDs(){
-        List <String> tmpList = new ArrayList();
-        
-        //all ID's are unique but does check anyway
-        this.stream()
-                .filter(f -> tmpList.stream().noneMatch(y -> y.equals(f.filmID)))
-                .map(f -> tmpList.add(f.filmID))
-                .collect(Collectors.toList());
-        
-        Collections.sort(tmpList);
-                
-        return tmpList;  
     }
 }

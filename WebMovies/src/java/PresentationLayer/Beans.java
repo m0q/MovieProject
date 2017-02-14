@@ -26,11 +26,11 @@ import javax.servlet.http.HttpServletRequest;
 public class Beans implements Serializable{
     
     private MovieBusinessLayer mbl = new MovieBusinessLayer();
-    private String selectedFilm, selectedDirector, selectedActor, selectedYear, selectedImdbID;
+    private String selectedFilm, selectedDirector, selectedActor, selectedYear;
     List<Director> directors;
     List<Actor> actors;
     List<SimplisticFilm> sFilms;
-    List<String> filmYears,imdbIDs;
+    List<String> filmYears;
     private boolean isSubmitted = false, isAllSelected = false;
     
     @PostConstruct
@@ -41,7 +41,6 @@ public class Beans implements Serializable{
                 String directorID = (selectedDirector == null ? null : selectedDirector);
                 String actorID = (selectedActor == null ? null : selectedActor);
                 String filmYear = (selectedYear == null ? null : selectedYear);
-                //String imdbID = (selectedImdbID == null ? null : selectedImdbID);
 
                 populateDropDownsWithFilteredData(filmID, directorID, actorID, filmYear);//, imdbID);
             }catch(Exception e){
@@ -61,13 +60,12 @@ public class Beans implements Serializable{
             actors = mbl.getDistinctActorsFromFilms(films);
             sFilms = mbl.getDistinctSimplisticFilmsFromFilms(films);
             filmYears = mbl.getDistinctYearsFromFilms(films);
-            //imdbIDs = mbl.getDistinctImdbIDsFromFilms(films);
         }catch(Exception e){
            e.printStackTrace();
         }
     }
     
-    private void populateDropDownsWithFilteredData(String filmID, String directorID, String actorID, String filmYear){//, String imdbID){
+    private void populateDropDownsWithFilteredData(String filmID, String directorID, String actorID, String filmYear){
         try{
             Films films = mbl.getFilms();
             
@@ -77,9 +75,8 @@ public class Beans implements Serializable{
             directors = (directorID == null) ? mbl.getDistinctDirectorsFromFilms(tmp) : mbl.getDistinctDirector(tmp, directorID);
             sFilms = (filmID == null) ? mbl.getDistinctSimplisticFilmsFromFilms(tmp) : tmp.getDistinctSimplisticFilm(filmID);
             filmYears = (filmYear == null) ? mbl.getDistinctYearsFromFilms(tmp) : mbl.getDistinctYear(tmp, filmYear);
-            //imdbIDs = (imdbID == null) ? mbl.getDistinctImdbIDsFromFilms(tmp) : tmp.toListDistinctImdbIDs();
             
-            if(sFilms.size() == 1 && directors.size() == 1 && actors.size() == 1){
+            if(sFilms.size() == 1 && directors.size() == 1 && actors.size() == 1 && filmYears.size() == 1){
                 isAllSelected = true;
                 this.populateFields(sFilms.get(0).filmID, directors.get(0).personID, actors.get(0).personID);
             }
@@ -115,7 +112,7 @@ public class Beans implements Serializable{
     }
     
     //--------------------------------------------------------------------------
-    public List populateYearsOrImdbIDs(List<String> list){ //worst method name every, change!
+    public List populateYears(List<String> list){ //worst method name every, change!
         if(isPostback() && list.size() == 1){
             List<SelectItem> siList = new ArrayList();
             
@@ -127,9 +124,11 @@ public class Beans implements Serializable{
         }else{
             List<SelectItem> siList = new ArrayList();
             
-            //TODO: <--SELECT--> Option
-            siList.add(new SelectItem(AppVariables.WebProperties.dropDownDefault));
-
+            //<--SELECT--> Option
+            SelectItem noSelect = new SelectItem(null, AppVariables.WebProperties.dropDownDefault);
+            noSelect.setNoSelectionOption(true);
+            siList.add(noSelect);
+            
             list.stream()
                 .map(a -> siList.add(new SelectItem(a)))
                 .collect(Collectors.toList());
@@ -147,10 +146,7 @@ public class Beans implements Serializable{
     public List getActors(){ return populateDropDownList(this.actors); }
     
     //populate and return a list of years based on what the films list currently holds
-    public List getFilmYears(){ return populateYearsOrImdbIDs(this.filmYears); }
-    
-    //populate and return a list of ids based on what the films list currently holds
-    public List getImdbIDs(){ return populateYearsOrImdbIDs(this.imdbIDs); }
+    public List getFilmYears(){ return populateYears(this.filmYears); }
     
     /*
         takes a generalised collector list - either Actor or Director
@@ -172,8 +168,10 @@ public class Beans implements Serializable{
         }else{
             List<SelectItem> siList = new ArrayList();
             
-            //TODO: <--SELECT--> Option
-            siList.add(new SelectItem(null, AppVariables.WebProperties.dropDownDefault));
+            //<--SELECT--> Option
+            SelectItem noSelect = new SelectItem(null, AppVariables.WebProperties.dropDownDefault);
+            noSelect.setNoSelectionOption(true);
+            siList.add(noSelect);
 
             curList.stream()
                 .map(a -> siList.add(new SelectItem(a.getID(), a.getName())))
@@ -211,13 +209,6 @@ public class Beans implements Serializable{
             this.load();
         }
     }
-    
-    public void valueChangeMethodImdbID(ValueChangeEvent e){
-        if(isPostback()){
-            selectedImdbID = e.getNewValue().toString();
-            this.load();
-        }
-    }
             
     //completely refresh the page to initial state
     public void reset() throws IOException {
@@ -244,8 +235,6 @@ public class Beans implements Serializable{
     public void setSelectedActor(String si){this.selectedActor = si;}
     public String getSelectedYear(){return this.selectedYear;}
     public void setSelectedYear(String si){this.selectedYear = si;}
-    public String getSelectedImdbID(){return this.selectedImdbID;}
-    public void setSelectedImdbID(String si){this.selectedImdbID = si;}
     public boolean getIsSubmitted(){return this.isSubmitted;}
     public void setIsSubmitted(Boolean isSubmitted){this.isSubmitted = isSubmitted;}
     public boolean getIsAllSelected(){return this.isAllSelected;}
