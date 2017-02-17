@@ -23,7 +23,6 @@ public class MovieBusinessLayer {
             SimpleCaching.put(AppVariables.Cache.filmCacheName, films);
             return SimpleCaching.get(AppVariables.Cache.filmCacheName);*/
             
-            //Films films = new MovieData().getFilmData(AppVariables.Database.connectionString, AppVariables.Database.username, AppVariables.Database.password);
             try{
                 //register and load the db driver - must happen before db connection is made
                 Class.forName(AppVariables.Database.mysqlDriver); 

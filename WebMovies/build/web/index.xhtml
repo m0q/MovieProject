@@ -19,27 +19,27 @@
 
                 -->
                 <p>Film:<h:selectOneMenu style="width:230px;" value="#{bean.selectedFilm}" 
-                              onchange="submit()" valueChangeListener="#{bean.valueChangeMethodFilm}">
+                              onchange="submit()" valueChangeListener="#{bean.filmValueChanged}">
                     <f:selectItems value="#{bean.films}" />
                 </h:selectOneMenu>
                 </p>
                 <p>Director:<h:selectOneMenu style="width:230px;" value="#{bean.selectedDirector}"
-                              onchange="submit()" valueChangeListener="#{bean.valueChangeMethodDir}">
+                              onchange="submit()" valueChangeListener="#{bean.directorValueChanged}">
                     <f:selectItems value="#{bean.directors}" />
                 </h:selectOneMenu>
                 </p>
                 <p>Actor:<h:selectOneMenu style="width:230px;" value="#{bean.selectedActor}"
-                              onchange="submit()" valueChangeListener="#{bean.valueChangeMethodAct}">
+                              onchange="submit()" valueChangeListener="#{bean.actorValueChanged}">
                     <f:selectItems value="#{bean.actors}" />
                 </h:selectOneMenu>
                 </p>
                 <p>Film Year:<h:selectOneMenu style="width:230px;" value="#{bean.selectedYear}"
-                              onchange="submit()" valueChangeListener="#{bean.valueChangeMethodYear}">
+                              onchange="submit()" valueChangeListener="#{bean.yearValueChanged}">
                         <f:selectItems value="#{bean.filmYears}" />
                 </h:selectOneMenu>
                 </p>
                 <p>Film Rating:<h:selectOneMenu style="width:230px;" value="#{bean.selectedRating}"
-                                                onchange="submit()" valueChangeListener="#{bean.valueChangeMethodRating}">
+                                                onchange="submit()" valueChangeListener="#{bean.ratingValueChanged}">
                         <f:selectItems value="#{bean.filmRatings}" />
                 </h:selectOneMenu>
                 </p>

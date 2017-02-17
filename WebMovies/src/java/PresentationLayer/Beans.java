@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -101,35 +102,35 @@ public class Beans extends BaseBean implements Serializable{
     
     
     //http://ruleoftech.com/2012/jsf-1-2-and-getting-selected-value-from-dropdown
-    public void valueChangeMethodFilm(ValueChangeEvent e){
+    public void filmValueChanged(ValueChangeEvent e){
         if(isPostback()){
             selectedFilm = e.getNewValue().toString();
             this.load();
         }
     }
     
-    public void valueChangeMethodDir(ValueChangeEvent e){
+    public void directorValueChanged(ValueChangeEvent e){
         if(isPostback()){
             selectedDirector = e.getNewValue().toString();
             this.load();
         }
     }
     
-    public void valueChangeMethodAct(ValueChangeEvent e){
+    public void actorValueChanged(ValueChangeEvent e){
         if(isPostback()){
             selectedActor = e.getNewValue().toString();
             this.load();
         }
     }
     
-    public void valueChangeMethodYear(ValueChangeEvent e){
+    public void yearValueChanged(ValueChangeEvent e){
         if(isPostback()){
             selectedYear = e.getNewValue().toString();
             this.load();
         }
     }
     
-    public void valueChangeMethodRating(ValueChangeEvent e){
+    public void ratingValueChanged(ValueChangeEvent e){
         if(isPostback()){
             selectedRating = e.getNewValue().toString();
             this.load();

@@ -7,7 +7,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 /**
@@ -18,6 +17,7 @@ import java.sql.SQLException;
  */
 public class MovieData {
     
+    //read data from CSV file - path provided as param
     public Films getFilmData(String csvPath){
         Films films = new Films();
         String[] line;
@@ -35,44 +35,7 @@ public class MovieData {
         return films;
     }
     
-    /* call stored procedure using given film_id and store results as objects */
-    public Films getFilmData(String dbConnectionString, String username, String password) throws ClassNotFoundException, SQLException{
-
-        //register and load the db driver - must happen before db connection is made
-        Class.forName(AppVariables.Database.mysqlDriver); 
-        
-        Connection conn = DriverManager.getConnection(dbConnectionString,username,password); //establish connection 
-        Films films = new Films();
-     
-        try(CallableStatement cs = conn.prepareCall(String.format("{CALL %s}", AppVariables.Database.storedProcedureName))){
-            boolean hasResults = cs.execute(); //execute stored procedure
-            
-            //retrieve the returned data (resultset) 
-            try(ResultSet rs = cs.getResultSet()){
-                while(rs.next()){
-                    String[] line = {rs.getString(AppVariables.Database.filmID)
-                                    ,rs.getString(AppVariables.Database.filmName)
-                                    ,rs.getString(AppVariables.Database.imdbRating)
-                                    ,rs.getString(AppVariables.Database.directorID)
-                                    ,rs.getString(AppVariables.Database.directorName)
-                                    ,rs.getString(AppVariables.Database.actorID)
-                                    ,rs.getString(AppVariables.Database.actorName)
-                                    ,rs.getString(AppVariables.Database.filmYear)};
-                                  
-                    films = storeLine(line, films);
-                }
-            }
-            
-            return films;    
-        }catch(Exception e){
-            e.printStackTrace();
-            return null;
-        }finally{
-            conn.close(); //close connection to db once try block is complete
-        }
-    } 
-    
-    /* call stored procedure using given film_id and store results as objects */
+    //read data from database into objects
     public Films getFilmData(Connection conn) throws ClassNotFoundException, SQLException{
         
         Films films = new Films();
@@ -80,7 +43,7 @@ public class MovieData {
         try(CallableStatement cs = conn.prepareCall(String.format("{CALL %s}", AppVariables.Database.storedProcedureName))){
             boolean hasResults = cs.execute(); //execute stored procedure
             
-            //retrieve the returned data (resultset) 
+            //retrieve data from the resultset
             try(ResultSet rs = cs.getResultSet()){
                 while(rs.next()){
                     String[] line = {rs.getString(AppVariables.Database.filmID)
@@ -92,7 +55,7 @@ public class MovieData {
                                     ,rs.getString(AppVariables.Database.actorName)
                                     ,rs.getString(AppVariables.Database.filmYear)};
                                   
-                    films = storeLine(line, films);
+                    films = storeLine(line, films); //overwrite Films object with new data
                 }
             }
             
@@ -105,6 +68,9 @@ public class MovieData {
         }
     } 
     
+    /*store data as objects
+        new film: with actors and directors
+        existing film: add actor/director if not already present*/                        
     private Films storeLine(String[] line, Films films){
         Films tmpFilms = films;
         
