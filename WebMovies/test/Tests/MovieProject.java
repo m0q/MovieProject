@@ -11,7 +11,7 @@ public class MovieProject {
     public static void main(String[] args) {
         MovieBusinessLayer mbl = new MovieBusinessLayer();
         
-        Films films = mbl.getFilms();//.getFilmsFromCSV(AppVariables.FILE_PATH);
+        Films films = mbl.getFilms();
         
         for(Film f:films){
             System.out.println("Film: "+f.filmName);

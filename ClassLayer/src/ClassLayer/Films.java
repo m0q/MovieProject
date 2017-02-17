@@ -21,10 +21,11 @@ public class Films extends ArrayList<Film>{
     }
     
     //Films
-    public Films getFilmsFilteredSubset(String filmID, String directorID, String actorID, String filmYear){
+    public Films getFilmsFilteredSubset(String filmID, String directorID, String actorID, String filmYear, String filmRating){
         Films tmpFilms = new Films();
         tmpFilms.addAll(this.stream().filter(f -> f.filmID.equals((filmID == null) ? f.filmID : filmID)) 
                                      .filter(f -> f.filmYear.equals((filmYear == null) ? f.filmYear : filmYear))
+                                     .filter(f -> f.imdbRating.equals((filmRating == null) ? f.imdbRating : filmRating))
                                      .filter(f -> f.directors.stream().anyMatch(p -> p.getID().equals((directorID == null) ? p.getID() : directorID)))
                                      .filter(f -> f.actors.stream().anyMatch(p -> p.getID().equals((actorID == null) ? p.getID() : actorID)))
                                      .sorted(Comparator.comparing(f -> f.getFilmName()))
@@ -123,5 +124,32 @@ public class Films extends ArrayList<Film>{
         Collections.sort(tmpList);
                 
         return tmpList;   
+    }
+    
+    //Film Rating
+    public List<String> toListDistinctFilmRatings(){
+        List <String> tmpList = new ArrayList();
+
+         this.stream()
+                 .filter(f -> tmpList.stream().noneMatch(y -> y.equals(f.imdbRating)))
+                 .map(f -> tmpList.add(f.imdbRating))
+                 .collect(Collectors.toList());
+
+         Collections.sort(tmpList);
+
+         return tmpList;
+    }
+    
+    public List<String> getDistinctFilmRating(String imdbRating){
+        List <String> tmpList = new ArrayList();
+        
+        this.stream()
+                .filter(f -> tmpList.stream().noneMatch(y -> y.equals(f.imdbRating) && f.imdbRating.equals(imdbRating)))
+                .map(f -> tmpList.add(f.imdbRating))
+                .collect(Collectors.toList());
+        
+        Collections.sort(tmpList);
+                
+        return tmpList;
     }
 }

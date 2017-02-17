@@ -5,16 +5,13 @@ import BusinessLayer.MovieBusinessLayer;
 import ClassLayer.*;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
-import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -23,14 +20,14 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ManagedBean(name="bean")
 @ViewScoped
-public class Beans implements Serializable{
+public class Beans extends BaseBean implements Serializable{
     
     private MovieBusinessLayer mbl = new MovieBusinessLayer();
-    private String selectedFilm, selectedDirector, selectedActor, selectedYear;
+    private String selectedFilm, selectedDirector, selectedActor, selectedYear, selectedRating;
     List<Director> directors;
     List<Actor> actors;
     List<SimplisticFilm> sFilms;
-    List<String> filmYears;
+    List<String> filmYears, filmRatings;
     private boolean isSubmitted = false, isAllSelected = false;
     
     @PostConstruct
@@ -41,8 +38,9 @@ public class Beans implements Serializable{
                 String directorID = (selectedDirector == null ? null : selectedDirector);
                 String actorID = (selectedActor == null ? null : selectedActor);
                 String filmYear = (selectedYear == null ? null : selectedYear);
+                String filmRating = (selectedRating == null ? null : selectedRating);
 
-                populateDropDownsWithFilteredData(filmID, directorID, actorID, filmYear);//, imdbID);
+                populateDropDownsWithFilteredData(filmID, directorID, actorID, filmYear, filmRating);//, imdbID);
             }catch(Exception e){
                 e.printStackTrace();
             }
@@ -53,28 +51,29 @@ public class Beans implements Serializable{
     
     private void populateDropDownsWithOriginalData(){
         try{
-            //Films films = mbl.getFilms(DataLayerType.CSV, AppVariables.FILE_PATH);
             Films films = mbl.getFilms();
             
             directors = mbl.getDistinctDirectorsFromFilms(films);
             actors = mbl.getDistinctActorsFromFilms(films);
             sFilms = mbl.getDistinctSimplisticFilmsFromFilms(films);
             filmYears = mbl.getDistinctYearsFromFilms(films);
+            filmRatings = mbl.getDistinctRatingsFromFilms(films);
         }catch(Exception e){
            e.printStackTrace();
         }
     }
     
-    private void populateDropDownsWithFilteredData(String filmID, String directorID, String actorID, String filmYear){
+    private void populateDropDownsWithFilteredData(String filmID, String directorID, String actorID, String filmYear, String filmRating){
         try{
             Films films = mbl.getFilms();
             
-            Films tmp = mbl.getFilmsSubset(filmID, directorID, actorID, filmYear, films);
+            Films tmp = mbl.getFilmsSubset(filmID, directorID, actorID, filmYear, filmRating, films);
 
             actors = (actorID == null) ? mbl.getDistinctActorsFromFilms(tmp) : mbl.getDistinctActor(tmp, actorID);
             directors = (directorID == null) ? mbl.getDistinctDirectorsFromFilms(tmp) : mbl.getDistinctDirector(tmp, directorID);
             sFilms = (filmID == null) ? mbl.getDistinctSimplisticFilmsFromFilms(tmp) : tmp.getDistinctSimplisticFilm(filmID);
             filmYears = (filmYear == null) ? mbl.getDistinctYearsFromFilms(tmp) : mbl.getDistinctYear(tmp, filmYear);
+            filmRatings = (filmRating == null) ? mbl.getDistinctRatingsFromFilms(tmp) : tmp.getDistinctFilmRating(filmID); 
             
             if(sFilms.size() == 1 && directors.size() == 1 && actors.size() == 1 && filmYears.size() == 1){
                 isAllSelected = true;
@@ -85,59 +84,8 @@ public class Beans implements Serializable{
             e.printStackTrace();
         }
     }
-    //--------------------------------------------------------------------------
-    public List populateFilms(List<SimplisticFilm> films){
-        if(isPostback() && films.size() == 1){
-            List<SelectItem> siList = new ArrayList();
-            
-            films.stream()
-                 .map(f -> siList.add(new SelectItem(f.getFilmID(), f.getFilmName())))
-                 .collect(Collectors.toList());
-                    
-            return siList;
-        }else{
-            List<SelectItem> siList = new ArrayList();
-            
-            //<--SELECT--> Option
-            SelectItem noSelect = new SelectItem(null, AppVariables.WebProperties.dropDownDefault);
-            noSelect.setNoSelectionOption(true);
-            siList.add(noSelect);
-            
-            films.stream()
-                 .map(f -> siList.add(new SelectItem(f.getFilmID(), f.getFilmName())))
-                 .collect(Collectors.toList());
-            
-            return siList;
-        }
-    }
     
-    //--------------------------------------------------------------------------
-    public List populateYears(List<String> list){ //worst method name every, change!
-        if(isPostback() && list.size() == 1){
-            List<SelectItem> siList = new ArrayList();
-            
-            list.stream()
-                    .map(a -> siList.add(new SelectItem(a)))
-                    .collect(Collectors.toList());
-                    
-            return siList;
-        }else{
-            List<SelectItem> siList = new ArrayList();
-            
-            //<--SELECT--> Option
-            SelectItem noSelect = new SelectItem(null, AppVariables.WebProperties.dropDownDefault);
-            noSelect.setNoSelectionOption(true);
-            siList.add(noSelect);
-            
-            list.stream()
-                .map(a -> siList.add(new SelectItem(a)))
-                .collect(Collectors.toList());
-
-            return siList;
-        }
-    }
-    
-    public List getFilms(){ return populateFilms(this.sFilms); }
+    public List getFilms(){ return populateDropDownList(this.sFilms);}//populateFilms(this.sFilms); }
     
     //populate and return a list of directors based on what the films list currently holds
     public List getDirectors(){ return populateDropDownList(this.directors); }
@@ -146,40 +94,11 @@ public class Beans implements Serializable{
     public List getActors(){ return populateDropDownList(this.actors); }
     
     //populate and return a list of years based on what the films list currently holds
-    public List getFilmYears(){ return populateYears(this.filmYears); }
+    public List getFilmYears(){ return populateDropDownList(this.filmYears); }
     
-    /*
-        takes a generalised collector list - either Actor or Director
-        converters each set of actor/director into a list of selectitem for the
-        dropdown. If theres only a single item in the list, display it on the
-        dropdown as a default.
-        
-        generalised collector: http://stackoverflow.com/questions/17834145/whats-the-use-of-saying-extends-someobject-instead-of-someobject/17834223
-    */
-    private List populateDropDownList(List<? extends Person> curList){
-        if(isPostback() && curList.size() == 1){
-            List<SelectItem> siList = new ArrayList();
-            
-            curList.stream()
-                    .map(a -> siList.add(new SelectItem(a.getID(), a.getName())))
-                    .collect(Collectors.toList());
-                    
-            return siList;
-        }else{
-            List<SelectItem> siList = new ArrayList();
-            
-            //<--SELECT--> Option
-            SelectItem noSelect = new SelectItem(null, AppVariables.WebProperties.dropDownDefault);
-            noSelect.setNoSelectionOption(true);
-            siList.add(noSelect);
-
-            curList.stream()
-                .map(a -> siList.add(new SelectItem(a.getID(), a.getName())))
-                .collect(Collectors.toList());
-
-            return siList;
-        }
-    }
+    //populate and return a list of years based on what the films list currently holds
+    public List getFilmRatings(){ return populateDropDownList(this.filmRatings); }
+    
     
     //http://ruleoftech.com/2012/jsf-1-2-and-getting-selected-value-from-dropdown
     public void valueChangeMethodFilm(ValueChangeEvent e){
@@ -209,6 +128,13 @@ public class Beans implements Serializable{
             this.load();
         }
     }
+    
+    public void valueChangeMethodRating(ValueChangeEvent e){
+        if(isPostback()){
+            selectedRating = e.getNewValue().toString();
+            this.load();
+        }
+    }
             
     //completely refresh the page to initial state
     public void reset() throws IOException {
@@ -235,6 +161,8 @@ public class Beans implements Serializable{
     public void setSelectedActor(String si){this.selectedActor = si;}
     public String getSelectedYear(){return this.selectedYear;}
     public void setSelectedYear(String si){this.selectedYear = si;}
+    public String getSelectedRating(){return this.selectedRating;}
+    public void setSelectedRating(String si){this.selectedRating = si;}
     public boolean getIsSubmitted(){return this.isSubmitted;}
     public void setIsSubmitted(Boolean isSubmitted){this.isSubmitted = isSubmitted;}
     public boolean getIsAllSelected(){return this.isAllSelected;}

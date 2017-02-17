@@ -72,6 +72,39 @@ public class MovieData {
         }
     } 
     
+    /* call stored procedure using given film_id and store results as objects */
+    public Films getFilmData(Connection conn) throws ClassNotFoundException, SQLException{
+        
+        Films films = new Films();
+     
+        try(CallableStatement cs = conn.prepareCall(String.format("{CALL %s}", AppVariables.Database.storedProcedureName))){
+            boolean hasResults = cs.execute(); //execute stored procedure
+            
+            //retrieve the returned data (resultset) 
+            try(ResultSet rs = cs.getResultSet()){
+                while(rs.next()){
+                    String[] line = {rs.getString(AppVariables.Database.filmID)
+                                    ,rs.getString(AppVariables.Database.filmName)
+                                    ,rs.getString(AppVariables.Database.imdbRating)
+                                    ,rs.getString(AppVariables.Database.directorID)
+                                    ,rs.getString(AppVariables.Database.directorName)
+                                    ,rs.getString(AppVariables.Database.actorID)
+                                    ,rs.getString(AppVariables.Database.actorName)
+                                    ,rs.getString(AppVariables.Database.filmYear)};
+                                  
+                    films = storeLine(line, films);
+                }
+            }
+            
+            return films;    
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }finally{
+            conn.close(); //close connection to db once try block is complete
+        }
+    } 
+    
     private Films storeLine(String[] line, Films films){
         Films tmpFilms = films;
         
