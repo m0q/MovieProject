@@ -19,11 +19,11 @@ public class MovieBusinessLayer {
         if(SimpleCaching.get(AppVariables.Cache.filmCacheName) != null){
             return SimpleCaching.get(AppVariables.Cache.filmCacheName);
         }else{
-            /*Films films = new MovieData().getFilmData(AppVariables.CSV.EXTENDED_FILE_PATH);
+            Films films = new MovieData().getFilmData(AppVariables.CSV.EXTENDED_FILE_PATH);
             SimpleCaching.put(AppVariables.Cache.filmCacheName, films);
-            return SimpleCaching.get(AppVariables.Cache.filmCacheName);*/
+            return SimpleCaching.get(AppVariables.Cache.filmCacheName);
             
-            try{
+            /*try{
                 //register and load the db driver - must happen before db connection is made
                 Class.forName(AppVariables.Database.mysqlDriver); 
                 
@@ -34,7 +34,7 @@ public class MovieBusinessLayer {
             }catch(Exception e){
                 e.printStackTrace();
                 return null;
-            }  
+            } */ 
         }
     }
     

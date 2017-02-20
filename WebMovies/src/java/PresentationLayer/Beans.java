@@ -5,7 +5,10 @@ import BusinessLayer.MovieBusinessLayer;
 import ClassLayer.*;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -173,42 +176,21 @@ public class Beans extends BaseBean implements Serializable{
     //-------------------------------------------------
     //   Populating strings with selected film data
     //-------------------------------------------------
-    private String filmID, filmName, filmYear, imdbRating;
-    private String actorID, actorName;
-    private String directorID, directorName;
+    private Film film;
+    private Director director;
+    private Actor actor;
     
     public void populateFields(String filmID, String directorID, String actorID){
-        try{
-            MovieBusinessLayer mbl = new MovieBusinessLayer();
-            Film film = mbl.getFilmFromSimplisticFilm(filmID);
-            
-            this.filmID = film.getFilmID();
-            this.filmName = film.getFilmName();
-            this.filmYear = film.getFilmYear();
-            this.imdbRating = film.getFilmRating();
-            
-            Director director = mbl.getDirectorFromSimplisticFilm(film, directorID);
-            this.directorID = director.getID();
-            this.directorName = director.getName();
-            
-            Actor actor = mbl.getActorFromSimplisticFilm(film, actorID);
-            this.actorID = actor.getID();
-            this.actorName = actor.getName();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+        this.film = mbl.getFilmFromSimplisticFilm(filmID);
+        this.director = mbl.getDirectorFromSimplisticFilm(film, directorID);
+        this.actor = mbl.getActorFromSimplisticFilm(film, actorID);
     }
     
     //JSF read access to fields
-    public String getFilmImdbLink() {return String.format(AppVariables.WebProperties.imdbFilmURL, filmID);}
-    public String getDirectorImdbLink() {return String.format(AppVariables.WebProperties.imdbProfileURL, directorID);}
-    public String getActorImdbLink() {return String.format(AppVariables.WebProperties.imdbProfileURL, actorID);}
-    public String getFilmID() {return filmID;}
-    public String getFilmName() {return filmName;}
-    public String getFilmYear() {return filmYear;}
-    public String getImdbRating() {return imdbRating;}
-    public String getActorID() {return actorID;}
-    public String getActorName() {return actorName;}
-    public String getDirectorID() {return directorID;}
-    public String getDirectorName() {return directorName;}
+    public Film getFilm(){return film;}
+    public Director getDirector(){return director;}
+    public Actor getActor(){return actor;}
+    public String getFilmImdbLink() {return String.format(AppVariables.WebProperties.imdbFilmURL, film.filmID);}
+    public String getDirectorImdbLink() {return String.format(AppVariables.WebProperties.imdbProfileURL, director.personID);}
+    public String getActorImdbLink() {return String.format(AppVariables.WebProperties.imdbProfileURL, actor.personID);}
 }
