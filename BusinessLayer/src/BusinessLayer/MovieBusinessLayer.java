@@ -16,26 +16,23 @@ public class MovieBusinessLayer {
     
     //retrieve film list from data source or cache 
     public Films getFilms(){
-        if(SimpleCaching.get(AppVariables.Cache.filmCacheName) != null){
-            return SimpleCaching.get(AppVariables.Cache.filmCacheName);
-        }else{
+        if(SimpleCaching.get(AppVariables.Cache.filmCacheName) == null){
             Films films = new MovieData().getFilmData(AppVariables.CSV.EXTENDED_FILE_PATH);
             SimpleCaching.put(AppVariables.Cache.filmCacheName, films);
-            return SimpleCaching.get(AppVariables.Cache.filmCacheName);
             
             /*try{
                 //register and load the db driver - must happen before db connection is made
                 Class.forName(AppVariables.Database.mysqlDriver); 
-                
+
                 Connection conn = DriverManager.getConnection(AppVariables.Database.connectionString, AppVariables.Database.username, AppVariables.Database.password);
                 Films films = new MovieData().getFilmData(conn);
                 SimpleCaching.put(AppVariables.Cache.filmCacheName, films);
-                return SimpleCaching.get(AppVariables.Cache.filmCacheName);
             }catch(Exception e){
                 e.printStackTrace();
                 return null;
-            } */ 
-        }
+            } */
+        }   
+        return SimpleCaching.get(AppVariables.Cache.filmCacheName);
     }
     
     //Films

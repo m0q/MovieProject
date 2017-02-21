@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <title>Movie DB</title>
+    </h:head>
+    <h:body>
+        <h:outputStylesheet name="style.css"  />
+        <h1>New Film</h1>
+        <h:form id="form">
+            <br />
+            <h:panelGrid>
+                Film ID:<h:inputText id="filmID" value="#{filmform.filmID}" maxlength="7" a:placeholder="8372817" required="true" validatorMessage="A 7 digit ID must be entered.">
+                     <f:validateLength minimum="7" ></f:validateLength>
+                </h:inputText>
+                <h:message for="filmID" errorClass="errorMessage" /> <!-- Message for username -->
+                
+                Film Name:<h:inputText value="#{filmform.filmName}" a:placeholder="name" required="true"/>
+                
+                Film Year:<h:inputText value="#{filmform.filmYear}" maxlength="4" a:placeholder="year" required="true" validatorMessage="A 4 digit year must be entered.">
+                    <f:validateLength minimum="4" maximum="7" ></f:validateLength>
+                </h:inputText>
+                
+                Film Rating:<h:inputText value="#{filmform.filmRating}" maxlength="4" a:placeholder="rating" required="true" validatorMessage="A rating between 0.0 and 10.0 must be entered.">
+                    <f:validateLength minimum="3" maximum="4" ></f:validateLength>
+                </h:inputText>
+                
+                <h:commandButton value="Submit" class="button" action="#{filmform.submitForm}" />
+                <h:button value="Home" class="button" outcome="index.xhtml" /><br />
+            </h:panelGrid>
+        </h:form>
+        
+        <h:outputText value="#{filmform.filmID}" /><br/>
+        <h:outputText value="#{filmform.filmName}" /><br/>
+        <h:outputText value="#{filmform.filmRating}" /><br/>
+        <h:outputText value="#{filmform.filmYear}" /><br/>
+    </h:body>
+</html>
+
