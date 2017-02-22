@@ -10,20 +10,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 
 /**
  *
  * @author mqul
  */
-@ManagedBean(name="bean")
 @ViewScoped
+@Named("bean")
+/*@ManagedBean(name="bean")
+@ViewScoped*/
 public class Beans extends BaseBean implements Serializable{
     
     private MovieBusinessLayer mbl = new MovieBusinessLayer();

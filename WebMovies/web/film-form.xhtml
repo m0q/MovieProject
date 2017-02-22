@@ -14,18 +14,17 @@
         <h:form id="form">
             <br />
             <h:panelGrid>
-                Film ID:<h:inputText id="filmID" value="#{filmform.filmID}" maxlength="7" a:placeholder="8372817" required="true" validatorMessage="A 7 digit ID must be entered.">
-                     <f:validateLength minimum="7" ></f:validateLength>
-                </h:inputText>
-                <h:message for="filmID" errorClass="errorMessage" /> <!-- Message for username -->
+                Film ID:<h:inputText id="filmID" value="#{filmform.filmID}" maxlength="7" a:placeholder="8372817" required="true"/>
+                <!--<h:message for="filmID" styleClass="error"/>-->
+                <!--<h:message for="filmID"/> errorClass="errorMessage"  Message for username -->
                 
-                Film Name:<h:inputText value="#{filmform.filmName}" a:placeholder="name" required="true"/>
+                Film Name:<h:inputText id="filmName" value="#{filmform.filmName}" a:placeholder="name" required="true"/>
                 
-                Film Year:<h:inputText value="#{filmform.filmYear}" maxlength="4" a:placeholder="year" required="true" validatorMessage="A 4 digit year must be entered.">
+                Film Year:<h:inputText id="filmYear" value="#{filmform.filmYear}" maxlength="4" a:placeholder="year" required="true" validatorMessage="A 4 digit year must be entered.">
                     <f:validateLength minimum="4" maximum="7" ></f:validateLength>
                 </h:inputText>
                 
-                Film Rating:<h:inputText value="#{filmform.filmRating}" maxlength="4" a:placeholder="rating" required="true" validatorMessage="A rating between 0.0 and 10.0 must be entered.">
+                Film Rating:<h:inputText id="filmRating" value="#{filmform.filmRating}" maxlength="4" a:placeholder="rating" required="true" validatorMessage="A rating between 0.0 and 10.0 must be entered.">
                     <f:validateLength minimum="3" maximum="4" ></f:validateLength>
                 </h:inputText>
                 
@@ -34,10 +33,10 @@
             </h:panelGrid>
         </h:form>
         
-        <h:outputText value="#{filmform.filmID}" /><br/>
+       <!-- <h:outputText value="#{filmform.filmID}" /><br/>
         <h:outputText value="#{filmform.filmName}" /><br/>
         <h:outputText value="#{filmform.filmRating}" /><br/>
-        <h:outputText value="#{filmform.filmYear}" /><br/>
+        <h:outputText value="#{filmform.filmYear}" /><br/>-->
     </h:body>
 </html>
 
