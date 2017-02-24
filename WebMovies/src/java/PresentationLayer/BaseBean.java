@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package PresentationLayer;
 
 import ApplicationVariables.AppVariables;
@@ -16,12 +11,15 @@ import javax.faces.model.SelectItem;
 /**
  *
  * @author mqul
+ * to be used in all beans that requires some generic function which lives in this class
  */
 public abstract class BaseBean {
     
+    //generic method used when populating dropdowns
     protected <T>List populateDropDownList(List<T> dataSource){
         List<SelectItem> siList = new ArrayList();
          
+        //specify default dropdown item
         if(dataSource.size() > 1){
             //No selection option = <--SELECT--> 
             SelectItem noSelect = new SelectItem(null, AppVariables.WebProperties.dropDownDefault);
@@ -29,6 +27,7 @@ public abstract class BaseBean {
             siList.add(noSelect);
         }
         
+        //generate SelectItem objects for dropdown based on data type
         if(dataSource != null && dataSource.get(0) instanceof SimplisticFilm){
             List<SimplisticFilm> tmpList = (List<SimplisticFilm>)dataSource;
             siList.addAll(tmpList.stream()

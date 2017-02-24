@@ -48,10 +48,15 @@ public class AppVariables {
     }
     
     public static class WebProperties{
+        /** External IMDB links **/
         public static String imdbFilmURL = "http://www.imdb.com/title/tt%s";
         public static String imdbProfileURL = "http://www.imdb.com/name/nm%s";
         
         /**   DropDown Default   **/
         public static final String dropDownDefault = "--SELECT--";
+        
+        /** Film form year range **/
+        public static String yearMin = "2000";
+        public static String yearMax = "2017";
     }   
 }

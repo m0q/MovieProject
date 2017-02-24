@@ -5,6 +5,8 @@
  */
 package Tests;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -28,5 +30,18 @@ public class NewTest {
         NewTest nt = new NewTest();
         
         boolean b = nt.idCheck("0394828");
+        
+        ArrayList<Integer> al = new ArrayList<>();
+        
+        while(al.size() < 10){
+            if(al.size() < 2){
+                al.add(1);
+                al.add(1);
+            }
+            int tmp = al.get(al.size()-1) + al.get(al.size()-2);
+            al.add(tmp);
+        }
+        
+        al.forEach(s -> System.out.print(s+", "));
     }
 }

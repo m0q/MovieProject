@@ -5,10 +5,7 @@ import BusinessLayer.MovieBusinessLayer;
 import ClassLayer.*;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 import javax.annotation.PostConstruct;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -23,8 +20,6 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ViewScoped
 @Named("bean")
-/*@ManagedBean(name="bean")
-@ViewScoped*/
 public class Beans extends BaseBean implements Serializable{
     
     private MovieBusinessLayer mbl = new MovieBusinessLayer();
@@ -38,22 +33,19 @@ public class Beans extends BaseBean implements Serializable{
     @PostConstruct
     protected void load(){
         if (this.isPostback()){
-            try{
-                String filmID = (selectedFilm == null ? null : selectedFilm);
-                String directorID = (selectedDirector == null ? null : selectedDirector);
-                String actorID = (selectedActor == null ? null : selectedActor);
-                String filmYear = (selectedYear == null ? null : selectedYear);
-                String filmRating = (selectedRating == null ? null : selectedRating);
+            String filmID = (selectedFilm == null ? null : selectedFilm);
+            String directorID = (selectedDirector == null ? null : selectedDirector);
+            String actorID = (selectedActor == null ? null : selectedActor);
+            String filmYear = (selectedYear == null ? null : selectedYear);
+            String filmRating = (selectedRating == null ? null : selectedRating);
 
-                populateDropDownsWithFilteredData(filmID, directorID, actorID, filmYear, filmRating);//, imdbID);
-            }catch(Exception e){
-                e.printStackTrace();
-            }
+            populateDropDownsWithFilteredData(filmID, directorID, actorID, filmYear, filmRating);
         }else{
             populateDropDownsWithOriginalData();
         }
     }
     
+    //populate dropdown lists with ALL data retrieved
     private void populateDropDownsWithOriginalData(){
         try{
             Films films = mbl.getFilms();
@@ -68,40 +60,30 @@ public class Beans extends BaseBean implements Serializable{
         }
     }
     
+    //populate dropdown based on filters currently in place
     private void populateDropDownsWithFilteredData(String filmID, String directorID, String actorID, String filmYear, String filmRating){
-        try{
-            Films films = mbl.getFilms();
+        Films films = mbl.getFilms(); 
             
-            Films tmp = mbl.getFilmsSubset(filmID, directorID, actorID, filmYear, filmRating, films);
+        Films tmp = mbl.getFilmsSubset(filmID, directorID, actorID, filmYear, filmRating, films);
 
-            actors = (actorID == null) ? mbl.getDistinctActorsFromFilms(tmp) : mbl.getDistinctActor(tmp, actorID);
-            directors = (directorID == null) ? mbl.getDistinctDirectorsFromFilms(tmp) : mbl.getDistinctDirector(tmp, directorID);
-            sFilms = (filmID == null) ? mbl.getDistinctSimplisticFilmsFromFilms(tmp) : tmp.getDistinctSimplisticFilm(filmID);
-            filmYears = (filmYear == null) ? mbl.getDistinctYearsFromFilms(tmp) : mbl.getDistinctYear(tmp, filmYear);
-            filmRatings = (filmRating == null) ? mbl.getDistinctRatingsFromFilms(tmp) : tmp.getDistinctFilmRating(filmID); 
-            
-            if(sFilms.size() == 1 && directors.size() == 1 && actors.size() == 1 && filmYears.size() == 1){
-                isAllSelected = true;
-                this.populateFields(sFilms.get(0).filmID, directors.get(0).personID, actors.get(0).personID);
-            }
-            
-        }catch(Exception e){
-            e.printStackTrace();
+        actors = (actorID == null) ? mbl.getDistinctActorsFromFilms(tmp) : mbl.getDistinctActor(tmp, actorID);
+        directors = (directorID == null) ? mbl.getDistinctDirectorsFromFilms(tmp) : mbl.getDistinctDirector(tmp, directorID);
+        sFilms = (filmID == null) ? mbl.getDistinctSimplisticFilmsFromFilms(tmp) : tmp.getDistinctSimplisticFilm(filmID);
+        filmYears = (filmYear == null) ? mbl.getDistinctYearsFromFilms(tmp) : mbl.getDistinctYear(tmp, filmYear);
+        filmRatings = (filmRating == null) ? mbl.getDistinctRatingsFromFilms(tmp) : tmp.getDistinctFilmRating(filmID); 
+        
+        //display table of data once all values are selected
+        if(sFilms.size() == 1 && directors.size() == 1 && actors.size() == 1 && filmYears.size() == 1){
+            isAllSelected = true;
+            this.populateFields(sFilms.get(0).filmID, directors.get(0).personID, actors.get(0).personID);
         }
     }
     
-    public List getFilms(){ return populateDropDownList(this.sFilms);}//populateFilms(this.sFilms); }
-    
-    //populate and return a list of directors based on what the films list currently holds
+    //populate and return a list of data based on what the films list currently holds
+    public List getFilms(){ return populateDropDownList(this.sFilms);}
     public List getDirectors(){ return populateDropDownList(this.directors); }
-    
-    //populate and return a list of actors based on what the films list currently holds
     public List getActors(){ return populateDropDownList(this.actors); }
-    
-    //populate and return a list of years based on what the films list currently holds
     public List getFilmYears(){ return populateDropDownList(this.filmYears); }
-    
-    //populate and return a list of years based on what the films list currently holds
     public List getFilmRatings(){ return populateDropDownList(this.filmRatings); }
     
     
@@ -141,16 +123,17 @@ public class Beans extends BaseBean implements Serializable{
         }
     }
             
-    //completely refresh the page to initial state
+    //refresh the page to initial state
     public void reset() throws IOException {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
     }
     
+    /* works with submit button
     public void submitForm(){
         setIsSubmitted(true);
         this.load();
-    }
+    }*/
     
     //check if status of page is postback
     public static boolean isPostback() {

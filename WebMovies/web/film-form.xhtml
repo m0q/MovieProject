@@ -2,8 +2,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
     <h:head>
         <title>Movie DB</title>
@@ -11,32 +9,57 @@
     <h:body>
         <h:outputStylesheet name="style.css"  />
         <h1>New Film</h1>
-        <h:form id="form">
-            <br />
-            <h:panelGrid>
-                Film ID:<h:inputText id="filmID" value="#{filmform.filmID}" maxlength="7" a:placeholder="8372817" required="true"/>
-                <!--<h:message for="filmID" styleClass="error"/>-->
-                <!--<h:message for="filmID"/> errorClass="errorMessage"  Message for username -->
-                
-                Film Name:<h:inputText id="filmName" value="#{filmform.filmName}" a:placeholder="name" required="true"/>
-                
-                Film Year:<h:inputText id="filmYear" value="#{filmform.filmYear}" maxlength="4" a:placeholder="year" required="true" validatorMessage="A 4 digit year must be entered.">
-                    <f:validateLength minimum="4" maximum="7" ></f:validateLength>
-                </h:inputText>
-                
-                Film Rating:<h:inputText id="filmRating" value="#{filmform.filmRating}" maxlength="4" a:placeholder="rating" required="true" validatorMessage="A rating between 0.0 and 10.0 must be entered.">
-                    <f:validateLength minimum="3" maximum="4" ></f:validateLength>
-                </h:inputText>
-                
-                <h:commandButton value="Submit" class="button" action="#{filmform.submitForm}" />
-                <h:button value="Home" class="button" outcome="index.xhtml" /><br />
-            </h:panelGrid>
-        </h:form>
         
-       <!-- <h:outputText value="#{filmform.filmID}" /><br/>
-        <h:outputText value="#{filmform.filmName}" /><br/>
-        <h:outputText value="#{filmform.filmRating}" /><br/>
-        <h:outputText value="#{filmform.filmYear}" /><br/>-->
+        <h:form id="inputForm">
+            <h:panelGrid columns="3" styleClass="panelGrid"> 
+                
+                <h:outputText value="Film ID"/>
+                <h:inputText id="filmID" 
+                             value="#{filmform.filmID}" 
+                             a:placeholder="1870108" 
+                             required="true" 
+                             maxlength="7" 
+                             requiredMessage="Film ID is required"
+                             validator="#{filmform.validateID}"
+                             style="#{ component.valid ? 'border-color:black;' : 'border-color:red;'}" >
+                </h:inputText>
+                <h:message id="IDMessage" for="filmID" styleClass="error"/>
+                
+                <h:outputText value="Film Name"/>
+                <h:inputText id="filmName" 
+                             value="#{filmform.filmName}" 
+                             a:placeholder="name" 
+                             required="true" 
+                             requiredMessage="Film Name is required"
+                             style="#{component.valid ? 'border-color:black;' : 'border-color:red;'}"/>
+                <h:message id="nameMessage" for="filmName" styleClass="error"/>
+                
+                <h:outputText value="Film Year"/>
+                <h:inputText id="filmYear" 
+                             value="#{filmform.filmYear}" 
+                             a:placeholder="2001" 
+                             required="true" 
+                             maxlength="4" 
+                             requiredMessage="Film Year is required" 
+                             validator="#{filmform.validateYear}"
+                             style="#{component.valid ? 'border-color:black;' : 'border-color:red;'}"/>
+                <h:message id="yearMessage" for="filmYear" styleClass="error"/>
+                
+                <h:outputText value="Film Rating"/>
+                <h:inputText id="filmRating" 
+                             value="#{filmform.filmRating}" 
+                             a:placeholder="6.7"
+                             required="true" 
+                             maxlength="4" 
+                             requiredMessage="Film Rating is required"
+                             validator="#{filmform.validateRating}"
+                             style="#{component.valid ? 'border-color:black;' : 'border-color:red;'}"/>
+                <h:message id="ratingMessage" for="filmRating" styleClass="error"/>
+                
+            </h:panelGrid>
+            <h:commandButton value="Submit" class="button" action="#{filmform.submitForm}" />
+            <h:button value="Home" class="button" outcome="index.xhtml" /><br />
+        </h:form>
     </h:body>
 </html>
 
