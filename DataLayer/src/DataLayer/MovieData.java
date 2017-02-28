@@ -124,4 +124,44 @@ public class MovieData {
         
         return film;
     }
+    
+    //read data from database into objects
+    public boolean putFilmData(Connection conn, Film film, Actor actor, Director director) throws ClassNotFoundException, SQLException{
+        
+        boolean isSuccess = false;
+        
+        try(CallableStatement cs = conn.prepareCall("{CALL insertDataset(?,?,?,?,?,?,?,?,?,?)}")){
+            cs.setString(1, film.filmName);
+            cs.setString(2, film.filmYear);
+            cs.setString(3, film.filmID);
+            cs.setString(4, film.imdbRating);
+            cs.setString(5, actor.personName);
+            cs.setString(6, actor.personName);
+            cs.setString(7, actor.personID);
+            cs.setString(8, director.personName);
+            cs.setString(9, director.personName);
+            cs.setString(10,director.personID);
+            
+            boolean hasResults = cs.execute(); //execute stored procedure
+            
+            //retrieve data from the resultset
+            try(ResultSet rs = cs.getResultSet()){
+                while(rs.next()){
+                    String result = rs.getString(1);          
+                    switch(result){
+                        case "commit": isSuccess = true; break;
+                        case "rollback": isSuccess = false; break;
+                        default: isSuccess = false;
+                    }  
+                }
+            }  
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }finally{
+            conn.close(); //close connection to db once try block is complete
+        }
+        
+        return isSuccess;
+    } 
 }

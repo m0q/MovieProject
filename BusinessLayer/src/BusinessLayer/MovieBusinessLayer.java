@@ -17,10 +17,10 @@ public class MovieBusinessLayer {
     //retrieve film list from data source or cache 
     public Films getFilms(){
         if(SimpleCaching.get(AppVariables.Cache.filmCacheName) == null){
-            Films films = new MovieData().getFilmData(AppVariables.CSV.EXTENDED_FILE_PATH);
-            SimpleCaching.put(AppVariables.Cache.filmCacheName, films);
+            /*Films films = new MovieData().getFilmData(AppVariables.CSV.EXTENDED_FILE_PATH);
+            SimpleCaching.put(AppVariables.Cache.filmCacheName, films);*/
             
-            /*try{
+            try{
                 //register and load the db driver - must happen before db connection is made
                 Class.forName(AppVariables.Database.mysqlDriver); 
 
@@ -30,7 +30,7 @@ public class MovieBusinessLayer {
             }catch(Exception e){
                 e.printStackTrace();
                 return null;
-            } */
+            } 
         }   
         return SimpleCaching.get(AppVariables.Cache.filmCacheName);
     }
@@ -96,6 +96,30 @@ public class MovieBusinessLayer {
                         .stream()
                         .filter(a -> a.getID().equals(actorID))
                         .findFirst().get();
+    }
+    
+    //film form to film object
+    public boolean insertFilm(String filmID, String filmName, String filmRating, String filmYear,
+                              String actorID, String actorName, String directorID, String directorName){
+        Film film = new Film(filmID, filmName, filmRating, filmYear);
+        Actor actor = new Actor(actorID, actorName);
+        Director director = new Director(directorID, directorName);
+        
+        try{
+            Class.forName(AppVariables.Database.mysqlDriver); 
+            Connection conn = DriverManager.getConnection(AppVariables.Database.connectionString, AppVariables.Database.username, AppVariables.Database.password);
+                
+            boolean isSuccess = new MovieData().putFilmData(conn, film, actor, director);
+            
+            if(isSuccess){
+                SimpleCaching.remove(AppVariables.Cache.filmCacheName);
+            }
+            
+            return isSuccess;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return false;
     }
 }
 

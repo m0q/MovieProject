@@ -1,6 +1,7 @@
 package PresentationLayer;
 
 import ApplicationVariables.AppVariables;
+import BusinessLayer.MovieBusinessLayer;
 import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
@@ -16,11 +17,19 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 @Named("filmform")
 public class FilmFormBean implements Serializable{
-    private String filmID, filmName, filmYear, filmRating;
+    private String filmID, filmName, filmYear, filmRating, directorID, directorName, actorID, actorName;
     
     public void submitForm(){
         //filmID, filmName, filmYear, filmRating
         //call to business layer - will store data from page to DB
+        boolean isSuccess = new MovieBusinessLayer().insertFilm(filmID, filmName, filmRating, filmYear,
+                                                                actorID, actorName, directorID, directorName);
+        
+        if(isSuccess){
+            FacesContext.getCurrentInstance().addMessage("resultMessage", new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", null));
+        }else{
+            FacesContext.getCurrentInstance().addMessage("resultMessage", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed", null));
+        }
     }
     
     //ensure the entered id meets condition: numeric with length 4 
@@ -92,9 +101,17 @@ public class FilmFormBean implements Serializable{
     public String getFilmName(){return filmName;}
     public String getFilmYear(){return filmYear;}
     public String getFilmRating(){return filmRating;}
+    public String getDirectorID(){return directorID;}
+    public String getDirectorName(){return directorName;}
+    public String getActorID(){return actorID;}
+    public String getActorName(){return actorName;}
     
     public void setFilmID(String filmID){this.filmID = filmID;}
     public void setFilmName(String filmName){this.filmName = filmName;}
     public void setFilmYear(String filmYear){this.filmYear = filmYear;}
     public void setFilmRating(String filmRating){this.filmRating = filmRating;}
+    public void setActorID(String actorID){this.actorID = actorID;}
+    public void setActorName(String actorName){this.actorName = actorName;}
+    public void setDirectorID(String directorID){this.directorID = directorID;}
+    public void setDirectorName(String directorName){this.directorName = directorName;}
 }

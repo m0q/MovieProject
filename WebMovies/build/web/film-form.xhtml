@@ -12,6 +12,7 @@
         <h1>New Film</h1>
         
         <h:form id="inputForm">
+            <h:button value="Home" class="button" outcome="index.xhtml" />
             <h:panelGrid columns="3" styleClass="panelGrid"> 
                 
                 <h:outputText value="Film ID"/>
@@ -55,11 +56,57 @@
                              validator="#{filmform.validateRating}"
                              style="#{component.valid ? 'border-color:black;' : 'border-color:red;'}"/>
                 <h:message id="ratingMessage" for="filmRating" styleClass="error"/>
-                
             </h:panelGrid>
+            
+            <div id="personDiv">
+                <h:panelGrid columns="1" styleClass="directorPanelGrid">
+                    <h:outputText value="Director"/>
+                    <h:inputText id="directorID" 
+                                 value="#{filmform.directorID}" 
+                                 a:placeholder="director id" 
+                                 required="true" 
+                                 maxlength="7" 
+                                 requiredMessage="Director ID is required"
+                                 validator="#{filmform.validateID}"
+                                 style="#{ component.valid ? 'border-color:black;' : 'border-color:red;'}" />
+                    <h:message id="IDMessage1" for="directorID" styleClass="error"/>
+
+                    <h:inputText id="directorName" 
+                                 value="#{filmform.directorName}" 
+                                 a:placeholder="director name" 
+                                 required="true" 
+                                 requiredMessage="Director Name is required"
+                                 style="#{component.valid ? 'border-color:black;' : 'border-color:red;'}"/>
+                    <h:message id="nameMessage1" for="directorName" styleClass="error"/>
+                </h:panelGrid>
+
+                <h:panelGrid columns="1" styleClass="actorPanelGrid">
+                     <h:outputText value="Actor"/>
+                    <h:inputText id="actorID" 
+                                 value="#{filmform.actorID}" 
+                                 a:placeholder="actor id" 
+                                 required="true" 
+                                 maxlength="7" 
+                                 requiredMessage="Actor ID is required"
+                                 validator="#{filmform.validateID}"
+                                 style="#{ component.valid ? 'border-color:black;' : 'border-color:red;'}" />
+                    <h:message id="IDMessage2" for="actorID" styleClass="error"/>
+
+                    <h:inputText id="actorName" 
+                                 value="#{filmform.actorName}" 
+                                 a:placeholder="actor name" 
+                                 required="true" 
+                                 requiredMessage="Actor Name is required"
+                                 style="#{component.valid ? 'border-color:black;' : 'border-color:red;'}"/>
+                    <h:message id="nameMessage2" for="actorName" styleClass="error"/>
+                </h:panelGrid>
+            </div>
+            
             <h:commandButton value="Submit" class="button" action="#{filmform.submitForm}" />
-            <h:button value="Home" class="button" outcome="index.xhtml" /><br />
+            <br />
         </h:form>
+        
+        <h:message id="resultMessage" for="inputForm" infoStyle="color:darkgreen" errorStyle="color:darkred"  />
     </h:body>
 </html>
 
