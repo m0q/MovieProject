@@ -126,7 +126,7 @@ public class MovieData {
     }
     
     //read data from database into objects
-    public boolean putFilmData(Connection conn, Film film, Actor actor, Director director) throws ClassNotFoundException, SQLException{
+    public boolean putFilmData(Connection conn, Film film, Actor actor, Director director) throws SQLException{
         
         boolean isSuccess = false;
         
@@ -155,9 +155,6 @@ public class MovieData {
                     }  
                 }
             }  
-        }catch(Exception e){
-            e.printStackTrace();
-            return false;
         }finally{
             conn.close(); //close connection to db once try block is complete
         }

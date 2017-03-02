@@ -3,6 +3,7 @@ package PresentationLayer;
 import ApplicationVariables.AppVariables;
 import BusinessLayer.MovieBusinessLayer;
 import java.io.Serializable;
+import java.sql.SQLException;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -20,15 +21,27 @@ public class FilmFormBean implements Serializable{
     private String filmID, filmName, filmYear, filmRating, directorID, directorName, actorID, actorName;
     
     public void submitForm(){
-        //filmID, filmName, filmYear, filmRating
-        //call to business layer - will store data from page to DB
-        boolean isSuccess = new MovieBusinessLayer().insertFilm(filmID, filmName, filmRating, filmYear,
-                                                                actorID, actorName, directorID, directorName);
+        String message = "";
+        boolean isSuccess = false;
+        
+        try{
+            //filmID, filmName, filmYear, filmRating
+            //call to business layer - will store data from page to DB
+            isSuccess = new MovieBusinessLayer().insertFilm(filmID, filmName, filmRating, filmYear,
+                                                            actorID, actorName, directorID, directorName);
+        }catch(SQLException | ClassNotFoundException e){
+            if(e instanceof SQLException){
+                SQLException ex = (SQLException)e;
+                message += "Failed | "; 
+                message += "Error Code: " + ex.getErrorCode() + " | ";
+                message += "Message: " + e.getMessage();
+            }
+        }
         
         if(isSuccess){
             FacesContext.getCurrentInstance().addMessage("resultMessage", new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", null));
         }else{
-            FacesContext.getCurrentInstance().addMessage("resultMessage", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed", null));
+            FacesContext.getCurrentInstance().addMessage("resultMessage", new FacesMessage(FacesMessage.SEVERITY_ERROR, message , null));
         }
     }
     

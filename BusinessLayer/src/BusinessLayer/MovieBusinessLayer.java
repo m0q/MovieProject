@@ -7,6 +7,7 @@ import java.util.List;
 import caching.SimpleCaching;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  *
@@ -100,26 +101,23 @@ public class MovieBusinessLayer {
     
     //film form to film object
     public boolean insertFilm(String filmID, String filmName, String filmRating, String filmYear,
-                              String actorID, String actorName, String directorID, String directorName){
+                              String actorID, String actorName, String directorID, String directorName) throws SQLException, ClassNotFoundException{
+        
         Film film = new Film(filmID, filmName, filmRating, filmYear);
         Actor actor = new Actor(actorID, actorName);
         Director director = new Director(directorID, directorName);
         
-        try{
-            Class.forName(AppVariables.Database.mysqlDriver); 
-            Connection conn = DriverManager.getConnection(AppVariables.Database.connectionString, AppVariables.Database.username, AppVariables.Database.password);
-                
-            boolean isSuccess = new MovieData().putFilmData(conn, film, actor, director);
-            
-            if(isSuccess){
-                SimpleCaching.remove(AppVariables.Cache.filmCacheName);
-            }
-            
-            return isSuccess;
-        }catch(Exception e){
-            e.printStackTrace();
+        Class.forName(AppVariables.Database.mysqlDriver); 
+        Connection conn = DriverManager.getConnection(AppVariables.Database.connectionString, AppVariables.Database.username, AppVariables.Database.password);
+
+        boolean isSuccess = new MovieData().putFilmData(conn, film, actor, director);
+
+        if(isSuccess){
+            SimpleCaching.remove(AppVariables.Cache.filmCacheName);
         }
-        return false;
+
+        return isSuccess;
     }
 }
+
 
