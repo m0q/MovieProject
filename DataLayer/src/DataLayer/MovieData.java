@@ -17,6 +17,8 @@ import java.sql.SQLException;
  */
 public class MovieData {
     
+    String message = "";
+    
     //read data from CSV file - path provided as param
     public Films getFilmData(String csvPath){
         Films films = new Films();
@@ -151,6 +153,8 @@ public class MovieData {
                     switch(result){
                         case "commit": isSuccess = true; break;
                         case "rollback": isSuccess = false; break;
+                        case "Error, data already exists": isSuccess = false; message = result; 
+                        case "Error occured": isSuccess = false; message = result;
                         default: isSuccess = false;
                     }  
                 }
@@ -160,5 +164,9 @@ public class MovieData {
         }
         
         return isSuccess;
-    } 
+    }
+    
+    public String getResultMessage(){
+        return message;
+    }
 }

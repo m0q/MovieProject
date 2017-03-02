@@ -14,6 +14,7 @@ import java.sql.SQLException;
  * @author mqul
  */
 public class MovieBusinessLayer {
+    String message;
     
     //retrieve film list from data source or cache 
     public Films getFilms(){
@@ -109,15 +110,18 @@ public class MovieBusinessLayer {
         
         Class.forName(AppVariables.Database.mysqlDriver); 
         Connection conn = DriverManager.getConnection(AppVariables.Database.connectionString, AppVariables.Database.username, AppVariables.Database.password);
-
-        boolean isSuccess = new MovieData().putFilmData(conn, film, actor, director);
-
+        
+        MovieData md = new MovieData();
+        boolean isSuccess = md.putFilmData(conn, film, actor, director);
+        message = md.getResultMessage();    
+        
         if(isSuccess){
             SimpleCaching.remove(AppVariables.Cache.filmCacheName);
         }
 
         return isSuccess;
     }
+    public String getMessage(){return message;}
 }
 
 

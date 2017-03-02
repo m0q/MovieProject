@@ -27,8 +27,10 @@ public class FilmFormBean implements Serializable{
         try{
             //filmID, filmName, filmYear, filmRating
             //call to business layer - will store data from page to DB
-            isSuccess = new MovieBusinessLayer().insertFilm(filmID, filmName, filmRating, filmYear,
+            MovieBusinessLayer mbl = new MovieBusinessLayer();
+            isSuccess = mbl.insertFilm(filmID, filmName, filmRating, filmYear,
                                                             actorID, actorName, directorID, directorName);
+            message = mbl.getMessage();
         }catch(SQLException | ClassNotFoundException e){
             if(e instanceof SQLException){
                 SQLException ex = (SQLException)e;
