@@ -121,6 +121,7 @@ public class MovieBusinessLayer {
 
         return isSuccess;
     }
+    
     public String getMessage(){return message;}
 }
 
