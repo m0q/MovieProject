@@ -144,19 +144,26 @@ public class MovieData {
             cs.setString(9, director.personName);
             cs.setString(10,director.personID);
             
-            boolean hasResults = cs.execute(); //execute stored procedure
+            cs.execute(); //execute stored procedure
             
             //retrieve data from the resultset
             try(ResultSet rs = cs.getResultSet()){
                 while(rs.next()){
-                    String result = rs.getString(1);          
-                    switch(result){
-                        case "commit": isSuccess = true; break;
-                        case "rollback": isSuccess = false; break;
-                        case "Error, data already exists": isSuccess = false; message = result; 
-                        case "Error occured": isSuccess = false; message = result;
-                        default: isSuccess = false;
-                    }  
+                    String result = rs.getString(1); 
+                    
+                    if(result.contains("Success")){
+                        isSuccess = true;
+                    }else{
+                        isSuccess = false;
+                        message = result;
+                   }
+//                    switch(result){
+//                        case "commit": isSuccess = true; break;
+//                        case "rollback": isSuccess = false; break;
+//                        case "Error, data already exists": isSuccess = false; message = result; 
+//                        case "Error occured": isSuccess = false; message = result;
+//                        default: isSuccess = false;
+//                    }  
                 }
             }  
         }finally{
