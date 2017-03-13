@@ -22,14 +22,18 @@ CREATE PROCEDURE insertActor(IN aFirstNames varchar(100),
 							 IN imdbID varchar(7),
 							 OUT actorID int (10))
 BEGIN
-	INSERT INTO Actors(actor_firstNames, actor_lastName, imdb_id)
-	VALUES (aFirstNames, aLastName, imdbID);
-	
-	IF ((SELECT count(*) FROM Actors WHERE imdb_id = imdbID) > 1) THEN
-		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: An Actor with that ID already exists';
-	ELSE
-		SELECT LAST_INSERT_ID() INTO actorID;
-	END IF;
+	START TRANSACTION;
+		INSERT INTO Actors(actor_firstNames, actor_lastName, imdb_id)
+		VALUES (aFirstNames, aLastName, imdbID);
+		
+		IF ((SELECT count(*) FROM Actors WHERE imdb_id = imdbID) > 1) THEN
+			ROLLBACK;
+			SELECT (SELECT actor_id FROM Actors WHERE imdb_id = imdbID) INTO actorID;
+			/*SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: An Actor with that ID already exists';*/
+		ELSE
+			SELECT LAST_INSERT_ID() INTO actorID;
+			COMMIT;
+		END IF;
 END //
 DELIMITER ;
 
@@ -41,14 +45,18 @@ CREATE PROCEDURE insertDirector(IN dFirstNames varchar(100),
 							 IN imdbID varchar(7),
 							 OUT directorID int (10))
 BEGIN
-	INSERT INTO Directors(director_firstNames, director_lastName, imdb_id)
-	VALUES (dFirstNames, dLastName, imdbID);
-	
-	IF ((SELECT count(*) FROM Directors WHERE imdb_id = imdbID) > 1) THEN
-		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: A Director with that ID already exists';
-	ELSE
-		SELECT LAST_INSERT_ID() INTO directorID;
-	END IF;
+	START TRANSACTION;
+		INSERT INTO Directors(director_firstNames, director_lastName, imdb_id)
+		VALUES (dFirstNames, dLastName, imdbID);
+		
+		IF ((SELECT count(*) FROM Directors WHERE imdb_id = imdbID) > 1) THEN
+			ROLLBACK;
+			SELECT (SELECT director_id FROM Directors WHERE imdb_id = imdbID) INTO directorID;
+			/*SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: A Director with that ID already exists';*/
+		ELSE
+			SELECT LAST_INSERT_ID() INTO directorID;
+			COMMIT;
+		END IF;
 END //
 DELIMITER ;
 

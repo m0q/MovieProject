@@ -16,6 +16,7 @@
             <h:inputFile value="#{fileimport.file}" />
             <h:commandButton value="Submit" class="button" action="#{fileimport.submit}" />
         </h:form>
+        <h:message id="resultMessage" for="inputForm" infoStyle="color:darkgreen" errorStyle="color:darkred"  />
     </h:body>
 </html>
 

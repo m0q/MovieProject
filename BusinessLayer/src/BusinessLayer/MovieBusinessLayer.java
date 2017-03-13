@@ -37,11 +37,26 @@ public class MovieBusinessLayer {
         return SimpleCaching.get(AppVariables.Cache.filmCacheName);
     }
     
-    public boolean importData(String fileName){
-        Films existingFilms = this.getFilms();
-        Films films = new MovieData().getFilmData("/Users/mqul/NetBeansProjects/NovusMovieProject/Data/" + fileName, existingFilms);
-        SimpleCaching.put(AppVariables.Cache.filmCacheName, films);
-        return false;
+    public boolean importData(String fileName) throws ClassNotFoundException, SQLException{
+        Films films = new MovieData().getFilmData("/Users/mqul/NetBeansProjects/NovusMovieProject/Data/" + fileName);
+        boolean isSuccess = false;
+        
+        Class.forName(AppVariables.Database.mysqlDriver); 
+        Connection conn = DriverManager.getConnection(AppVariables.Database.connectionString, AppVariables.Database.username, AppVariables.Database.password);
+        
+        MovieData md = new MovieData();
+        
+        for(Film film : films){
+            isSuccess = md.putFilmData(conn, film, film.actors.get(0), film.directors.get(0));
+        }
+        
+        message = md.getResultMessage();    
+        
+        if(isSuccess){
+            SimpleCaching.remove(AppVariables.Cache.filmCacheName);
+        }
+        
+        return isSuccess;
     }
     
     //Films
