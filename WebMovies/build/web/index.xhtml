@@ -11,8 +11,10 @@
         <h1>Movie DB</h1>
         
         <h:form id="form">
-                <h:button value="Film Form" class="button" outcome="film-form.xhtml" />
-                <h:button value="Import CSV" class="button" outcome="import-file.xhtml" />
+                <div class="nav">
+                    <h:button value="Film Form" class="button" outcome="film-form.xhtml" />
+                    <h:button value="Import CSV" class="button" outcome="import-file.xhtml" />
+                </div>
                 <!-- implementation used AJAX listener
 
                 Films:<h:selectOneMenu style="width:230px;" value="#{bean.selectedFilm}">
@@ -89,6 +91,7 @@
                 <h:outputLink value="#{bean.actorImdbLink}"><h:outputText value="#{bean.actor.name}" /></h:outputLink>
             </h:column>
         </h:dataTable>
+        <br/>
     </h:body>
 </html>
 

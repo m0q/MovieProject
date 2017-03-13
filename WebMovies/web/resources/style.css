@@ -16,6 +16,7 @@ h1{
     height: 70px;
     text-align: center;
     padding-top: 30px;
+    border-bottom: 2px solid #000000;
 }
 
 /**drop down layout**/
@@ -111,3 +112,43 @@ h1{
 }
 
 /**end**/
+
+.inputFile{
+    margin: 20px auto;
+    margin-left: 30%;
+    color: black;
+    padding: 2px;
+    padding: 2px;
+    border: 1px solid gray;
+    border-radius: 2px;
+    background: lightgray;
+}
+
+/**NAV**/
+.nav{
+  display: inline-block;
+  margin: 0px auto;
+  margin-left: 27px;
+  background: #AAAAAA;
+  border-bottom: 2px solid #000000;
+  border-left: 2px solid #000000;
+  border-right: 2px solid #000000;
+  border-bottom-left-radius: 1em;
+  border-bottom-right-radius: 1em;
+}
+
+.nav .button {
+margin:10px;
+display:table-row;
+background: #AAAAAA;
+color: black;
+font-size: 12px;
+}
+
+.nav .button:hover {
+margin: 0px auto;
+margin:10px;
+display:table-row;
+background: black;
+color: white;
+}
