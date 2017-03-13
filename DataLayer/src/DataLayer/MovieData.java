@@ -37,6 +37,24 @@ public class MovieData {
         return films;
     }
     
+    //read data from CSV file - path provided as param
+    public Films getFilmData(String csvPath, Films oFilms){
+        Films films = oFilms;
+        String[] line;
+        
+        try(CSVReader csv = new CSVReader(new FileReader(csvPath));){
+            String[] headers = csv.readNext(); //read first line for header strings
+           
+            while((line = csv.readNext()) != null){
+                films = storeLine(line, films);
+            }
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }
+        
+        return films;
+    }
+    
     //read data from database into objects
     public Films getFilmData(Connection conn) throws ClassNotFoundException, SQLException{
         

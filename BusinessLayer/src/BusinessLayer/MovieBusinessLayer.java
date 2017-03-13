@@ -37,6 +37,13 @@ public class MovieBusinessLayer {
         return SimpleCaching.get(AppVariables.Cache.filmCacheName);
     }
     
+    public boolean importData(String fileName){
+        Films existingFilms = this.getFilms();
+        Films films = new MovieData().getFilmData("/Users/mqul/NetBeansProjects/NovusMovieProject/Data/" + fileName, existingFilms);
+        SimpleCaching.put(AppVariables.Cache.filmCacheName, films);
+        return false;
+    }
+    
     //Films
     public List<SimplisticFilm> getDistinctSimplisticFilmsFromFilms(Films films){
         return (films == null) ? null : films.toListSimplisticFilm();

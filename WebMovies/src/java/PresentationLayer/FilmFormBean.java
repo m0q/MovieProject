@@ -2,12 +2,14 @@ package PresentationLayer;
 
 import ApplicationVariables.AppVariables;
 import BusinessLayer.MovieBusinessLayer;
+import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
+import javax.faces.context.ExternalContext;
 import javax.inject.Named;
 import javax.faces.context.FacesContext;
 
@@ -20,7 +22,7 @@ import javax.faces.context.FacesContext;
 public class FilmFormBean implements Serializable{
     private String filmID, filmName, filmYear, filmRating, directorID, directorName, actorID, actorName;
     
-    public void submitForm(){
+    public void submitForm() throws IOException{
         String message = "";
         boolean isSuccess = false;
         
@@ -42,6 +44,7 @@ public class FilmFormBean implements Serializable{
         
         if(isSuccess){
             FacesContext.getCurrentInstance().addMessage("resultMessage", new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", null));
+            //FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
         }else{
             FacesContext.getCurrentInstance().addMessage("resultMessage", new FacesMessage(FacesMessage.SEVERITY_ERROR, message , null));
         }

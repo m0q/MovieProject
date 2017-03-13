@@ -1,6 +1,7 @@
 package caching;
 
 import ClassLayer.Films;
+import java.util.stream.Collectors;
 import org.ehcache.Cache;
 import org.ehcache.CacheManager;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
@@ -29,6 +30,11 @@ public class SimpleCaching{
     
     //creates a cache manager instances and inserts new key-value set into the cache
     public static void put(String key, Films value) {
+        if(cache != null){
+            cache.put(key, value);
+            return;
+        }
+        
         cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
                 .withCache("preConfigured",
                             CacheConfigurationBuilder.newCacheConfigurationBuilder(String.class, Films.class, 
