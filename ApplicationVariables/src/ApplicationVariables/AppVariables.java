@@ -19,7 +19,7 @@ public class AppVariables {
     public static class CSV{    
         /**   CSV Path   **/
         public static String FILE_PATH = "/Users/mqul/NetBeansProjects/NovusMovieProject/Data/TestData.csv";
-        public static String EXTENDED_FILE_PATH = "/Users/mqul/NetBeansProjects/NovusMovieProject/Data/ExtendedTestData.csv";
+        public static String EXTENDED_FILE_PATH = "ExtendedTestData.csv";///Users/mqul/NetBeansProjects/NovusMovieProject/Data/ExtendedTestData.csv";
     }
     
     public static class Database{
@@ -36,10 +36,10 @@ public class AppVariables {
         /**   Stored Procedure   **/
         public static String storedProcedureName = "getAllDetails()";
         
-        public static String connectionString = "jdbc:mysql://localhost:3306/db_Movie?useSSL=false";
+        public static String connectionString = "jdbc:mysql://node146675-filmdb.j.layershift.co.uk/db_Movie";//"jdbc:mysql://localhost:3306/db_Movie?useSSL=false";
         public static String mysqlDriver = "com.mysql.jdbc.Driver";
-        public static String username = "root";
-        public static String password = "";
+        public static String username = "mqul";
+        public static String password = "pass";
     }
     
     public static class Cache{

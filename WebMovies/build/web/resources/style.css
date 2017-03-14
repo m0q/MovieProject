@@ -107,7 +107,7 @@ h1{
   font-size:12px;
   border-width: 1px;
   padding: 8px;
-  border-style: solid;
+  border-style: solid; /*comment*/
   border-color: #000000;
 }
 

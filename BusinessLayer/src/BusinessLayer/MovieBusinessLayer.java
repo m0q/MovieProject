@@ -17,22 +17,17 @@ public class MovieBusinessLayer {
     String message;
     
     //retrieve film list from data source or cache 
-    public Films getFilms(){
+    public Films getFilms() throws SQLException, ClassNotFoundException{
         if(SimpleCaching.get(AppVariables.Cache.filmCacheName) == null){
-            /*Films films = new MovieData().getFilmData(AppVariables.CSV.EXTENDED_FILE_PATH);
+           /* Films films = new MovieData().getFilmData(AppVariables.CSV.EXTENDED_FILE_PATH);
             SimpleCaching.put(AppVariables.Cache.filmCacheName, films);*/
             
-            try{
-                //register and load the db driver - must happen before db connection is made
-                Class.forName(AppVariables.Database.mysqlDriver); 
+            //register and load the db driver - must happen before db connection is made
+            Class.forName(AppVariables.Database.mysqlDriver); 
 
-                Connection conn = DriverManager.getConnection(AppVariables.Database.connectionString, AppVariables.Database.username, AppVariables.Database.password);
-                Films films = new MovieData().getFilmData(conn);
-                SimpleCaching.put(AppVariables.Cache.filmCacheName, films);
-            }catch(Exception e){
-                e.printStackTrace();
-                return null;
-            } 
+            Connection conn = DriverManager.getConnection(AppVariables.Database.connectionString, AppVariables.Database.username, AppVariables.Database.password);
+            Films films = new MovieData().getFilmData(conn);
+            SimpleCaching.put(AppVariables.Cache.filmCacheName, films);     
         }   
         return SimpleCaching.get(AppVariables.Cache.filmCacheName);
     }
@@ -101,7 +96,7 @@ public class MovieBusinessLayer {
     }
     
     //information for table once all dropdown fields are selected
-    public Film getFilmFromSimplisticFilm(String filmID){
+    public Film getFilmFromSimplisticFilm(String filmID) throws SQLException, ClassNotFoundException{
         return this.getFilms()
                         .stream()
                         .filter(f -> f.getFilmID().equals(filmID))

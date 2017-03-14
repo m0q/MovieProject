@@ -132,16 +132,24 @@ public class MovieData {
         
         boolean isSuccess = false;
         
+        String[] actorName = actor.personName.split(" ", 2);
+        String actorFirstname = actorName[0];
+        String actorLastname = actorName[1]; 
+        
+        String[] directorName = director.personName.split(" ", 2);
+        String directorFirstname = directorName[0];
+        String directorLastname = directorName[1]; 
+        
         try(CallableStatement cs = conn.prepareCall("{CALL insertDataset(?,?,?,?,?,?,?,?,?,?)}")){
             cs.setString(1, film.filmName);
             cs.setString(2, film.filmYear);
             cs.setString(3, film.filmID);
             cs.setString(4, film.imdbRating);
-            cs.setString(5, actor.personName);
-            cs.setString(6, actor.personName);
+            cs.setString(5, actorFirstname);
+            cs.setString(6, actorLastname);
             cs.setString(7, actor.personID);
-            cs.setString(8, director.personName);
-            cs.setString(9, director.personName);
+            cs.setString(8, directorFirstname);
+            cs.setString(9, directorLastname);
             cs.setString(10,director.personID);
             
             cs.execute(); //execute stored procedure

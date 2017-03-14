@@ -29,6 +29,8 @@ public class FileImportBean implements Serializable{
         boolean isSuccess = false;
         String message = "";
         
+        //http://stackoverflow.com/questions/27677397/how-to-upload-file-using-jsf-2-2-hinputfile-where-is-the-saved-file
+        
         try (InputStream input = file.getInputStream()) {
             fileName = "CSVDATA_" + new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date()) +".csv";
             Files.copy(input, new File("/Users/mqul/NetBeansProjects/NovusMovieProject/Data/", fileName).toPath());

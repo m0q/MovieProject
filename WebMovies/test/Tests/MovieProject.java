@@ -2,13 +2,20 @@ package Tests;
 
 import ClassLayer.*;
 import BusinessLayer.MovieBusinessLayer;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.SQLException;
 
 /**
  *
  * @author mqul
  */
 public class MovieProject {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException{
+        Files.write(Paths.get("text.txt"), new String("Hello").getBytes());
         MovieBusinessLayer mbl = new MovieBusinessLayer();
         
         Films films = mbl.getFilms();

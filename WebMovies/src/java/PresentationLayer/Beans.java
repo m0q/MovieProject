@@ -5,6 +5,7 @@ import BusinessLayer.MovieBusinessLayer;
 import ClassLayer.*;
 import java.io.IOException;
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.context.ExternalContext;
@@ -31,7 +32,7 @@ public class Beans extends BaseBean implements Serializable{
     private boolean isSubmitted = false, isAllSelected = false;
     
     @PostConstruct
-    protected void load(){
+    protected void load() throws SQLException, ClassNotFoundException{
         if (this.isPostback()){
             String filmID = (selectedFilm == null ? null : selectedFilm);
             String directorID = (selectedDirector == null ? null : selectedDirector);
@@ -61,7 +62,7 @@ public class Beans extends BaseBean implements Serializable{
     }
     
     //populate dropdown based on filters currently in place
-    private void populateDropDownsWithFilteredData(String filmID, String directorID, String actorID, String filmYear, String filmRating){
+    private void populateDropDownsWithFilteredData(String filmID, String directorID, String actorID, String filmYear, String filmRating) throws SQLException, ClassNotFoundException{
         Films films = mbl.getFilms(); 
             
         Films tmp = mbl.getFilmsSubset(filmID, directorID, actorID, filmYear, filmRating, films);
@@ -88,35 +89,35 @@ public class Beans extends BaseBean implements Serializable{
     
     
     //http://ruleoftech.com/2012/jsf-1-2-and-getting-selected-value-from-dropdown
-    public void filmValueChanged(ValueChangeEvent e){
+    public void filmValueChanged(ValueChangeEvent e) throws SQLException, ClassNotFoundException{
         if(isPostback()){
             selectedFilm = e.getNewValue().toString();
             this.load();
         }
     }
     
-    public void directorValueChanged(ValueChangeEvent e){
+    public void directorValueChanged(ValueChangeEvent e) throws SQLException, ClassNotFoundException{
         if(isPostback()){
             selectedDirector = e.getNewValue().toString();
             this.load();
         }
     }
     
-    public void actorValueChanged(ValueChangeEvent e){
+    public void actorValueChanged(ValueChangeEvent e) throws SQLException, ClassNotFoundException{
         if(isPostback()){
             selectedActor = e.getNewValue().toString();
             this.load();
         }
     }
     
-    public void yearValueChanged(ValueChangeEvent e){
+    public void yearValueChanged(ValueChangeEvent e) throws SQLException, ClassNotFoundException{
         if(isPostback()){
             selectedYear = e.getNewValue().toString();
             this.load();
         }
     }
     
-    public void ratingValueChanged(ValueChangeEvent e){
+    public void ratingValueChanged(ValueChangeEvent e) throws SQLException, ClassNotFoundException{
         if(isPostback()){
             selectedRating = e.getNewValue().toString();
             this.load();
@@ -164,7 +165,7 @@ public class Beans extends BaseBean implements Serializable{
     private Director director;
     private Actor actor;
     
-    public void populateFields(String filmID, String directorID, String actorID){
+    public void populateFields(String filmID, String directorID, String actorID) throws SQLException, ClassNotFoundException{
         this.film = mbl.getFilmFromSimplisticFilm(filmID);
         this.director = mbl.getDirectorFromSimplisticFilm(film, directorID);
         this.actor = mbl.getActorFromSimplisticFilm(film, actorID);
