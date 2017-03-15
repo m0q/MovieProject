@@ -32,15 +32,19 @@ public class Beans extends BaseBean implements Serializable{
     private boolean isSubmitted = false, isAllSelected = false;
     
     @PostConstruct
-    protected void load() throws SQLException, ClassNotFoundException{
+    protected void load() {
         if (this.isPostback()){
             String filmID = (selectedFilm == null ? null : selectedFilm);
             String directorID = (selectedDirector == null ? null : selectedDirector);
             String actorID = (selectedActor == null ? null : selectedActor);
             String filmYear = (selectedYear == null ? null : selectedYear);
             String filmRating = (selectedRating == null ? null : selectedRating);
-
-            populateDropDownsWithFilteredData(filmID, directorID, actorID, filmYear, filmRating);
+            
+            try{
+                populateDropDownsWithFilteredData(filmID, directorID, actorID, filmYear, filmRating);
+            }catch(SQLException | ClassNotFoundException se){
+                se.printStackTrace();
+            }
         }else{
             populateDropDownsWithOriginalData();
         }

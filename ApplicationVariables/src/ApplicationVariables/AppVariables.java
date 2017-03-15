@@ -36,10 +36,10 @@ public class AppVariables {
         /**   Stored Procedure   **/
         public static String storedProcedureName = "getAllDetails()";
         
-        public static String connectionString = "jdbc:mysql://node146675-filmdb.j.layershift.co.uk/db_Movie";//"jdbc:mysql://localhost:3306/db_Movie?useSSL=false";
+        public static String connectionString = "jdbc:mysql://localhost:3306/db_Movie?useSSL=false";
         public static String mysqlDriver = "com.mysql.jdbc.Driver";
-        public static String username = "mqul";
-        public static String password = "pass";
+        public static String username = "root";
+        public static String password = "";
     }
     
     public static class Cache{
