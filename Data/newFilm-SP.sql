@@ -1,4 +1,4 @@
-DROP PROCEDURE IF EXISTS insertFilm;
+/*DROP PROCEDURE IF EXISTS insertFilm;
 DELIMITER //
 CREATE PROCEDURE insertFilm(IN fName varchar(100),IN fYear smallint(4),
 							IN imdbID varchar(7), IN imdbRating float(3,1),
@@ -10,6 +10,26 @@ BEGIN
 	IF ((SELECT count(*) FROM Films WHERE imdb_id = imdbID) > 1) THEN
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: A Film with that ID already exists';
 	ELSE
+		SELECT LAST_INSERT_ID() INTO filmID;
+	END IF;
+END //
+DELIMITER ;*/
+DROP PROCEDURE IF EXISTS insertOrUpdateFilm;
+DELIMITER //
+CREATE PROCEDURE insertOrUpdateFilm(IN fName varchar(100),IN fYear smallint(4),
+									IN imdbID varchar(7), IN imdbRating float(3,1),
+									OUT filmID int (10))
+BEGIN
+	IF ((SELECT count(*) FROM Films WHERE imdb_id = imdbID) > 0) THEN
+		UPDATE Films 
+		SET film_name = fName, film_year = fYear, imdb_rating = imdbRating
+		WHERE imdb_id = imdbID;
+
+		SELECT (SELECT film_id FROM Films WHERE imdb_id = imdbID) INTO filmID;
+	ELSE
+		INSERT INTO Films(film_name, film_year, imdb_id, imdb_rating)
+		VALUES (fName, fYear, imdbID, imdbRating);
+
 		SELECT LAST_INSERT_ID() INTO filmID;
 	END IF;
 END //
@@ -78,7 +98,7 @@ BEGIN
 
 	START TRANSACTION;
 	
-	CALL insertFilm(fName, fYear, fImdbID, imdbRating, @filmID);
+	CALL insertOrUpdateFilm(fName, fYear, fImdbID, imdbRating, @filmID);
 
 	CALL insertActor(aFirstNames, aLastName, aImdbID, @actorID);
 

@@ -132,13 +132,27 @@ public class MovieData {
         
         boolean isSuccess = false;
         
-        String[] actorName = actor.personName.split(" ", 2);
-        String actorFirstname = actorName[0];
-        String actorLastname = actorName[1]; 
+        String actorFirstname;
+        String actorLastname;
+        if(actor.personName.contains(" ")){
+            String[] actorName = actor.personName.split(" ", 2);
+            actorFirstname = actorName[0];
+            actorLastname = actorName[1]; 
+        }else{
+            actorFirstname = actor.personName;
+            actorLastname = "";
+        }
         
-        String[] directorName = director.personName.split(" ", 2);
-        String directorFirstname = directorName[0];
-        String directorLastname = directorName[1]; 
+        String directorFirstname;
+        String directorLastname;
+        if(director.personName.contains(" ")){
+            String[] directorName = director.personName.split(" ", 2);
+            directorFirstname = directorName[0];
+            directorLastname = directorName[1];  
+        }else{
+            directorFirstname = director.personName;
+            directorLastname = "";
+        }
         
         try(CallableStatement cs = conn.prepareCall("{CALL insertDataset(?,?,?,?,?,?,?,?,?,?)}")){
             cs.setString(1, film.filmName);
