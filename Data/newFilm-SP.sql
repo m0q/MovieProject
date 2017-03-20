@@ -92,7 +92,7 @@ BEGIN
 	BEGIN
 		GET DIAGNOSTICS CONDITION 1
 		@p1 = MESSAGE_TEXT;
-		SELECT @p1;
+		SELECT '0' AS 'resultCode', @p1 AS 'resultMessage';
 		ROLLBACK;
 	END;
 
@@ -104,16 +104,16 @@ BEGIN
 
 	CALL insertDirector(dFirstNames, dLastName, dImdbID, @directorID);
 
-	INSERT INTO Lookup_Film_Actors VALUES (@filmID, @actorID);
-	INSERT INTO Lookup_Film_Directors VALUES (@filmID, @directorID);
-
 	IF ((SELECT count(*) FROM Lookup_Film_Actors WHERE film_id = @filmID AND actor_id = @actorID) > 0) AND
 	   ((SELECT count(*) FROM Lookup_Film_Directors WHERE film_id = @filmID AND director_id = @directorID) > 0) THEN
-	   	SELECT 'Success: changes committed' AS 'result';
-	   	COMMIT;
-	ELSE
-		SELECT 'Error: transaction rollback' AS 'result';
+	   	SELECT '-1' AS 'resultCode', 'Warning: data already exists' AS 'resultMessage';
 		ROLLBACK;
+	ELSE
+		INSERT INTO Lookup_Film_Actors VALUES (@filmID, @actorID);
+		INSERT INTO Lookup_Film_Directors VALUES (@filmID, @directorID);
+
+		SELECT '1' AS 'resultCode', 'Success: changes committed' AS 'resultMessage';
+	   	COMMIT;
 	END IF;
 	
 END //

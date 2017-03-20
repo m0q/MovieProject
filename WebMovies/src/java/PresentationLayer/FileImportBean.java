@@ -43,10 +43,9 @@ public class FileImportBean implements Serializable{
         }
         
         if(isSuccess){
-            FacesContext.getCurrentInstance().addMessage("resultMessage", new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", null));
+            FacesContext.getCurrentInstance().addMessage("resultMessage", new FacesMessage(FacesMessage.SEVERITY_INFO, message, null));
             //FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
         }else{
-            message = "Oops, this file contains data we already have.";
             FacesContext.getCurrentInstance().addMessage("resultMessage", new FacesMessage(FacesMessage.SEVERITY_ERROR, message , null));
         }  
     }

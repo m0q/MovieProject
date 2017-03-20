@@ -171,14 +171,29 @@ public class MovieData {
             //retrieve data from the resultset
             try(ResultSet rs = cs.getResultSet()){
                 while(rs.next()){
-                    String result = rs.getString(1); 
+                    String result = rs.getString("resultCode"); 
+                    String dbMessage = rs.getString("resultMessage");
                     
-                    if(result.contains("Success")){
+                    switch(Integer.parseInt(result)){
+                        case AppVariables.Database.DatabaseCodes.success:
+                            isSuccess = true; 
+                            message = dbMessage;
+                            break;
+                        case AppVariables.Database.DatabaseCodes.lookupLinksExist:
+                            isSuccess = true;
+                            message = dbMessage;
+                            break;
+                        case AppVariables.Database.DatabaseCodes.error:
+                            isSuccess = false;
+                            message = dbMessage;
+                    }
+                    
+                  /*  if(result.contains("Success")){
                         isSuccess = true;
-                    }else{
+                    }else if(result.contains(result)){
                         isSuccess = false;
                         message = result;
-                   }
+                   }*/
 //                    switch(result){
 //                        case "commit": isSuccess = true; break;
 //                        case "rollback": isSuccess = false; break;

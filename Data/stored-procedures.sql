@@ -83,16 +83,17 @@ BEGIN
 
 	CALL insertDirector(dFirstNames, dLastName, dImdbID, @directorID);
 
-	INSERT INTO Lookup_Film_Actors VALUES (@filmID, @actorID);
-	INSERT INTO Lookup_Film_Directors VALUES (@filmID, @directorID);
-
 	IF ((SELECT count(*) FROM Lookup_Film_Actors WHERE film_id = @filmID) > 0) AND
 	   ((SELECT count(*) FROM Lookup_Film_Directors WHERE film_id = @filmID) > 0) THEN
-	   	SELECT 'commit' AS 'result';
-	   	COMMIT;
-	ELSE
-		SELECT 'rollback' AS 'result';
+
+	   	SELECT 'rollback' AS 'result';
 		ROLLBACK;
+	ELSE
+		INSERT INTO Lookup_Film_Actors VALUES (@filmID, @actorID);
+		INSERT INTO Lookup_Film_Directors VALUES (@filmID, @directorID);
+
+		SELECT 'commit' AS 'result';
+	   	COMMIT;
 	END IF;
 	
 END //
