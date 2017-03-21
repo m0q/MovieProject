@@ -25,7 +25,7 @@ public class FileImportBean implements Serializable{
     private Part file; // +getter+setter
     private String fileName;
     
-    public void submit() throws ClassNotFoundException, SQLException{
+    public void submit() throws ClassNotFoundException, SQLException, IOException{
         boolean isSuccess = false;
         String message = "";
         
@@ -40,6 +40,8 @@ public class FileImportBean implements Serializable{
             message = mbl.getMessage();
         }catch (IOException e) {
             // Show faces message?
+        }finally{
+            Files.delete(new File("/Users/mqul/NetBeansProjects/NovusMovieProject/Data/", fileName).toPath());
         }
         
         if(isSuccess){

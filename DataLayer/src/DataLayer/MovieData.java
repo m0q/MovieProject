@@ -17,8 +17,6 @@ import java.sql.SQLException;
  */
 public class MovieData {
     
-    String message = "";
-    
     //read data from CSV file - path provided as param
     public Films getFilmData(String csvPath){
         Films films = new Films();
@@ -125,92 +123,5 @@ public class MovieData {
         film.actors.add(actor);
         
         return film;
-    }
-    
-    //read data from database into objects
-    public boolean putFilmData(Connection conn, Film film, Actor actor, Director director) throws SQLException{
-        
-        boolean isSuccess = false;
-        
-        String actorFirstname;
-        String actorLastname;
-        if(actor.personName.contains(" ")){
-            String[] actorName = actor.personName.split(" ", 2);
-            actorFirstname = actorName[0];
-            actorLastname = actorName[1]; 
-        }else{
-            actorFirstname = actor.personName;
-            actorLastname = "";
-        }
-        
-        String directorFirstname;
-        String directorLastname;
-        if(director.personName.contains(" ")){
-            String[] directorName = director.personName.split(" ", 2);
-            directorFirstname = directorName[0];
-            directorLastname = directorName[1];  
-        }else{
-            directorFirstname = director.personName;
-            directorLastname = "";
-        }
-        
-        try(CallableStatement cs = conn.prepareCall("{CALL insertDataset(?,?,?,?,?,?,?,?,?,?)}")){
-            cs.setString(1, film.filmName);
-            cs.setString(2, film.filmYear);
-            cs.setString(3, film.filmID);
-            cs.setString(4, film.imdbRating);
-            cs.setString(5, actorFirstname);
-            cs.setString(6, actorLastname);
-            cs.setString(7, actor.personID);
-            cs.setString(8, directorFirstname);
-            cs.setString(9, directorLastname);
-            cs.setString(10,director.personID);
-            
-            cs.execute(); //execute stored procedure
-            
-            //retrieve data from the resultset
-            try(ResultSet rs = cs.getResultSet()){
-                while(rs.next()){
-                    String result = rs.getString("resultCode"); 
-                    String dbMessage = rs.getString("resultMessage");
-                    
-                    switch(Integer.parseInt(result)){
-                        case AppVariables.Database.DatabaseCodes.success:
-                            isSuccess = true; 
-                            message = dbMessage;
-                            break;
-                        case AppVariables.Database.DatabaseCodes.lookupLinksExist:
-                            isSuccess = true;
-                            message = dbMessage;
-                            break;
-                        case AppVariables.Database.DatabaseCodes.error:
-                            isSuccess = false;
-                            message = dbMessage;
-                    }
-                    
-                  /*  if(result.contains("Success")){
-                        isSuccess = true;
-                    }else if(result.contains(result)){
-                        isSuccess = false;
-                        message = result;
-                   }*/
-//                    switch(result){
-//                        case "commit": isSuccess = true; break;
-//                        case "rollback": isSuccess = false; break;
-//                        case "Error, data already exists": isSuccess = false; message = result; 
-//                        case "Error occured": isSuccess = false; message = result;
-//                        default: isSuccess = false;
-//                    }  
-                }
-            }  
-        }finally{
-            //UNCOMMENT conn.close(); //close connection to db once try block is complete
-        }
-        
-        return isSuccess;
-    }
-    
-    public String getResultMessage(){
-        return message;
     }
 }

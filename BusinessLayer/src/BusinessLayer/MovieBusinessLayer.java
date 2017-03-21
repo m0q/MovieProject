@@ -2,7 +2,7 @@ package BusinessLayer;
 
 import ApplicationVariables.AppVariables;
 import ClassLayer.*;
-import DataLayer.MovieData;
+import DataLayer.*;
 import java.util.List;
 import caching.SimpleCaching;
 import java.sql.Connection;
@@ -39,10 +39,18 @@ public class MovieBusinessLayer {
         Class.forName(AppVariables.Database.mysqlDriver); 
         Connection conn = DriverManager.getConnection(AppVariables.Database.connectionString, AppVariables.Database.username, AppVariables.Database.password);
         
-        MovieData md = new MovieData();
+        DatabaseAccess md = new DatabaseAccess();
         
         for(Film film : films){
-            isSuccess = md.putFilmData(conn, film, film.actors.get(0), film.directors.get(0));
+            md.putMovieData(conn, film);//.putFilmData(conn, film, film.actors.get(0), film.directors.get(0));
+            
+            for(Actor actor : film.actors){
+                md.putActorData(conn, film.filmID, actor);
+            }
+            
+            for(Director director : film.directors){
+                md.putDirectorData(conn, film.filmID, director);
+            }
         }
         
         message = md.getResultMessage();    
@@ -128,7 +136,7 @@ public class MovieBusinessLayer {
         Class.forName(AppVariables.Database.mysqlDriver); 
         Connection conn = DriverManager.getConnection(AppVariables.Database.connectionString, AppVariables.Database.username, AppVariables.Database.password);
         
-        MovieData md = new MovieData();
+        DatabaseAccess md = new DatabaseAccess();
         boolean isSuccess = md.putFilmData(conn, film, actor, director);
         message = md.getResultMessage();    
         
