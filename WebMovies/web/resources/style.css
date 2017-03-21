@@ -40,7 +40,7 @@ h1{
      margin: 0 auto;
 }
 
-.directorPanelGrid{
+/*.directorPanelGrid{
     float: left;
     margin: 0 auto;
 }
@@ -48,7 +48,7 @@ h1{
 .actorPanelGrid{
     float: right;
     margin: 0 auto;
-}
+}*/
 
 #inputForm input{
     height: 40px;

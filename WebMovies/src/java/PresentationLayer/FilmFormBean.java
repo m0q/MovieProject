@@ -21,6 +21,7 @@ import javax.faces.context.FacesContext;
 @Named("filmform")
 public class FilmFormBean implements Serializable{
     private String filmID, filmName, filmYear, filmRating, directorID, directorName, actorID, actorName;
+    private String item = "Film";
     
     public void submitForm() throws IOException{
         String message = "";
@@ -114,6 +115,8 @@ public class FilmFormBean implements Serializable{
                     .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                     .toString().length() == requiredLength;  
     }
+    public String getItem(){return item;}
+    public void setItem(String item){this.item = item;}
     
     public String getFilmID(){return filmID;}
     public String getFilmName(){return filmName;}

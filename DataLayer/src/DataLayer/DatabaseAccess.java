@@ -218,11 +218,11 @@ public class DatabaseAccess{
             }  
         }catch(SQLException e){
             isSuccess = false;
-            StringBuilder sb = new StringBuilder();
-            sb.append("Message: " + e.getMessage());
-            sb.append("SQL State: " + e.getSQLState());
-            sb.append("Error code: "+ e.getErrorCode());
-            message = sb.toString();
+             message = new StringBuilder()
+                            .append("Message: ").append(e.getMessage())
+                            .append("SQL State: ").append(e.getSQLState())
+                            .append("Error code: ").append(e.getErrorCode())
+                            .toString();
         }finally{
             //UNCOMMENT conn.close(); //close connection to db once try block is complete
         }

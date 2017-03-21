@@ -32,34 +32,43 @@ public class MovieBusinessLayer {
         return SimpleCaching.get(AppVariables.Cache.filmCacheName);
     }
     
-    public boolean importData(String fileName) throws ClassNotFoundException, SQLException{
+    public boolean importData(String fileName) throws ClassNotFoundException{
         Films films = new MovieData().getFilmData("/Users/mqul/NetBeansProjects/NovusMovieProject/Data/" + fileName);
-        boolean isSuccess = false;
+        boolean filmSuccess =false, actorSuccess = false, directorSuccess = false;
         
         Class.forName(AppVariables.Database.mysqlDriver); 
-        Connection conn = DriverManager.getConnection(AppVariables.Database.connectionString, AppVariables.Database.username, AppVariables.Database.password);
-        
-        DatabaseAccess md = new DatabaseAccess();
-        
-        for(Film film : films){
-            md.putMovieData(conn, film);//.putFilmData(conn, film, film.actors.get(0), film.directors.get(0));
+        try(Connection conn = DriverManager.getConnection(AppVariables.Database.connectionString, AppVariables.Database.username, AppVariables.Database.password);){
+            Class.forName(AppVariables.Database.mysqlDriver); 
+
+            DatabaseAccess md = new DatabaseAccess();
             
-            for(Actor actor : film.actors){
-                md.putActorData(conn, film.filmID, actor);
+            for(Film film : films){
+                filmSuccess = md.putMovieData(conn, film);//.putFilmData(conn, film, film.actors.get(0), film.directors.get(0));
+
+                for(Actor actor : film.actors){
+                    actorSuccess = md.putActorData(conn, film.filmID, actor);
+                }
+
+                for(Director director : film.directors){
+                    directorSuccess = md.putDirectorData(conn, film.filmID, director);
+                }
             }
             
-            for(Director director : film.directors){
-                md.putDirectorData(conn, film.filmID, director);
-            }
-        }
+            message = md.getResultMessage(); 
+        }catch(SQLException e){
+            message = new StringBuilder()
+                            .append("Message: ").append(e.getMessage())
+                            .append("SQL State: ").append(e.getSQLState())
+                            .append("Error code: ").append(e.getErrorCode())
+                            .toString();
+        }  
         
-        message = md.getResultMessage();    
-        
-        if(isSuccess){
+        if(filmSuccess == true && actorSuccess == true && directorSuccess == true){
             SimpleCaching.remove(AppVariables.Cache.filmCacheName);
+            return true;
+        }else{
+            return false;
         }
-        
-        return isSuccess;
     }
     
     //Films
