@@ -37,18 +37,30 @@ h1{
 
 #personDiv{
     width: 400px;
-     margin: 0 auto;
+    margin: 0 auto;
 }
 
-/*.directorPanelGrid{
-    float: left;
+.directorPanelGrid{
     margin: 0 auto;
 }
 
 .actorPanelGrid{
-    float: right;
     margin: 0 auto;
-}*/
+}
+
+#inputForm{
+    margin: 0 auto;
+    width:400px;
+}
+
+#inputForm .formDropdown{
+    /*margin: 0 auto;
+    width: 70%;*/
+}
+
+#inputForm .formDropDown .formSelectMenu{
+    vertical-align: middle;
+}
 
 #inputForm input{
     height: 40px;

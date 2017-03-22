@@ -21,13 +21,14 @@ import javax.faces.context.FacesContext;
 @Named("filmform")
 public class FilmFormBean implements Serializable{
     private String filmID, filmName, filmYear, filmRating, directorID, directorName, actorID, actorName;
-    private String item = "Film";
+    private String item = "";
     
     public void submitForm() throws IOException{
         String message = "";
         boolean isSuccess = false;
         
-        try{
+        
+        /*try{
             //filmID, filmName, filmYear, filmRating
             //call to business layer - will store data from page to DB
             MovieBusinessLayer mbl = new MovieBusinessLayer();
@@ -41,7 +42,7 @@ public class FilmFormBean implements Serializable{
                 message += "Error Code: " + ex.getErrorCode() + " | ";
                 message += "Message: " + e.getMessage();
             }
-        }
+        }*/
         
         if(isSuccess){
             FacesContext.getCurrentInstance().addMessage("resultMessage", new FacesMessage(FacesMessage.SEVERITY_INFO, message, null));

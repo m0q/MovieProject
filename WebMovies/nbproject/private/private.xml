@@ -4,10 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/Users/mqul/NetBeansProjects/NovusMovieProject/WebMovies/nbproject/build-impl.xml</file>
+            <file>file:/Users/mqul/NetBeansProjects/NovusMovieProject/WebMovies/web/film-form.xhtml</file>
             <file>file:/Users/mqul/NetBeansProjects/NovusMovieProject/WebMovies/src/java/PresentationLayer/Beans.java</file>
             <file>file:/Users/mqul/NetBeansProjects/NovusMovieProject/WebMovies/src/java/PresentationLayer/FileImportBean.java</file>
             <file>file:/Users/mqul/NetBeansProjects/NovusMovieProject/WebMovies/web/index.xhtml</file>
             <file>file:/Users/mqul/NetBeansProjects/NovusMovieProject/WebMovies/test/Tests/MovieProject.java</file>
+            <file>file:/Users/mqul/NetBeansProjects/NovusMovieProject/WebMovies/web/resources/style.css</file>
             <file>file:/Users/mqul/NetBeansProjects/NovusMovieProject/WebMovies/src/java/PresentationLayer/FilmFormBean.java</file>
         </group>
     </open-files>

@@ -15,14 +15,17 @@
             <div class="nav">
                 <h:button value="Home" class="button" outcome="index.xhtml" />
             </div>
+            <br />
             
-            <h:selectOneMenu value="#{filmform.item}">
-                <f:selectItem itemValue="Film" />
-                <f:selectItem itemValue="Actor" />
-                <f:selectItem itemValue="Director" />
-                <f:ajax render="@form" />
-            </h:selectOneMenu>
-
+            <div class="formDropdown">
+                <h:selectOneMenu value="#{filmform.item}" styleClass="formSelectMenu">
+                    <f:selectItem itemValue="Film" />
+                    <f:selectItem itemValue="Actor" />
+                    <f:selectItem itemValue="Director" />
+                    <f:ajax render="@form" />
+                </h:selectOneMenu>
+            </div>
+            
             <h:panelGroup rendered="#{filmform.item == 'Film'}">
                 <h:panelGrid columns="3" styleClass="panelGrid">   
                     <h:outputText value="Film ID"/>
