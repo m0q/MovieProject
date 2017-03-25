@@ -134,6 +134,69 @@ public class MovieBusinessLayer {
                         .findFirst().get();
     }
     
+    public List<Actor> getDistinctActorsFromDB() throws SQLException, ClassNotFoundException{
+        Class.forName(AppVariables.Database.mysqlDriver); 
+        
+        try(Connection conn = DriverManager.getConnection(AppVariables.Database.connectionString, AppVariables.Database.username, AppVariables.Database.password)){
+            DatabaseAccess md = new DatabaseAccess();
+            return md.getDistinctActors(conn);
+        }
+    }
+    
+    public List<Director> getDistinctDirectorsFromDB() throws SQLException, ClassNotFoundException{
+        Class.forName(AppVariables.Database.mysqlDriver); 
+        
+        try(Connection conn = DriverManager.getConnection(AppVariables.Database.connectionString, AppVariables.Database.username, AppVariables.Database.password)){
+            DatabaseAccess md = new DatabaseAccess();
+            return md.getDistinctDirectors(conn);
+        }
+    }
+    
+    public boolean insertActor(Actor actor, String filmID) throws ClassNotFoundException, SQLException{
+        Class.forName(AppVariables.Database.mysqlDriver); 
+        Connection conn = DriverManager.getConnection(AppVariables.Database.connectionString, AppVariables.Database.username, AppVariables.Database.password);
+        
+        DatabaseAccess md = new DatabaseAccess();
+        
+        //clear cache
+        
+        boolean isSuccess = md.putActorData(conn, filmID, actor);
+        message = md.getResultMessage();
+        return isSuccess;
+    }
+    
+    public boolean insertDirector(Director director, String filmID) throws ClassNotFoundException, SQLException{
+        Class.forName(AppVariables.Database.mysqlDriver); 
+        Connection conn = DriverManager.getConnection(AppVariables.Database.connectionString, AppVariables.Database.username, AppVariables.Database.password);
+        
+        DatabaseAccess md = new DatabaseAccess();
+        
+        boolean isSuccess = md.putDirectorData(conn, filmID, director);
+        
+        //clear cache?
+        
+        message = md.getResultMessage();
+        return isSuccess;
+    }
+    
+    public boolean insertFilm(Film film) throws ClassNotFoundException, SQLException{
+        Class.forName(AppVariables.Database.mysqlDriver); 
+        Connection conn = DriverManager.getConnection(AppVariables.Database.connectionString, AppVariables.Database.username, AppVariables.Database.password);
+        
+        DatabaseAccess md = new DatabaseAccess();
+        
+        //clear cache
+        
+        boolean isSuccess = md.putMovieData(conn, film);
+        
+        if(isSuccess){
+            SimpleCaching.remove(AppVariables.Cache.filmCacheName);
+        }
+        
+        message = md.getResultMessage();
+        return isSuccess;
+    }
+    
     //film form to film object
     public boolean insertFilm(String filmID, String filmName, String filmRating, String filmYear,
                               String actorID, String actorName, String directorID, String directorName) throws SQLException, ClassNotFoundException{

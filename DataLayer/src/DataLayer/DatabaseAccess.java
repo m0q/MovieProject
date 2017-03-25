@@ -13,6 +13,8 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -21,6 +23,32 @@ import java.sql.SQLException;
 public class DatabaseAccess{
     
     String message = "";
+    
+    public List<Actor> getDistinctActors(Connection conn) throws SQLException{
+        List<Actor> tmpList = new ArrayList<>();
+        try(CallableStatement cs = conn.prepareCall("{CALL getActors()}")){
+        
+            try(ResultSet rs = cs.executeQuery()){
+                while(rs.next()){
+                    tmpList.add(new Actor(rs.getString("Actor ID"), rs.getString("Actor Name")));            
+                }
+            }
+        }
+        return tmpList;
+    }
+    
+    public List<Director>getDistinctDirectors(Connection conn) throws SQLException{
+        List<Director> tmpList = new ArrayList<>();
+        try(CallableStatement cs = conn.prepareCall("{CALL getDirectors()}")){
+        
+            try(ResultSet rs = cs.executeQuery()){
+                while(rs.next()){
+                    tmpList.add(new Director(rs.getString("Director ID"), rs.getString("Director Name")));            
+                }
+            }
+        }
+        return tmpList;
+    }
     
     public boolean putActorData(Connection conn, String filmID, Actor actor) throws SQLException{
         
@@ -138,6 +166,24 @@ public class DatabaseAccess{
         }
         
         return isSuccess;
+    }
+    
+    public boolean associateActor(Connection conn, String filmID, String actorID) throws SQLException{
+        try(CallableStatement cs = conn.prepareCall("{CALL associateActor(?,?)}")){
+            cs.setString(1, filmID);
+            cs.setString(2, actorID);
+            
+            return cs.execute();
+        }
+    }
+    
+    public boolean associateDirector(Connection conn, String filmID, String directorID) throws SQLException{
+        try(CallableStatement cs = conn.prepareCall("{CALL associateDirector(?,?)}")){
+            cs.setString(1, filmID);
+            cs.setString(2, directorID);
+            
+            return cs.execute();
+        }
     }
     
     //read data from database into objects

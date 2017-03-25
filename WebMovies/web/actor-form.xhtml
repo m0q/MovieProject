@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Movie DB</title>
+    </h:head>
+    <h:body>
+        <h:outputStylesheet name="style.css"  />
+        <h1>New Actor</h1>
+        
+        <h:form id="inputForm">
+            <div class="nav">
+                <h:button value="Home" class="button" outcome="index.xhtml" />
+            </div>
+            <br />
+            <h:panelGrid columns="3" styleClass="panelGrid"> 
+                <h:outputText value="Actor ID"/>
+                <h:inputText id="actorID" 
+                             value="#{actorform.actorID}" 
+                             a:placeholder="actor id" 
+                             required="true" 
+                             maxlength="7" 
+                             requiredMessage="Actor ID is required"
+                             validator="#{actorform.validateID}"
+                             style="#{ component.valid ? 'border-color:black;' : 'border-color:red;'}" />
+                <h:message id="IDMessage2" for="actorID" styleClass="error"/>
+
+                <h:outputText value="Actor Name"/>
+                <h:inputText id="actorName" 
+                             value="#{actorform.actorName}" 
+                             a:placeholder="actor name" 
+                             required="true" 
+                             requiredMessage="Actor Name is required"
+                             style="#{component.valid ? 'border-color:black;' : 'border-color:red;'}"/>
+                <h:message id="nameMessage2" for="actorName" styleClass="error"/>
+
+                <h:outputText value="Film ID"/>
+                        <h:inputText id="filmID" 
+                                     value="#{actorform.filmID}" 
+                                     a:placeholder="1870108" 
+                                     required="true" 
+                                     maxlength="7" 
+                                     requiredMessage="Film ID is required"
+                                     validator="#{actorform.validateID}"
+                                     style="#{ component.valid ? 'border-color:black;' : 'border-color:red;'}" />
+                        <h:message id="IDMessage" for="filmID" styleClass="error"/>
+            </h:panelGrid>
+            
+            <h:commandButton value="Submit" class="button" action="#{actorform.submitForm}" />
+            <br />
+        </h:form>
+        
+        <h:message id="resultMessage" for="inputForm" infoStyle="color:darkgreen" errorStyle="color:darkred"  />
+    </h:body>
+</html>
+

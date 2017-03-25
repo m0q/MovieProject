@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Movie DB</title>
+    </h:head>
+    <h:body>
+        <h:outputStylesheet name="style.css"  />
+        <h1>Associate Data</h1>
+        
+        <h:form id="inputForm">
+            <div class="nav">
+                <h:button value="Home" class="button" outcome="index.xhtml" />
+            </div>
+            <br />
+            
+            <p>Film:<h:selectOneMenu style="width:230px;" value="#{associatebean.selectedFilm}">
+                    <f:selectItems value="#{associatebean.films}" />
+                </h:selectOneMenu>
+            </p>
+            <h:panelGrid columns="6" styleClass="panelGrid"> 
+                
+                
+                <h:outputText value="Actors"/>
+                <h:selectManyListbox value="#{associatebean.actors}"> 
+                    <f:selectItems value="#{filmform.actors}" />
+                </h:selectManyListbox>
+                
+                <br/>
+                
+                <h:outputText value="Directors"/>
+                <h:selectManyListbox value = "#{associatebean.directors}"> 
+                    <f:selectItems value="#{filmform.directors}" />
+                </h:selectManyListbox>
+            </h:panelGrid> 
+            
+            <h:commandButton value="Submit" class="button" action="#{associatebean.submitForm}" />
+            <br />
+        </h:form>
+        
+        <h:message id="resultMessage" for="inputForm" infoStyle="color:darkgreen" errorStyle="color:darkred"  />
+    </h:body>
+</html>
+
