@@ -1,7 +1,8 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Movie DB</title>
     </h:head>
@@ -9,10 +10,9 @@
         <h:outputStylesheet name="style.css"  />
         <h1>Import File</h1>
         
-        <h:form enctype="multipart/form-data">
-            <div class="nav">
-                <h:button value="Home" class="button" outcome="index.xhtml" />
-            </div><br />
+        <h:form id="form" enctype="multipart/form-data">
+            <ui:include src="nav.xhtml" />
+            <br />
             <h:inputFile styleClass="inputFile" value="#{fileimport.file}" />
             <h:commandButton value="Submit" class="button" action="#{fileimport.submit}" />
         </h:form>

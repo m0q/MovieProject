@@ -38,16 +38,15 @@ public class AssociateBean implements Serializable{
     public List<SelectItem> getFilms() throws SQLException, ClassNotFoundException{
         List<SelectItem> tmpList = new ArrayList<SelectItem>();
         tmpList.add(new SelectItem("<--Select-->"));
-        tmpList.addAll(new MovieBusinessLayer().getFilms().stream()
+        tmpList.addAll(new MovieBusinessLayer().getDistinctFilmsFromDB().stream()
                .map(f -> new SelectItem(f.filmID, f.filmName)).collect(Collectors.toList()));
         
         return tmpList;
     }
     
-    public void submitForm(){
-       // String[] selectedActors = actors;
-       // String[] selectedDirectors = directors;
-        
-        String selectedFilm = this.selectedFilm;
+    public void submitForm() throws ClassNotFoundException, SQLException{
+       MovieBusinessLayer mbl = new MovieBusinessLayer();
+       mbl.associateActorsWithFilm(actors, selectedFilm);
+       mbl.associateDirectorsWithFilm(directors, selectedFilm);
     }
 }

@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Movie DB</title>
     </h:head>
@@ -12,27 +13,28 @@
         <h1>Associate Data</h1>
         
         <h:form id="inputForm">
-            <div class="nav">
-                <h:button value="Home" class="button" outcome="index.xhtml" />
-            </div>
+            <ui:include src="nav.xhtml" />
             <br />
             
-            <p>Film:<h:selectOneMenu style="width:230px;" value="#{associatebean.selectedFilm}">
+            <h:panelGrid columns="2" styleClass="associateDD">
+                <h:outputText value="Films:"/> 
+                
+                <h:selectOneMenu style="width:230px;" value="#{associatebean.selectedFilm}">
                     <f:selectItems value="#{associatebean.films}" />
                 </h:selectOneMenu>
-            </p>
-            <h:panelGrid columns="6" styleClass="panelGrid"> 
+            </h:panelGrid> 
+            
+            <h:panelGrid columns="2"> 
                 
                 
-                <h:outputText value="Actors"/>
-                <h:selectManyListbox value="#{associatebean.actors}"> 
+                <h:outputText value="Actors"/>   
+                <h:outputText value="Directors"/>
+               
+                <h:selectManyListbox value="#{associatebean.actors}" styleClass="listBox"> 
                     <f:selectItems value="#{filmform.actors}" />
                 </h:selectManyListbox>
-                
-                <br/>
-                
-                <h:outputText value="Directors"/>
-                <h:selectManyListbox value = "#{associatebean.directors}"> 
+              
+                <h:selectManyListbox value = "#{associatebean.directors}" styleClass="listBox"> 
                     <f:selectItems value="#{filmform.directors}" />
                 </h:selectManyListbox>
             </h:panelGrid> 

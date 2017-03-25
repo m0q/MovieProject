@@ -134,6 +134,15 @@ public class MovieBusinessLayer {
                         .findFirst().get();
     }
     
+    public List<SimplisticFilm> getDistinctFilmsFromDB() throws SQLException, ClassNotFoundException{
+        Class.forName(AppVariables.Database.mysqlDriver); 
+        
+        try(Connection conn = DriverManager.getConnection(AppVariables.Database.connectionString, AppVariables.Database.username, AppVariables.Database.password)){
+            DatabaseAccess md = new DatabaseAccess();
+            return md.getDistinctSimplisticFilms(conn);
+        }
+    }
+    
     public List<Actor> getDistinctActorsFromDB() throws SQLException, ClassNotFoundException{
         Class.forName(AppVariables.Database.mysqlDriver); 
         
@@ -192,6 +201,46 @@ public class MovieBusinessLayer {
         if(isSuccess){
             SimpleCaching.remove(AppVariables.Cache.filmCacheName);
         }
+        
+        message = md.getResultMessage();
+        return isSuccess;
+    }
+    
+    public boolean associateActorsWithFilm(List<String> actors, String filmID) throws ClassNotFoundException, SQLException{
+        boolean isSuccess = false;
+        
+        Class.forName(AppVariables.Database.mysqlDriver); 
+        Connection conn = DriverManager.getConnection(AppVariables.Database.connectionString, AppVariables.Database.username, AppVariables.Database.password);
+        
+        DatabaseAccess md = new DatabaseAccess();
+        
+        for(String actorID : actors){
+            isSuccess = md.associateActor(conn, filmID, actorID);
+        }
+        
+        //if(isSuccess){
+            SimpleCaching.remove(AppVariables.Cache.filmCacheName);
+       // }
+        
+        message = md.getResultMessage();
+        return isSuccess;
+    }
+    
+    public boolean associateDirectorsWithFilm(List<String> directors, String filmID) throws ClassNotFoundException, SQLException{
+        boolean isSuccess = false;
+        
+        Class.forName(AppVariables.Database.mysqlDriver); 
+        Connection conn = DriverManager.getConnection(AppVariables.Database.connectionString, AppVariables.Database.username, AppVariables.Database.password);
+        
+        DatabaseAccess md = new DatabaseAccess();
+        
+        for(String directorID : directors){
+            isSuccess = md.associateDirector(conn, filmID, directorID);
+        }
+        
+        //if(isSuccess){
+            SimpleCaching.remove(AppVariables.Cache.filmCacheName);
+       // }
         
         message = md.getResultMessage();
         return isSuccess;

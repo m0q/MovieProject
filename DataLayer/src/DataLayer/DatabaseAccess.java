@@ -9,6 +9,7 @@ import ApplicationVariables.AppVariables;
 import ClassLayer.Actor;
 import ClassLayer.Director;
 import ClassLayer.Film;
+import ClassLayer.SimplisticFilm;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -23,6 +24,19 @@ import java.util.List;
 public class DatabaseAccess{
     
     String message = "";
+    
+    public List<SimplisticFilm> getDistinctSimplisticFilms(Connection conn) throws SQLException{
+        List<SimplisticFilm> tmpList = new ArrayList<>();
+        try(CallableStatement cs = conn.prepareCall("{CALL getFilms()}")){
+        
+            try(ResultSet rs = cs.executeQuery()){
+                while(rs.next()){
+                    tmpList.add(new SimplisticFilm(rs.getString("Film ID"), rs.getString("Film Name")));            
+                }
+            }
+        }
+        return tmpList;
+    }
     
     public List<Actor> getDistinctActors(Connection conn) throws SQLException{
         List<Actor> tmpList = new ArrayList<>();

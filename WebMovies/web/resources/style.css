@@ -50,7 +50,7 @@ h1{
 
 #inputForm{
     margin: 0 auto;
-    width:400px;
+    width:250px;
 }
 
 #inputForm .formDropdown{
@@ -81,7 +81,7 @@ h1{
     display: block;
     background: rgba(0,0,0,0.7);
     height: 40px;
-    width: 75px;
+    width: 100px;
     color: #fff;
     border-radius: 5px;
     -webkit-transition: all 0.15s linear;
@@ -125,22 +125,32 @@ h1{
 
 /**end**/
 
+.associateDD{
+    padding: 20px 0px 20px 0px;
+}
+
 .inputFile{
-    margin: 20px auto;
-    margin-left: 30%;
+    margin: 0px auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    padding: 10px;
     color: black;
-    padding: 2px;
-    padding: 2px;
     border: 1px solid gray;
     border-radius: 2px;
     background: lightgray;
 }
 
+
+.listBox{
+    width: 135px;
+    height: 200px; 
+}
+
 /**NAV**/
 .nav{
   display: inline-block;
-  margin: 0px auto;
-  margin-left: 27px;
+  margin-left: -95%;
+  width: 725px;
   background: #AAAAAA;
   border-bottom: 2px solid #000000;
   border-left: 2px solid #000000;
