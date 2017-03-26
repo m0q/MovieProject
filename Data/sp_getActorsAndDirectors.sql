@@ -9,3 +9,13 @@ BEGIN
   FROM Actors;
 END //
 DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS getFilms; 
+DELIMITER //
+CREATE PROCEDURE getFilms ()
+BEGIN  
+  SELECT imdb_id AS 'Film ID', film_name AS 'Film Name'
+  FROM Films;
+END //
+DELIMITER ;

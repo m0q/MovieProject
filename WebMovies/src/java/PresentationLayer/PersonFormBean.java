@@ -1,22 +1,28 @@
 package PresentationLayer;
 
 import BusinessLayer.MovieBusinessLayer;
+import ClassLayer.Actor;
 import ClassLayer.Director;
+import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.inject.Named;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 
 /**
  *
  * @author mqul
  */
 @RequestScoped
-@Named("directorform")
-public class DirectorFormBean extends ValidationBean implements Serializable{
-    private String directorID, directorName, filmID;
+@Named("personBean")
+public class PersonFormBean extends ValidationBean implements Serializable{
+    private String personID, personName, selectedType;
     
     public void submitForm(){
         String message = "";
@@ -25,8 +31,16 @@ public class DirectorFormBean extends ValidationBean implements Serializable{
         try{
             //call to business layer - will store data from page to DB
             MovieBusinessLayer mbl = new MovieBusinessLayer();
-            isSuccess = mbl.insertDirector(new Director(directorID, directorName), filmID);
-            message = mbl.getMessage();
+            
+            if(selectedType.equals("actor")){
+                isSuccess = mbl.insertActor(new Actor(personID, personName));
+                message = mbl.getMessage();
+            }else if(selectedType.equals("director")){
+                isSuccess = mbl.insertDirector(new Director(personID, personName));
+                message = mbl.getMessage();
+            }else{
+                //something went wrong
+            }
         }catch(SQLException | ClassNotFoundException e){
             if(e instanceof SQLException){
                 SQLException ex = (SQLException)e;
@@ -44,11 +58,11 @@ public class DirectorFormBean extends ValidationBean implements Serializable{
         }
     }
 
-    public String getDirectorID(){return directorID;}
-    public String getDirectorName(){return directorName;}
-    public String getFilmID(){return filmID;}
+    public String getPersonID(){return personID;}
+    public String getPersonName(){return personName;}
+    public String getSelectedType(){return selectedType;}
     
-    public void setFilmID(String filmID){this.filmID = filmID;}
-    public void setDirectorID(String directorID){this.directorID = directorID;}
-    public void setDirectorName(String directorName){this.directorName = directorName;}
+    public void setSelectedType(String selectedType){this.selectedType = selectedType;}
+    public void setPersonID(String personID){this.personID = personID;}
+    public void setPersonName(String personName){this.personName = personName;}
 }

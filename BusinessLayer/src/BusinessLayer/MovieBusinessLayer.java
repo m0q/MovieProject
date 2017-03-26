@@ -46,11 +46,11 @@ public class MovieBusinessLayer {
                 filmSuccess = md.putMovieData(conn, film);//.putFilmData(conn, film, film.actors.get(0), film.directors.get(0));
 
                 for(Actor actor : film.actors){
-                    actorSuccess = md.putActorData(conn, film.filmID, actor);
+                    actorSuccess = md.putPersonData(conn, actor, film.filmID, true);
                 }
 
                 for(Director director : film.directors){
-                    directorSuccess = md.putDirectorData(conn, film.filmID, director);
+                    directorSuccess = md.putPersonData(conn, director, film.filmID, false);
                 }
             }
             
@@ -161,7 +161,7 @@ public class MovieBusinessLayer {
         }
     }
     
-    public boolean insertActor(Actor actor, String filmID) throws ClassNotFoundException, SQLException{
+    public boolean insertActor(Actor actor) throws ClassNotFoundException, SQLException{
         Class.forName(AppVariables.Database.mysqlDriver); 
         Connection conn = DriverManager.getConnection(AppVariables.Database.connectionString, AppVariables.Database.username, AppVariables.Database.password);
         
@@ -169,18 +169,18 @@ public class MovieBusinessLayer {
         
         //clear cache
         
-        boolean isSuccess = md.putActorData(conn, filmID, actor);
+        boolean isSuccess = md.putActorData(conn, actor);
         message = md.getResultMessage();
         return isSuccess;
     }
     
-    public boolean insertDirector(Director director, String filmID) throws ClassNotFoundException, SQLException{
+    public boolean insertDirector(Director director) throws ClassNotFoundException, SQLException{
         Class.forName(AppVariables.Database.mysqlDriver); 
         Connection conn = DriverManager.getConnection(AppVariables.Database.connectionString, AppVariables.Database.username, AppVariables.Database.password);
         
         DatabaseAccess md = new DatabaseAccess();
         
-        boolean isSuccess = md.putDirectorData(conn, filmID, director);
+        boolean isSuccess = md.putDirectorData(conn, director);
         
         //clear cache?
         

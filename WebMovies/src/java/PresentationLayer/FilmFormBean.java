@@ -52,38 +52,6 @@ public class FilmFormBean extends ValidationBean implements Serializable{
             FacesContext.getCurrentInstance().addMessage("resultMessage", new FacesMessage(FacesMessage.SEVERITY_ERROR, message , null));
         }
     }
-    
-    public List<SelectItem> getActors(){
-        MovieBusinessLayer mbl = new MovieBusinessLayer();
-        
-        try{
-            List<SelectItem> tmpItems = new ArrayList<>();
-            mbl.getDistinctActorsFromDB().stream()
-                    .map(actor -> tmpItems.add(new SelectItem(actor.personID, actor.personName)))
-                    .collect(Collectors.toList());
-            
-            return tmpItems;
-        }catch(SQLException | ClassNotFoundException se){
-            se.printStackTrace();
-            return null;
-        }
-    }
-    
-    public List<SelectItem> getDirectors(){
-        MovieBusinessLayer mbl = new MovieBusinessLayer();
-        
-        try{
-            List<SelectItem> tmpItems = new ArrayList<>();
-            mbl.getDistinctDirectorsFromDB().stream()
-                    .map(director -> tmpItems.add(new SelectItem(director.personID, director.personName)))
-                    .collect(Collectors.toList());
-            
-            return tmpItems;
-        }catch(SQLException | ClassNotFoundException se){
-            se.printStackTrace();
-            return null;
-        }
-    }
    
     public String getItem(){return item;}
     public void setItem(String item){this.item = item;}

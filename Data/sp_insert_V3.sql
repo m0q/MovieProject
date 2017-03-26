@@ -21,9 +21,9 @@ BEGIN
 END //
 DELIMITER ;
 
-DROP PROCEDURE IF EXISTS insertOrUpdateActor;
+DROP PROCEDURE IF EXISTS insertOrUpdateAndLinkActor;
 DELIMITER //
-CREATE PROCEDURE insertOrUpdateActor(IN aFirstNames varchar(100),IN aLastName varchar(100),
+CREATE PROCEDURE insertOrUpdateAndLinkActor(IN aFirstNames varchar(100),IN aLastName varchar(100),
 									 IN imdbID varchar(7),IN filmImdbID varchar(7))
 BEGIN
 	START TRANSACTION;
@@ -65,9 +65,9 @@ END //
 DELIMITER ;
 
 
-DROP PROCEDURE IF EXISTS insertOrUpdateDirector;
+DROP PROCEDURE IF EXISTS insertOrUpdateAndLinkDirector;
 DELIMITER //
-CREATE PROCEDURE insertOrUpdateDirector(IN dFirstNames varchar(100),IN dLastName varchar(100),
+CREATE PROCEDURE insertOrUpdateAndLinkDirector(IN dFirstNames varchar(100),IN dLastName varchar(100),
 										IN imdbID varchar(7),IN filmImdbID varchar(7))
 BEGIN
 	START TRANSACTION;

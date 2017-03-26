@@ -9,6 +9,7 @@ import ApplicationVariables.AppVariables;
 import ClassLayer.Actor;
 import ClassLayer.Director;
 import ClassLayer.Film;
+import ClassLayer.Person;
 import ClassLayer.SimplisticFilm;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -64,7 +65,7 @@ public class DatabaseAccess{
         return tmpList;
     }
     
-    public boolean putActorData(Connection conn, String filmID, Actor actor) throws SQLException{
+    public boolean putActorData(Connection conn, Actor actor) throws SQLException{
         
         boolean isSuccess = false;
         
@@ -79,11 +80,10 @@ public class DatabaseAccess{
             actorLastname = "";
         }
         
-        try(CallableStatement cs = conn.prepareCall("{CALL insertOrUpdateActor(?,?,?,?)}")){
+        try(CallableStatement cs = conn.prepareCall("{CALL insertOrUpdateActor(?,?,?)}")){
             cs.setString(1, actorFirstname);
             cs.setString(2, actorLastname);
             cs.setString(3, actor.personID);
-            cs.setString(4, filmID);
             
             cs.execute(); //execute stored procedure
             
@@ -107,7 +107,7 @@ public class DatabaseAccess{
         return isSuccess;
     }
     
-    public boolean putDirectorData(Connection conn, String filmID, Director director) throws SQLException{
+    public boolean putDirectorData(Connection conn, Director director) throws SQLException{
         
         boolean isSuccess = false;
         
@@ -122,10 +122,54 @@ public class DatabaseAccess{
             directorLastname = "";
         }
         
-        try(CallableStatement cs = conn.prepareCall("{CALL insertOrUpdateDirector(?,?,?,?)}")){
+        try(CallableStatement cs = conn.prepareCall("{CALL insertOrUpdateDirector(?,?,?)}")){
             cs.setString(1, directorFirstname);
             cs.setString(2, directorLastname);
             cs.setString(3, director.personID);
+            
+            cs.execute(); //execute stored procedure
+            
+            //retrieve data from the resultset
+            try(ResultSet rs = cs.getResultSet()){
+                while(rs.next()){
+                    //String result = rs.getString("resultCode"); 
+                    String dbMessage = rs.getString(1);
+                    
+                    if(dbMessage.contains("error")){
+                        isSuccess = false;
+                        message = dbMessage;
+                    }else{
+                        isSuccess = true;
+                        message = dbMessage;
+                    } 
+                }
+            }  
+        }
+        
+        return isSuccess;
+    }
+    
+    public boolean putPersonData(Connection conn, Person person, String filmID, boolean isActor) throws SQLException{
+        
+        boolean isSuccess = false;
+        
+        String personFirstname;
+        String personLastname;
+        if(person.personName.contains(" ")){
+            String[] personName = person.personName.split(" ", 2);
+            personFirstname = personName[0];
+            personLastname = personName[1]; 
+        }else{
+            personFirstname = person.personName;
+            personLastname = "";
+        }
+        
+        String procedure = (isActor == true ? "{CALL insertOrUpdateAndLinkActor(?,?,?,?)}" : "{CALL insertOrUpdateAndLinkDirector(?,?,?,?)}");
+        
+        try(CallableStatement cs = conn.prepareCall(procedure)){
+            cs.setString(1, personFirstname);
+            cs.setString(2, personLastname);
+            cs.setString(3, person.personID);
             cs.setString(4, filmID);
             
             cs.execute(); //execute stored procedure
