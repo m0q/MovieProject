@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -79,22 +80,18 @@ public class AssociateBean implements Serializable{
         }
     }
     
-    public void filmValueChanged(ValueChangeEvent e) throws SQLException, ClassNotFoundException{
-        selectedFilm = e.getNewValue().toString();
-        
-        MovieBusinessLayer mbl = new MovieBusinessLayer();
-        
-        Films films = mbl.getFilmsSubset(selectedFilm, null, null, null, null, mbl.getFilms());
+    public void submitForm() throws ClassNotFoundException, SQLException, IOException{
+       MovieBusinessLayer mbl = new MovieBusinessLayer();
        
-        this.submitForm();
-    //    actorList = films.toListDistinctActor().stream().map(a -> a.personID).collect(Collectors.toList());
-    //    directorList = films.toListDistinctDirector().stream().map(d -> d.personID).collect(Collectors.toList());
-    }
-    
-    public void submitForm() throws ClassNotFoundException, SQLException{
-       actorList = this.getActors().subList(5, 10).stream().map(c -> (String)c.getValue()).collect(Collectors.toList());
-        //MovieBusinessLayer mbl = new MovieBusinessLayer();
-       //mbl.associateActorsWithFilm(actorList, selectedFilm);
-       //mbl.associateDirectorsWithFilm(directorList, selectedFilm);
+       if(actorList != null && directorList != null){
+            mbl.associateActorsWithFilm(actorList, selectedFilm);
+            mbl.associateDirectorsWithFilm(directorList, selectedFilm);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+       }
+       
+       Films films = mbl.getFilmsSubset(selectedFilm, null, null, null, null, mbl.getFilms());
+       actorList = films.toListDistinctActor().stream().map(a -> a.personID).collect(Collectors.toList());
+       directorList = films.toListDistinctDirector().stream().map(d -> d.personID).collect(Collectors.toList());
+        
     }
 }
