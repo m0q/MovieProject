@@ -23,10 +23,6 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.opencsv-3.8.jar}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
-                <library dirs="200">
                     <file>${reference.UtilityLayer.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
@@ -48,6 +44,10 @@
                 </library>
                 <library dirs="200">
                     <file>${file.reference.slf4j-api-1.7.7.jar}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.opencsv-3.8.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>

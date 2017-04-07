@@ -6,6 +6,8 @@ BEGIN
 		SET @filmID = (SELECT film_id FROM Films WHERE imdb_id = filmImdb_id);
 		SET @actorID = (SELECT actor_id FROM Actors WHERE imdb_id = actorImdb_id);
 
+		DELETE FROM Lookup_Film_Actors WHERE film_id = @filmID;
+
 		INSERT INTO Lookup_Film_Actors(film_id, actor_id) VALUES (@filmID, @actorID);
 		COMMIT;
 END //
@@ -18,6 +20,8 @@ BEGIN
 	START TRANSACTION;
 		SET @filmID = (SELECT film_id FROM Films WHERE imdb_id = filmImdb_id);
 		SET @directorID = (SELECT director_id FROM Directors WHERE imdb_id = directorImdb_id);
+
+		DELETE FROM Lookup_Film_Directors WHERE film_id = @filmID;
 
 		INSERT INTO Lookup_Film_Directors(film_id, director_id) VALUES (@filmID, @directorID);
 		COMMIT;
