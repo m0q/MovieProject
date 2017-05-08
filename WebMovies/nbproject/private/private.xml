@@ -3,21 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/mqul/NetBeansProjects/NovusMovieProject/WebMovies/nbproject/build-impl.xml</file>
-            <file>file:/Users/mqul/NetBeansProjects/NovusMovieProject/WebMovies/src/java/PresentationLayer/ValidationBean.java</file>
-            <file>file:/Users/mqul/NetBeansProjects/NovusMovieProject/WebMovies/src/java/PresentationLayer/BaseBean.java</file>
-            <file>file:/Users/mqul/NetBeansProjects/NovusMovieProject/WebMovies/web/index.xhtml</file>
-            <file>file:/Users/mqul/NetBeansProjects/NovusMovieProject/WebMovies/test/Tests/MovieProject.java</file>
-            <file>file:/Users/mqul/NetBeansProjects/NovusMovieProject/WebMovies/src/java/PresentationLayer/AssociateBean.java</file>
-            <file>file:/Users/mqul/NetBeansProjects/NovusMovieProject/WebMovies/web/nav.xhtml</file>
-            <file>file:/Users/mqul/NetBeansProjects/NovusMovieProject/WebMovies/web/film-form.xhtml</file>
-            <file>file:/Users/mqul/NetBeansProjects/NovusMovieProject/WebMovies/src/java/PresentationLayer/Beans.java</file>
-            <file>file:/Users/mqul/NetBeansProjects/NovusMovieProject/WebMovies/src/java/PresentationLayer/FileImportBean.java</file>
-            <file>file:/Users/mqul/NetBeansProjects/NovusMovieProject/WebMovies/web/associate-data.xhtml</file>
-            <file>file:/Users/mqul/NetBeansProjects/NovusMovieProject/WebMovies/web/resources/style.css</file>
-            <file>file:/Users/mqul/NetBeansProjects/NovusMovieProject/WebMovies/web/person-form.xhtml</file>
-            <file>file:/Users/mqul/NetBeansProjects/NovusMovieProject/WebMovies/src/java/PresentationLayer/FilmFormBean.java</file>
-            <file>file:/Users/mqul/NetBeansProjects/NovusMovieProject/WebMovies/web/import-file.xhtml</file>
+            <file>file:/C:/Users/moqul/Documents/Coding%20Projects/NovusMovieProject/WebMovies/src/java/PresentationLayer/AssociateBean.java</file>
         </group>
     </open-files>
 </project-private>
