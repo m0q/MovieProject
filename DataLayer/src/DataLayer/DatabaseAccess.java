@@ -17,6 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  *
@@ -55,7 +56,6 @@ public class DatabaseAccess{
     public List<Director>getDistinctDirectors(Connection conn) throws SQLException{
         List<Director> tmpList = new ArrayList<>();
         try(CallableStatement cs = conn.prepareCall("{CALL getDirectors()}")){
-        
             try(ResultSet rs = cs.executeQuery()){
                 while(rs.next()){
                     tmpList.add(new Director(rs.getString("Director ID"), rs.getString("Director Name")));            
